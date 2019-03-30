@@ -27,7 +27,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="#">
-                        <img src="assets/img/logo.png" />
+                        <img class="arrow-logo" src="assets/img/logo.png" />
 
                     </a>
                     
@@ -90,7 +90,7 @@
                     if ($device != null) {
                     ?>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
-                        <a class="nolink" href="blank.html" >
+                        <a class="nolink" href="device.php" >
                             <div class="div-square">
                                 <i class="fa fa-mobile fa-5x"></i>
                                 <h4><?php echo $device ?></h4>                            

@@ -28,6 +28,14 @@ body {
     background:#F3F3F3;
    
 }
+
+#page-wrapper-device {
+    padding: 15px 15px;
+    min-height: 600px;
+    background:#F3F3F3;
+   
+}
+
 #page-inner {
     width:100%;
     margin:10px 20px 10px 0px;
@@ -138,12 +146,11 @@ a.nolink {
  
  @media(min-width:768px) {
      #page-wrapper{
-               margin: 0 0 0 260px;
+        margin: 0 0 0 260px;
         padding: 15px 30px;
         min-height: 1050px;
 		
     }
-	
 	
     .navbar-side {
         z-index: 1;
@@ -151,8 +158,23 @@ a.nolink {
         width: 260px;
        
     }
+}
 
- 
+@media(min-width:768px) {
+     #page-wrapper-device{
+        padding: 15px 30px;
+        min-height: 1050px;
+        
+    }
+}
+
+/* ========================================
+    Custom css
+    =======================================*/
+img.arrow-logo {
+    vertical-align: middle;
+    width: 48px;
+    height: 48px;
 }
 
 
