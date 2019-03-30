@@ -107,9 +107,13 @@ min-height: 80px;
 
 }
 
-.div-square> a,.div-square> a:hover {
-    color:#808080;
-     text-decoration:none;
+.div-square:hover {
+    color:  #4286f4;
+}
+
+a.nolink {
+    text-decoration: none;
+    color: inherit;
 }
 /*==============================================
     FOOTER STYLES     
