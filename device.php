@@ -1,9 +1,26 @@
-﻿<!DOCTYPE html>
+﻿<?php
+
+function geturlresp($jenurl) {
+  $url = $jenurl;
+  $output = file_get_contents("$url");
+  return $output;
+}
+?>
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Responsive Admin</title>
+    <?php
+    if (isset($_GET['select_device'])) {
+      $cur_device=$_GET['select_device'];
+      $cur_device_url="https://jenkins.arrowos.net/job/$cur_device/";
+      ?>
+      <title><?php echo ucfirst($cur_device) ?></title>
+      <?php
+    }
+    ?>
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -37,13 +54,30 @@
       <div id="page-inner">
         <div class="row">
           <div class="col-md-12">
-            <h2>BLANK PAGE </h2>   
-              </div>
-                </div>              
+            <h2><?php echo ucfirst($cur_device) ?></h2>   
+          </div>
+        </div>              
                  <!-- /. ROW  -->
                 <hr />
+
+                  <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="alert alert-info">
+                          Last successful build 
+                          <strong>
+                            <?php 
+                              $jsonresp = geturlresp($cur_device_url.'lastSuccessfulBuild/api/json');
+                              $obj = json_decode($jsonresp);
+                              $build_id = $obj->{'displayName'};
+                              $build_date = $obj->{'timestamp'}/1000;
+                            ?>
+                            <?php echo $build_id; ?> on <?php echo date('d/m/Y H:i:s', "$build_date"); ?>
+                          </strong>
+                        </div>                  
+                    </div>
+                  </div>
               
-                 <!-- /. ROW  -->           
+                 <!-- /. ROW  -->
       </div>
              <!-- /. PAGE INNER  -->
     </div>

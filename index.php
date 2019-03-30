@@ -3,7 +3,7 @@
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Responsive Admin</title>
+    <title>ArrowOS Jenkins</title>
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -77,6 +77,10 @@
 
             <!-- /. ROW  -->
             <?php
+                session_start();
+                if (isset($_GET['select_device'])) {
+                    $_SESSION['select_device']=$_GET['select_device'];
+                }
             	$url = 'https://raw.githubusercontent.com/ArrowOS/android_vendor_arrow/arrow-9.x/arrow.devices';
             	
                 $devices_list = nl2br( file_get_contents("$url") );
@@ -90,7 +94,7 @@
                     if ($device != null) {
                     ?>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
-                        <a class="nolink" href="device.php" >
+                        <a class="nolink" href="device.php?select_device=<?php echo $device ?>" >
                             <div class="div-square">
                                 <i class="fa fa-mobile fa-5x"></i>
                                 <h4><?php echo $device ?></h4>                            
@@ -137,8 +141,7 @@
       <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
-    
+    <script src="assets/js/custom.js"></script>    
    
 </body>
 </html>
