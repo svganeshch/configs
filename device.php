@@ -1,4 +1,5 @@
 ﻿<?php
+  include('session.php');
 
 function geturlresp($jenurl) {
   $url = $jenurl;
@@ -27,6 +28,7 @@ function geturlresp($jenurl) {
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
     <link href="assets/css/custom.css" rel="stylesheet" />
+    <link href="assets/css/switch.css" rel="stylesheet" />
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
@@ -44,7 +46,7 @@ function geturlresp($jenurl) {
           </div>
               
               <span class="logout-spn" >
-                <a href="#" style="color:#fff;">LOGOUT</a>  
+                <a href="logout.php" style="color:#fff;">LOGOUT</a>  
               </span>
       </div>
   </div>
@@ -78,6 +80,13 @@ function geturlresp($jenurl) {
                   </div>
               
                  <!-- /. ROW  -->
+                 <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                 </div>
       </div>
              <!-- /. PAGE INNER  -->
     </div>
