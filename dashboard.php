@@ -1,5 +1,6 @@
-﻿<?php
+<?php
     include('session.php');
+    include('connect_moi.php');
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -93,14 +94,17 @@
                 <?php
                 foreach(preg_split("/((\r?\n)|(\r\n?))/", $devices_list) as $device){
                     $device = substr($device, 0, strpos($device, 'userdebug'));
-                    $devices[] = $device;
                     if ($device != null) {
                     ?>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
                         <a class="nolink" href="device.php?select_device=<?php echo $device ?>" >
                             <div class="div-square">
                                 <i class="fa fa-mobile fa-5x"></i>
-                                <h4><?php echo $device ?></h4>                            
+                                <h4><?php echo $device ?></h4>
+                                <?php
+                                    $create_table_query = "CREATE TABLE IF NOT EXISTS $device (device_config_json JSON NOT NULL)";
+                                    mysqli_query($db, $create_table_query) or die(mysqli_error($db));
+                                ?>
                             </div>
                         </a>                                         
                     </div>           
