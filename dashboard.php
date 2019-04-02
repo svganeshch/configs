@@ -74,7 +74,7 @@
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="alert alert-info">
-                             <strong>Welcome Jhon Doe ! </strong> You Have No pending Task For Today.
+                             <strong>Welcome <?php echo $_SESSION['username'] ?>!</strong>
                         </div>                       
                     </div>
                 </div>
@@ -88,7 +88,6 @@
             	$url = 'https://raw.githubusercontent.com/ArrowOS/android_vendor_arrow/arrow-9.x/arrow.devices';
             	
                 $devices_list = nl2br( file_get_contents("$url") );
-                $devices = array();
                 ?>
                 <div class="row text-center pad-top">
                 <?php
@@ -102,7 +101,17 @@
                                 <i class="fa fa-mobile fa-5x"></i>
                                 <h4><?php echo $device ?></h4>
                                 <?php
-                                    $create_table_query = "CREATE TABLE IF NOT EXISTS $device (device_config_json JSON NOT NULL)";
+                                    $create_table_query = "CREATE TABLE IF NOT EXISTS $device (
+                                                            id int(10) AUTO_INCREMENT PRIMARY KEY,
+                                                            repo_paths JSON NULL,
+                                                            repo_clones JSON NULL,
+                                                            repopick_topics JSON NULL,
+                                                            repopick_changes JSON NULL,
+                                                            force_clean varchar(10) NULL,
+                                                            test_build varchar(10) NULL,
+                                                            lunch_override_name varchar(50) NULL,
+                                                            is_official varchar(10) NULL,
+                                                            changelog LONGTEXT NULL)";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
                                 ?>
                             </div>

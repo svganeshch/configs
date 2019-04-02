@@ -1,6 +1,6 @@
 <?php
 session_start();
- require('connect_moi.php');
+require('connect_moi.php');
 
 if (isset($_POST['username']) and isset($_POST['password'])){
 	$username = $_POST['username'];
@@ -9,7 +9,7 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 
 	$_SESSION["login_user"] = "$username";
 
-	$password_hash_query = "SELECT admin_password FROM `admin_login` WHERE admin_username='$username'";
+	$password_hash_query = "SELECT `admin_password` FROM `admin_login` WHERE `admin_username`='$username'";
 	$password_hash_res = mysqli_query($db, $password_hash_query) or die(mysqli_error($db));
 	$pass_hash = mysqli_fetch_assoc($password_hash_res);
 	$pass_hash = $pass_hash['admin_password'];

@@ -1,5 +1,6 @@
 ﻿<?php
-  include('session.php');
+include('session.php');
+session_start();
 
 function geturlresp($jenurl) {
   $url = $jenurl;
@@ -15,10 +16,10 @@ function geturlresp($jenurl) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <?php
     if (isset($_GET['select_device'])) {
-      $cur_device=$_GET['select_device'];
-      $cur_device_url="https://jenkins.arrowos.net/job/$cur_device/";
+      $_SESSION["cur_device"]=$_GET['select_device'];
+      $cur_device_url="https://jenkins.arrowos.net/job/".$_SESSION["cur_device"]."/";
       ?>
-      <title><?php echo ucfirst($cur_device) ?></title>
+      <title><?php echo ucfirst($_SESSION["cur_device"]) ?></title>
       <?php
     }
     ?>
@@ -51,43 +52,106 @@ function geturlresp($jenurl) {
       </div>
   </div>
 
-  <!-- /. NAV SIDE  -->
-    <div id="page-wrapper-device" >
-      <div id="page-inner">
+<!-- /. NAV SIDE  -->
+<div id="page-wrapper-device" >
+    <div id="page-inner">
         <div class="row">
-          <div class="col-md-12">
-            <h2><?php echo ucfirst($cur_device) ?></h2>   
-          </div>
+            <div class="col-md-12">
+                <h2><?php echo ucfirst($_SESSION["cur_device"]) ?></h2>   
+            </div>
         </div>              
-                 <!-- /. ROW  -->
-                <hr />
+        <!-- /. ROW  -->
+        <hr />
 
-                  <div class="row">
-                    <div class="col-lg-12 ">
-                        <div class="alert alert-info">
-                          Last successful build 
-                          <strong>
-                            <?php 
-                              $jsonresp = geturlresp($cur_device_url.'lastSuccessfulBuild/api/json');
-                              $obj = json_decode($jsonresp);
-                              $build_id = $obj->{'displayName'};
-                              $build_date = $obj->{'timestamp'}/1000;
-                            ?>
-                            <?php echo $build_id; ?> on <?php echo date('d/m/Y H:i:s', "$build_date"); ?>
-                          </strong>
-                        </div>                  
-                    </div>
-                  </div>
-              
-                 <!-- /. ROW  -->
-                 <div class="onoffswitch">
-                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-                        <label class="onoffswitch-label" for="myonoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
-                 </div>
-      </div>
+        <div class="row">
+            <div class="col-lg-12 ">
+                <div class="alert alert-info">
+                Last successful build for
+                <strong>
+                <?php 
+                    $jsonresp = geturlresp($cur_device_url.'lastSuccessfulBuild/api/json');
+                    $obj = json_decode($jsonresp);
+                    $build_id = $obj->{'displayName'};
+                    $build_date = $obj->{'timestamp'}/1000;
+                ?>
+                <?php echo ucfirst($_SESSION["cur_device"]); echo " "; echo $build_id; ?> on <?php echo date('d/m/Y H:i:s', "$build_date"); ?>
+                </strong>
+                </div>                  
+            </div>
+        </div>
+
+        <!-- /. ROW  -->
+        <div class="onoffswitch">
+            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+        </div>
+
+        <!-- Text Fields -->
+        <div class="form-group">  
+            <form name="add_name" id="add_name">
+                    <ul class="list-group">
+                        <li class="list-group-item" id="dynamic_field-1-">
+                            <label>Path of repos to delete!</label>
+                            <button type="button" name="add1" id="add1" class="btn btn-success">Add More</button>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" name="repo_paths[]" class="form-control" />
+                                    </div>
+                                </div>                                
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="list-group">
+                        <li class="list-group-item" id="dynamic_field-2-">
+                            <label>Url's of repos to clone/sync!</label>
+                            <button type="button" name="add2" id="add2" class="btn btn-success">Add More</button>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" name="repo_clones[]" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="list-group">
+                        <li class="list-group-item" id="dynamic_field-3-">
+                            <label>Repopick topics!</label>
+                            <button type="button" name="add3" id="add3" class="btn btn-success">Add More</button>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" name="repopick_topics[]" class="form-control" />
+                                    </div>
+                                </div>                                
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="list-group">
+                        <li class="list-group-item" id="dynamic_field-4-">
+                            <label>Repopick change numbers!</label>
+                            <button type="button" name="add4" id="add4" class="btn btn-success">Add More</button>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-2">
+                                    <div class="form-group">
+                                        <input type="text" name="repopick_changes[]" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
+            </form>  
+        </div>
+
              <!-- /. PAGE INNER  -->
     </div>
          <!-- /. PAGE WRAPPER  -->
@@ -110,7 +174,7 @@ function geturlresp($jenurl) {
     <script src="assets/js/bootstrap.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-    
+    <script src="assets/js/textbox.js"></script>
    
 </body>
 </html>

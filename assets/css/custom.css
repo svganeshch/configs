@@ -177,4 +177,12 @@ img.arrow-logo {
     height: 48px;
 }
 
+.btn-success {
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+
+.btn {
+    padding: 0px 6px;
+}
 
