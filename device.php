@@ -29,7 +29,7 @@ function geturlresp($jenurl) {
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
     <link href="assets/css/custom.css" rel="stylesheet" />
-    <link href="assets/css/switch.css" rel="stylesheet" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
      <!-- GOOGLE FONTS-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
@@ -80,18 +80,54 @@ function geturlresp($jenurl) {
             </div>
         </div>
 
-        <!-- /. ROW  -->
-        <div class="onoffswitch">
-            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-                <label class="onoffswitch-label" for="myonoffswitch">
-                    <span class="onoffswitch-inner"></span>
-                    <span class="onoffswitch-switch"></span>
-                </label>
-        </div>
-
         <!-- Text Fields -->
-        <div class="form-group">  
+        <div class="form-group">
             <form name="add_name" id="add_name">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label style="padding-right: 25px">Is Official?</label>  <input type="checkbox" name="is_official" id="is_official" checked />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label style="padding-right: 25px">Test Build</label>  <input type="checkbox" name="test_build" id="test_build" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label style="padding-right: 25px">Force Clean</label>  <input type="checkbox" name="force_clean" id="force_clean" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label style="padding-right: 25px">Override Lunch</label>  <input type="checkbox" name="override_lunch" id="override_lunch" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="hidden_is_official" id="hidden_is_official" value="yes" />
+                    <input type="hidden" name="hidden_test_build" id="hidden_test_build" value="no" />
+                    <input type="hidden" name="hidden_force_clean" id="hidden_force_clean" value="no" />
+                    <input type="hidden" name="hidden_override_lunch" id="hidden_override_lunch" value="no" />
+                    <br/>
+
                     <ul class="list-group">
                         <li class="list-group-item" id="dynamic_field-1-">
                             <label>Path of repos to delete!</label>
@@ -148,6 +184,15 @@ function geturlresp($jenurl) {
                         </li>
                     </ul>
 
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-2">
+                            <div class="form-group">
+                                <label>Changelog:</label>
+                                <textarea class="form-control" name="changelog" id="changelog" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                 <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
             </form>  
         </div>
@@ -174,7 +219,8 @@ function geturlresp($jenurl) {
     <script src="assets/js/bootstrap.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-    <script src="assets/js/textbox.js"></script>
+    <script src="assets/js/collect_data.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
    
 </body>
 </html>
