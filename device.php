@@ -81,121 +81,129 @@ function geturlresp($jenurl) {
         </div>
 
         <!-- Text Fields -->
-        <div class="form-group">
-            <form name="add_name" id="add_name">
-                    <div class="row">
-                        <div class="col-lg-4">
+        <form name="add_name" id="add_name">
+            <div class="container-fluid" >
+                <div class="row">
+                    <div class="col-md-1 col-xs-4">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>Is Official?</label> 
+                                <input type="checkbox" name="is_official" id="is_official" checked />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-xs-4">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>Test Build</label>
+                                <input type="checkbox" name="test_build" id="test_build" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-xs-4">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>Force clean</label>
+                                <input type="checkbox" name="force_clean" id="force_clean" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="hidden_is_official" id="hidden_is_official" value="yes" />
+                <input type="hidden" name="hidden_test_build" id="hidden_test_build" value="no" />
+                <input type="hidden" name="hidden_force_clean" id="hidden_force_clean" value="no" />
+                <input type="hidden" name="hidden_override_lunch" id="hidden_override_lunch" value="no" />
+                <br/>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-5 col-xs-12" id="total-menu-block">
+                        <li class="list-group-item" id="total-menu-list">
+
                             <div class="form-group">
                                 <div class="checkbox">
-                                    <label style="padding-right: 25px">Is Official?</label>  <input type="checkbox" name="is_official" id="is_official" checked />
+                                    <label>Override lunch?</label>
+                                    <input type="checkbox" name="override_lunch" id="override_lunch" />
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label style="padding-right: 25px">Test Build</label>  <input type="checkbox" name="test_build" id="test_build" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label style="padding-right: 25px">Force Clean</label>  <input type="checkbox" name="force_clean" id="force_clean" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label style="padding-right: 25px">Override Lunch</label>  <input type="checkbox" name="override_lunch" id="override_lunch" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="hidden" name="hidden_is_official" id="hidden_is_official" value="yes" />
-                    <input type="hidden" name="hidden_test_build" id="hidden_test_build" value="no" />
-                    <input type="hidden" name="hidden_force_clean" id="hidden_force_clean" value="no" />
-                    <input type="hidden" name="hidden_override_lunch" id="hidden_override_lunch" value="no" />
-                    <br/>
-
-                    <ul class="list-group">
-                        <li class="list-group-item" id="dynamic_field-1-">
-                            <label>Path of repos to delete!</label>
-                            <button type="button" name="add1" id="add1" class="btn btn-success">Add More</button>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" name="repo_paths[]" class="form-control" />
+                            <ul class="list-group">
+                                <li class="list-group-item" id="dynamic_field-1-">
+                                    <label>Path of repos to delete!</label>
+                                    <button type="button" name="add1" id="add1" class="btn btn-success">Add More</button>
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" name="repo_paths[]" class="form-control" />
+                                            </div>
+                                        </div>                                
                                     </div>
-                                </div>                                
-                            </div>
-                        </li>
-                    </ul>
+                                </li>
+                            </ul>
 
-                    <ul class="list-group">
-                        <li class="list-group-item" id="dynamic_field-2-">
-                            <label>Url's of repos to clone/sync!</label>
-                            <button type="button" name="add2" id="add2" class="btn btn-success">Add More</button>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" name="repo_clones[]" class="form-control" />
+                            <ul class="list-group">
+                                <li class="list-group-item" id="dynamic_field-2-">
+                                    <label>Url's of repos to clone/sync!</label>
+                                    <button type="button" name="add2" id="add2" class="btn btn-success">Add More</button>
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" name="repo_clones[]" class="form-control" />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                                </li>
+                            </ul>
 
-                    <ul class="list-group">
-                        <li class="list-group-item" id="dynamic_field-3-">
-                            <label>Repopick topics!</label>
-                            <button type="button" name="add3" id="add3" class="btn btn-success">Add More</button>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" name="repopick_topics[]" class="form-control" />
+                            <ul class="list-group">
+                                <li class="list-group-item" id="dynamic_field-3-">
+                                    <label>Repopick topics!</label>
+                                    <button type="button" name="add3" id="add3" class="btn btn-success">Add More</button>
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" name="repopick_topics[]" class="form-control" />
+                                            </div>
+                                        </div>                                
                                     </div>
-                                </div>                                
-                            </div>
-                        </li>
-                    </ul>
+                                </li>
+                            </ul>
 
-                    <ul class="list-group">
-                        <li class="list-group-item" id="dynamic_field-4-">
-                            <label>Repopick change numbers!</label>
-                            <button type="button" name="add4" id="add4" class="btn btn-success">Add More</button>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-2">
-                                    <div class="form-group">
-                                        <input type="text" name="repopick_changes[]" class="form-control" />
+                            <ul class="list-group">
+                                <li class="list-group-item" id="dynamic_field-4-">
+                                    <label>Repopick change numbers!</label>
+                                    <button type="button" name="add4" id="add4" class="btn btn-success">Add More</button>
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" name="repopick_changes[]" class="form-control" />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                                </li>
+                            </ul>
 
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-2">
-                            <div class="form-group">
-                                <label>Changelog:</label>
-                                <textarea class="form-control" name="changelog" id="changelog" rows="3"></textarea>
-                            </div>
-                        </div>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Changelog:</label>
+                                                <textarea class="form-control" name="changelog" id="changelog" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
+                        </li>
                     </div>
-
-                <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
-            </form>  
-        </div>
+                </div>
+            </div>
+        </form>
 
              <!-- /. PAGE INNER  -->
     </div>

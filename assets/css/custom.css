@@ -177,11 +177,19 @@ img.arrow-logo {
     height: 48px;
 }
 
-.btn-success {
+.list-group-item button.btn-success {
     margin-left: 20px;
     margin-bottom: 5px;
 }
 
-.btn {
+.list-group-item button.btn {
     padding: 0px 6px;
+}
+
+.checkbox label {
+    padding-left: 0px;
+}
+
+#total-menu-block li#total-menu-list {
+    border-color: #999;
 }
