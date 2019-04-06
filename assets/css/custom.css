@@ -178,12 +178,20 @@ img.arrow-logo {
 }
 
 .list-group-item button.btn-success {
-    margin-left: 20px;
-    margin-bottom: 5px;
+    margin-top: 5px;
+    background-color: #214761;
+    border-color: #214761;
+}
+
+.list-group-item button.btn-success:hover {
+    color: #fff;
+    background-color: #3a6f92;
+    border-color: #3a6f92;
 }
 
 .list-group-item button.btn {
     padding: 0px 6px;
+    float: right;
 }
 
 .checkbox label {
