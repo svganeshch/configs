@@ -66,6 +66,34 @@ $(document).ready(function(){
 		}
   });
 
+  $('#buildtype').bootstrapToggle({
+    on: 'User',
+    off: 'Eng',
+    onstyle: 'success',
+    offstyle: 'danger'
+  });
+  $('body').on('change', '#buildtype', function(){
+		if ($(this).prop('checked')) {
+			$('#hidden_buildtype').val('user');
+		} else {
+			$('#hidden_buildtype').val('eng');
+		}
+  });
+
+  $('#bootimage').bootstrapToggle({
+    on: 'Yes',
+    off: 'No',
+    onstyle: 'success',
+    offstyle: 'danger'
+  });
+  $('body').on('change', '#bootimage', function(){
+		if ($(this).prop('checked')) {
+			$('#hidden_bootimage').val('yes');
+		} else {
+			$('#hidden_bootimage').val('no');
+		}
+  });
+
   $('#override_lunch').bootstrapToggle({
     on: 'Yes',
     off: 'No',

@@ -113,6 +113,24 @@ function geturlresp($jenurl) {
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-3 col-xs-4">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>Buildtype</label>
+                                            <input type="checkbox" name="buildtype" id="buildtype" checked />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-4">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>Bootimage only!</label>
+                                            <input type="checkbox" name="bootimage" id="bootimage" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </li>
                     </div>
@@ -120,6 +138,8 @@ function geturlresp($jenurl) {
                 <input type="hidden" name="hidden_is_official" id="hidden_is_official" value="yes" />
                 <input type="hidden" name="hidden_test_build" id="hidden_test_build" value="no" />
                 <input type="hidden" name="hidden_force_clean" id="hidden_force_clean" value="no" />
+                <input type="hidden" name="hidden_buildtype" id="hidden_buildtype" value="user" />
+                <input type="hidden" name="hidden_bootimage" id="hidden_bootimage" value="no" />
                 <br/>
             </div>
 

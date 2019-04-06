@@ -43,21 +43,23 @@ function genJsonData ($counts, $key_value_name) {
 // Start
 $cur_device = $_SESSION["cur_device"];
 
+// Overriden device Constants
+$repo_path_count = count($_POST["repo_paths"]);
+$repo_clone_count = count($_POST["repo_clones"]);
+$repo_topic_count = count($_POST["repopick_topics"]);
+$repo_change_count = count($_POST["repopick_changes"]);
+
+// Overriden device Switch vals and changelog
+$is_official = $_POST["hidden_is_official"];
+$test_build = $_POST["hidden_test_build"];
+$force_clean = $_POST["hidden_force_clean"];
+$buildtype = $_POST["hidden_buildtype"];
+$bootimage = $_POST["hidden_bootimage"];
+$changelog = $_POST["changelog"];
+
 if ($_POST['hidden_override_lunch'] == 'yes') {
 
     $override_name = $_POST["lunch_override_name"];
-
-    // Overriden device Constants
-    $repo_path_count = count($_POST["repo_paths"]);
-    $repo_clone_count = count($_POST["repo_clones"]);
-    $repo_topic_count = count($_POST["repopick_topics"]);
-    $repo_change_count = count($_POST["repopick_changes"]);
-
-    // Overriden device Switch vals and changelog
-    $is_official = $_POST["hidden_is_official"];
-    $test_build = $_POST["hidden_test_build"];
-    $force_clean = $_POST["hidden_force_clean"];
-    $changelog = $_POST["changelog"];
 
     // Overriden device Json repos data query calls
     genJsonData($repo_path_count, 'ovr_repo_paths');
@@ -69,22 +71,12 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($is_official, 'ovr_is_official', $cur_device);
     pushQuery($test_build, 'ovr_test_build', $cur_device);
     pushQuery($force_clean, 'ovr_force_clean', $cur_device);
+    pushQuery($buildtype, 'ovr_buildtype', $cur_device);
+    pushQuery($bootimage, 'ovr_bootimage', $cur_device);
     pushQuery($changelog, 'ovr_changelog', $cur_device);
     pushQuery($override_name, 'lunch_override_name', $cur_device);
 
 } else {
-
-    // Constants
-    $repo_path_count = count($_POST["repo_paths"]);
-    $repo_clone_count = count($_POST["repo_clones"]);
-    $repo_topic_count = count($_POST["repopick_topics"]);
-    $repo_change_count = count($_POST["repopick_changes"]);
-
-    // Switch vals and changelog
-    $is_official = $_POST["hidden_is_official"];
-    $test_build = $_POST["hidden_test_build"];
-    $force_clean = $_POST["hidden_force_clean"];
-    $changelog = $_POST["changelog"];
 
     // Json repos data query calls
     genJsonData($repo_path_count, 'repo_paths');
@@ -96,6 +88,8 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($is_official, 'is_official', $cur_device);
     pushQuery($test_build, 'test_build', $cur_device);
     pushQuery($force_clean, 'force_clean', $cur_device);
+    pushQuery($buildtype, 'buildtype', $cur_device);
+    pushQuery($bootimage, 'bootimage', $cur_device);
     pushQuery($changelog, 'changelog', $cur_device);
 
 }

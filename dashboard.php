@@ -110,6 +110,8 @@
                                                             force_clean varchar(10) NULL,
                                                             test_build varchar(10) NULL,
                                                             is_official varchar(10) NULL,
+                                                            buildtype varchar(10) NULL,
+                                                            bootimage varchar(10) NULL,
                                                             changelog LONGTEXT NULL,
                                                             lunch_override_name varchar(50) NULL,
                                                             ovr_repo_paths JSON NULL,
@@ -119,6 +121,8 @@
                                                             ovr_force_clean varchar(10) NULL,
                                                             ovr_test_build varchar(10) NULL,
                                                             ovr_is_official varchar(10) NULL,
+                                                            ovr_buildtype varchar(10) NULL,
+                                                            ovr_bootimage varchar(10) NULL,
                                                             ovr_changelog LONGTEXT NULL)";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
                                 ?>
