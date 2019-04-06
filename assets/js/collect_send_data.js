@@ -76,7 +76,11 @@ $(document).ready(function(){
 		if ($(this).prop('checked')) {
 			$('#hidden_override_lunch').val('yes');
 			$('#config_dev_name').text("Enter lunch name of the device to override:");
-			$('#config_dev_name').append('<div class="row"> <div class="col-md-12 col-xs-12"> <div class="form-group"> <input type="text" name="lunch_override_name" class="form-control" /> </div> </div> </div>');
+			$('#config_dev_name').append('<div class="row"> <div class="col-md-12 col-xs-12"> <div class="form-group"> <input type="text" name="lunch_override_name" id="lunch_override_name" class="form-control" /> </div> </div> </div>');
+			$('#lunch_override_name').focus();
+		} else {
+			$('#hidden_override_lunch').val('no');
+			$('#config_dev_name').text(cur_devname);
 		}
   });
 

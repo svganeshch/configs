@@ -84,31 +84,37 @@ function geturlresp($jenurl) {
         <form name="add_name" id="add_name">
             <div class="container-fluid" >
                 <div class="row">
-                    <div class="col-md-1 col-xs-4">
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>Is Official?</label> 
-                                <input type="checkbox" name="is_official" id="is_official" checked />
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-md-5 col-xs-12" id="total-menu-block">
+                        <li class="list-group-item" id="total-menu-list">
+                            <div class="row">
+                                <div class="col-md-3 col-xs-4">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>Is Official?</label> 
+                                            <input type="checkbox" name="is_official" id="is_official" checked />
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <div class="col-md-1 col-xs-4">
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>Test Build</label>
-                                <input type="checkbox" name="test_build" id="test_build" />
-                            </div>
-                        </div>
-                    </div>
+                                <div class="col-md-3 col-xs-4">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>Test Build</label>
+                                            <input type="checkbox" name="test_build" id="test_build" />
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <div class="col-md-1 col-xs-4">
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>Force clean</label>
-                                <input type="checkbox" name="force_clean" id="force_clean" />
+                                <div class="col-md-3 col-xs-4">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>Force clean</label>
+                                            <input type="checkbox" name="force_clean" id="force_clean" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </li>
                     </div>
                 </div>
                 <input type="hidden" name="hidden_is_official" id="hidden_is_official" value="yes" />
