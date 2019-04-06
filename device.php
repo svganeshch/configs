@@ -45,10 +45,6 @@ function geturlresp($jenurl) {
               <img class="arrow-logo" src="assets/img/logo.png" />
             </a>
           </div>
-              
-              <span class="logout-spn" >
-                <a href="logout.php" style="color:#fff;">LOGOUT</a>  
-              </span>
       </div>
   </div>
 
@@ -63,20 +59,22 @@ function geturlresp($jenurl) {
         <!-- /. ROW  -->
         <hr />
 
-        <div class="row">
-            <div class="col-lg-12 ">
-                <div class="alert alert-info">
-                Last successful build for
-                <strong>
-                <?php 
-                    $jsonresp = geturlresp($cur_device_url.'lastSuccessfulBuild/api/json');
-                    $obj = json_decode($jsonresp);
-                    $build_id = $obj->{'displayName'};
-                    $build_date = $obj->{'timestamp'}/1000;
-                ?>
-                <?php echo ucfirst($_SESSION["cur_device"]); echo " "; echo $build_id; ?> on <?php echo date('d/m/Y H:i:s', "$build_date"); ?>
-                </strong>
-                </div>                  
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-5 col-xs-12">
+                    <div class="alert alert-info">
+                    Last successful build for
+                    <strong>
+                    <?php 
+                        $jsonresp = geturlresp($cur_device_url.'lastSuccessfulBuild/api/json');
+                        $obj = json_decode($jsonresp);
+                        $build_id = $obj->{'displayName'};
+                        $build_date = $obj->{'timestamp'}/1000;
+                    ?>
+                    <?php echo ucfirst($_SESSION["cur_device"]); echo " "; echo $build_id; ?> on <?php echo date('d/m/Y h:i', "$build_date"); ?>
+                    </strong>
+                    </div>                  
+                </div>
             </div>
         </div>
 
@@ -246,7 +244,7 @@ function geturlresp($jenurl) {
 <div class="footer">
   <div class="row">
     <div class="col-lg-12" >
-      &copy;  2014 yourdomain.com | Design by: <a href="http://binarytheme.com" style="color:#fff;"  target="_blank">www.binarytheme.com</a>
+      &copy;  2019 ArrowOS | <a href="https://arrowos.net" style="color:#fff;" target="_blank">www.arrowos.net</a>
     </div>
   </div>
 </div>

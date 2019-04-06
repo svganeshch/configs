@@ -22,7 +22,7 @@
            
           
     <div id="wrapper">
-         <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="adjust-nav">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -36,11 +36,6 @@
                     </a>
                     
                 </div>
-              
-                <span class="logout-spn" >
-                  <a href="logout.php" style="color:#fff;">LOGOUT</a>  
-
-                </span>
             </div>
         </div>
 
@@ -49,12 +44,12 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li class="active-link">
-                        <a href="index.html" ><i class="fa fa-desktop "></i>Dashboard <span class="badge">Included</span></a>
+                        <a href="dashboard.php" ><i class="fa fa-home "></i>Dashboard</a>
                     </li>
                    
 
                     <li>
-                        <a href="ui.html"><i class="fa fa-table "></i>UI Elements  <span class="badge">Included</span></a>
+                        <a href="logout.php" style="color: #a94442"><i class="fa fa-sign-out "></i>Logout</a>
                     </li>                   
                 </ul>
             </div>
@@ -65,7 +60,7 @@
         <div id="page-inner">
             <div class="row">
                 <div class="col-lg-12">
-                     <h2>ADMIN DASHBOARD</h2>   
+                     <h2>Official Devices</h2>   
                 </div>
             </div>
 
@@ -138,14 +133,14 @@
             ?>
                  
             <!-- /. ROW  -->   
-				<div class="row">
+				<!--<div class="row">
                 	<div class="col-lg-12 ">
 					<br/>
                         <div class="alert alert-danger">
                              <strong>Want More Icons Free ? </strong> Checkout fontawesome website and use any icon <a target="_blank" href="http://fortawesome.github.io/Font-Awesome/icons/">Click Here</a>.
                         </div>                       
                     </div>
-                </div>
+                </div>-->
                   <!-- /. ROW  --> 
     	</div>
              <!-- /. PAGE INNER  -->
@@ -156,7 +151,7 @@
     <div class="footer">
         <div class="row">
             <div class="col-lg-12" >
-                &copy;  2014 yourdomain.com | Design by: <a href="http://binarytheme.com" style="color:#fff;" target="_blank">www.binarytheme.com</a>
+                &copy;  2019 ArrowOS | <a href="https://arrowos.net" style="color:#fff;" target="_blank">www.arrowos.net</a>
             </div>
         </div>
     </div>

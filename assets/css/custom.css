@@ -19,18 +19,18 @@ body {
 
  #wrapper {
     width: 100%;
-    margin-top:50px;
+    margin-top:30px;
 }
 
 #page-wrapper {
-    padding: 15px 15px;
+    padding: 25px 15px;
     min-height: 600px;
     background:#F3F3F3;
    
 }
 
 #page-wrapper-device {
-    padding: 15px 15px;
+    padding: 25px 15px;
     min-height: 600px;
     background:#F3F3F3;
    
@@ -42,6 +42,7 @@ body {
     background-color:#fff!important;
     padding:10px;
     min-height:1050px;
+    border-radius: 6px;
 }
 .pad-top {
     padding-top:15px;
@@ -49,10 +50,9 @@ body {
 /*==============================================
     MENU STYLES    
     =============================================*/
-
 .sidebar-collapse .nav {
 	padding:0;
-    padding-top:50px;
+    padding-top:15px;
 }
 
 .sidebar-collapse > .nav > li > a {
@@ -74,13 +74,17 @@ font-size: 16px;
 .navbar-side {
 	border:none;
 	background-color: #fff;
-	
+    z-index: 1;
+    position: fixed;
+    right: 0;
+    left: 0;
 }
 .navbar-inverse {
 
 background-color: #214761;
 border-color: #F0F0F0;
-min-height: 80px;
+border-bottom-right-radius: 6px;
+border-bottom-left-radius: 6px;
 }
 
 
@@ -130,8 +134,10 @@ a.nolink {
     background-color:#214761;
     width:100%;
     color:#fff;
-    padding:20px 50px 20px 50px;
-     padding-left:20px;
+    padding:0px 50px 0px 50px;
+    padding-left:20px;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
 }
 
 
@@ -147,14 +153,14 @@ a.nolink {
  @media(min-width:768px) {
      #page-wrapper{
         margin: 0 0 0 260px;
-        padding: 15px 30px;
+        padding: 25px 30px;
         min-height: 1050px;
 		
     }
 	
     .navbar-side {
         z-index: 1;
-        position: absolute;
+        position: fixed;
         width: 260px;
        
     }
@@ -162,7 +168,7 @@ a.nolink {
 
 @media(min-width:768px) {
      #page-wrapper-device{
-        padding: 15px 30px;
+        padding: 25px 30px;
         min-height: 1050px;
         
     }
@@ -172,9 +178,9 @@ a.nolink {
     Custom css
     =======================================*/
 img.arrow-logo {
-    vertical-align: middle;
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
+    padding: 0px 2px 8px 2px;
 }
 
 .list-group-item button.btn-success {
