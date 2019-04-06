@@ -85,20 +85,30 @@ $(document).ready(function(){
   });
 
   $(document).on('click', '.btn_remove', function(){
-	 var button_id = $(this).attr("id"); 
-	 $('#dynamic_field'+button_id+'').remove();
+	var button_id = $(this).attr("id");
+	if ($('li#dynamic_field'+button_id+'').next().attr("id") != null) {
+		var next_text_field = $('li#dynamic_field'+button_id+'').next().attr("id");
+		next_text_field = next_text_field.slice(-1);
+		$('#text_field'+next_text_field+'').focus();
+	} else if ($('li#dynamic_field'+button_id+'').prev().attr("id") != null) {
+		var prev_text_field = $('li#dynamic_field'+button_id+'').prev().attr("id");
+		prev_text_field = prev_text_field.slice(-1);
+		$('#text_field'+prev_text_field+'').focus();
+	}
+
+	$('#dynamic_field'+button_id+'').remove();
   });
   
   $('#submit').click(function(){ 
-		$.ajax({
-		    url:"send_data.php",
-		    method:"POST",
-		    data:$('#add_name').serialize(),
-		    success:function(data)
-		    {
-			    alert(data);
-			    //$('#add_name')[0].reset();
-		    }
-		});
+	$.ajax({
+	    url:"send_data.php",
+	    method:"POST",
+	    data:$('#add_name').serialize(),
+	    success:function(data)
+	    {
+		    alert(data);
+		    //$('#add_name')[0].reset();
+	    }
+	});
   });
 });
