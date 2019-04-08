@@ -75,6 +75,33 @@
                 </div>
 
             <!-- /. ROW  -->
+            <div class="row text-center pad-top">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+                    <a class="nolink" href="device.php?select_device=<?php echo "common_config" ?>" >
+                        <div class="div-square">
+                            <i class="fa fa-mobile fa-5x"></i>
+                            <h4>Common Config</h4>
+                            <?php
+                                $create_table_query = "CREATE TABLE IF NOT EXISTS common_config (
+                                                        id int(10) AUTO_INCREMENT PRIMARY KEY,
+                                                        repo_paths JSON NULL,
+                                                        repo_clones JSON NULL,
+                                                        repopick_topics JSON NULL,
+                                                        repopick_changes JSON NULL,
+                                                        force_clean varchar(10) NULL,
+                                                        test_build varchar(10) NULL,
+                                                        is_official varchar(10) NULL,
+                                                        buildtype varchar(10) NULL,
+                                                        bootimage varchar(10) NULL,
+                                                        global_override varchar(10) NULL,
+                                                        changelog LONGTEXT NULL)";
+                                mysqli_query($db, $create_table_query) or die(mysqli_error($db));
+                            ?>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
             <?php
                 session_start();
                 if (isset($_GET['select_device'])) {

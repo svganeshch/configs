@@ -24,6 +24,22 @@ $(document).ready(function(){
   });
 
   // Switches
+  $('#global_override').bootstrapToggle({
+		on: 'Yes',
+		off: 'No',
+		onstyle: 'success',
+		offstyle: 'danger'
+  });
+  $('body').on('change', '#global_override', function(){
+		if ($(this).prop('checked')) {
+			$('#hidden_global_override').val('yes');
+			$('#switch-block').show();
+		} else {
+			$('#hidden_global_override').val('no');
+			$('#switch-block').hide();
+		}
+  });
+
   $('#is_official').bootstrapToggle({
 		on: 'Yes',
 		off: 'No',
@@ -128,5 +144,22 @@ $(document).ready(function(){
 			    //$('#add_name')[0].reset();
 		    }
 		});
+  });
+  $( "#global_override" ).trigger( "change" );
+
+  $('body').on('click', '#reset-hard', function(){
+  	//set defaults
+	$('#is_official').prop('checked', true);
+	$('#test_build').prop('checked', false);
+	$('#force_clean').prop('checked', false);
+	$('#buildtype').prop('checked', true);
+	$('#bootimage').prop('checked', false);
+
+	// trigger defaults
+	$("#is_official").trigger("change");
+	$("#test_build").trigger("change");
+	$("#force_clean").trigger("change");
+	$("#buildtype").trigger("change");
+	$("#bootimage").trigger("change");
   });
 });

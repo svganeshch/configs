@@ -50,6 +50,7 @@ $repo_topic_count = count($_POST["repopick_topics"]);
 $repo_change_count = count($_POST["repopick_changes"]);
 
 // Overriden device Switch vals and changelog
+$global_override = $_POST["hidden_global_override"];
 $is_official = $_POST["hidden_is_official"];
 $test_build = $_POST["hidden_test_build"];
 $force_clean = $_POST["hidden_force_clean"];
@@ -85,6 +86,9 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     genJsonData($repo_change_count, 'repopick_changes');
 
     // Switch vals and changelog query calls
+    if (isset($_POST['hidden_global_override'])) {
+        pushQuery($global_override, 'global_override', $cur_device);
+    }
     pushQuery($is_official, 'is_official', $cur_device);
     pushQuery($test_build, 'test_build', $cur_device);
     pushQuery($force_clean, 'force_clean', $cur_device);

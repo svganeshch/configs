@@ -59,6 +59,7 @@ function geturlresp($jenurl) {
         <!-- /. ROW  -->
         <hr />
 
+        <?php if ($_SESSION["cur_device"] != "common_config") { ?>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-5 col-xs-12">
@@ -77,60 +78,83 @@ function geturlresp($jenurl) {
                 </div>
             </div>
         </div>
+        <?php } ?>
 
         <!-- Text Fields -->
         <form name="add_name" id="add_name">
             <div class="container-fluid" >
-                <div class="row">
-                    <div class="col-md-5 col-xs-12" id="total-menu-block">
-                        <li class="list-group-item" id="total-menu-list">
-                            <div class="row">
-                                <div class="col-md-3 col-xs-4">
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>Is Official?</label> 
-                                            <input type="checkbox" name="is_official" id="is_official" checked />
-                                        </div>
+                <?php if ($_SESSION["cur_device"] == "common_config") { ?>           
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>Global override</label> 
+                            <input type="checkbox" name="global_override" id="global_override" />
+                        </div>
+                    </div>
+                <input type="hidden" name="hidden_global_override" id="hidden_global_override" value="no" />
+                <?php } ?>
+
+                <div class="switch-block" id="switch-block">
+                    <div class="row">
+                        <div class="col-md-5 col-xs-12" id="total-menu-block">
+                            <li class="list-group-item" id="total-menu-list">
+
+
+                                <div class="row" title="reset to defaults!">
+                                    <div class="col-md-12 col-xs-12">
+                                        <button type="button" id="reset-hard" name="reset-hard" class="btn btn-success">
+                                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        </button>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 col-xs-4">
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>Test Build</label>
-                                            <input type="checkbox" name="test_build" id="test_build" />
+                                <div class="row">
+                                    <div class="col-md-3 col-xs-4">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>Is Official?</label> 
+                                                <input type="checkbox" name="is_official" id="is_official" checked />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-3 col-xs-4">
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>Force clean</label>
-                                            <input type="checkbox" name="force_clean" id="force_clean" />
+                                    <div class="col-md-3 col-xs-4">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>Test Build</label>
+                                                <input type="checkbox" name="test_build" id="test_build" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-3 col-xs-4">
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>Buildtype</label>
-                                            <input type="checkbox" name="buildtype" id="buildtype" checked />
+                                    <div class="col-md-3 col-xs-4">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>Force clean</label>
+                                                <input type="checkbox" name="force_clean" id="force_clean" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-3 col-xs-4">
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>Bootimage only!</label>
-                                            <input type="checkbox" name="bootimage" id="bootimage" />
+                                    <div class="col-md-3 col-xs-4">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>Buildtype</label>
+                                                <input type="checkbox" name="buildtype" id="buildtype" checked />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-xs-4" title="builds only bootimage!!">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>Bootimage!</label>
+                                                <input type="checkbox" name="bootimage" id="bootimage" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        </div>
                     </div>
                 </div>
                 <input type="hidden" name="hidden_is_official" id="hidden_is_official" value="yes" />
@@ -146,6 +170,7 @@ function geturlresp($jenurl) {
                     <div class="col-md-5 col-xs-12" id="total-menu-block">
                         <li class="list-group-item" id="total-menu-list">
 
+                            <?php if ($_SESSION["cur_device"] != "common_config") { ?>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>Override lunch?</label>
@@ -153,6 +178,7 @@ function geturlresp($jenurl) {
                                 </div>
                             </div>
                             <input type="hidden" name="hidden_override_lunch" id="hidden_override_lunch" value="no" />
+                            <?php } ?>
 
                             <div class="config_dev_div" id="config_dev_div">
                                 <strong><label name="config_dev_name" id="config_dev_name" ><?php echo ucfirst($_SESSION["cur_device"]); ?> config:</label></strong>
@@ -229,7 +255,7 @@ function geturlresp($jenurl) {
                                     </li>
                                 </ul>
                             </div>
-                            <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
+                            <input type="button" name="submit" id="submit" class="btn btn-info" value="Push changes" />
                         </li>
                     </div>
                 </div>
