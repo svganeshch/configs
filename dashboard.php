@@ -99,7 +99,14 @@
                                                         buildtype varchar(10) NULL,
                                                         bootimage varchar(10) NULL,
                                                         global_override varchar(10) NULL,
-                                                        changelog LONGTEXT NULL)";
+                                                        changelog LONGTEXT NULL)
+                                                       AS SELECT
+                                                        'no' AS force_clean,
+                                                        'no' AS test_build,
+                                                        'yes' AS is_official,
+                                                        'user' AS buildtype,
+                                                        'no' AS bootimage,
+                                                        'no' AS global_override";
                                 mysqli_query($db, $create_table_query) or die(mysqli_error($db));
                             ?>
                         </div>
@@ -148,7 +155,18 @@
                                                             ovr_is_official varchar(10) NULL,
                                                             ovr_buildtype varchar(10) NULL,
                                                             ovr_bootimage varchar(10) NULL,
-                                                            ovr_changelog LONGTEXT NULL)";
+                                                            ovr_changelog LONGTEXT NULL)
+                                                           AS SELECT
+                                                             'no' AS force_clean,
+                                                             'no' AS test_build,
+                                                             'yes' AS is_official,
+                                                             'user' AS buildtype,
+                                                             'no' AS bootimage,
+                                                             'no' AS ovr_force_clean,
+                                                             'no' AS ovr_test_build,
+                                                             'yes' AS ovr_is_official,
+                                                             'user' AS ovr_buildtype,
+                                                             'no' AS ovr_bootimage";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
                                 ?>
                             </div>

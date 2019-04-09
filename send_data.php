@@ -42,14 +42,14 @@ function genJsonData ($counts, $key_value_name) {
 // Start
 $cur_device = $_SESSION["cur_device"];
 
-// Overriden device Constants
+// device repo values
 $repo_path_count = count($_POST["repo_paths"]);
 $repo_clone_count = count($_POST["repo_clones"]);
 $repo_clone_paths_count = count($_POST["repo_clones_paths"]);
 $repo_topic_count = count($_POST["repopick_topics"]);
 $repo_change_count = count($_POST["repopick_changes"]);
 
-// Overriden device Switch vals and changelog
+// device Switch vals and changelog
 $global_override = $_POST["hidden_global_override"];
 $is_official = $_POST["hidden_is_official"];
 $test_build = $_POST["hidden_test_build"];
