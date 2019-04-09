@@ -8,9 +8,9 @@
 
    $row = mysqli_fetch_array($ses_sql,MYSQLI_ASSOC);
 
-   $login_session = $row['username'];
+   $login_session = $row['admin_username'];
 
-   if(!isset($_SESSION['login_user'])){
+   if(!isset($login_session)){
       header("location:index.php");
       die();
    }

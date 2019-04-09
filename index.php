@@ -1,27 +1,33 @@
 <?php
-session_start();
 require('connect_moi.php');
+session_start();
 
 if (isset($_POST['username']) and isset($_POST['password'])){
 	$username = $_POST['username'];
-
 	$password = $_POST['password'];
+	$username = stripslashes($username);
+	$password = stripslashes($password);
 
-	$_SESSION["login_user"] = "$username";
+	$username_query = "SELECT * from `admin_login` WHERE `admin_username`='$username'";
+	$username_query_res = mysqli_query($db, $username_query) or die(mysqli_error($db));
+	$user_row_chk = mysqli_num_rows($username_query_res);
+	if ($user_row_chk == 1) {
+		$password_hash_query = "SELECT `admin_password` FROM `admin_login` WHERE `admin_username`='$username'";
+		$password_hash_res = mysqli_query($db, $password_hash_query) or die(mysqli_error($db));
+		$pass_hash = mysqli_fetch_assoc($password_hash_res);
+		$pass_hash = $pass_hash['admin_password'];
 
-	$password_hash_query = "SELECT `admin_password` FROM `admin_login` WHERE `admin_username`='$username'";
-	$password_hash_res = mysqli_query($db, $password_hash_query) or die(mysqli_error($db));
-	$pass_hash = mysqli_fetch_assoc($password_hash_res);
-	$pass_hash = $pass_hash['admin_password'];
-
-	if (password_verify($password, $pass_hash)){
-		$_SESSION['username'] = $username;
-	}else{
-		$fmsg = "Invalid Login Credentials.";
+		if (password_verify($password, $pass_hash)){
+			$_SESSION['login_user'] = $username;
+		}else{
+			$fmsg = "Invalid Password!";
+		}
+	} else {
+		$fmsg = "Invalid Username!";
 	}
 }
 
-if (isset($_SESSION['username'])){
+if (isset($_SESSION['login_user'])){
     header("Location: dashboard.php");
     exit();
 }else{
@@ -53,7 +59,7 @@ if (isset($_SESSION['username'])){
 	</div>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value=" Login ">Login</button>
       </form>
 </div>
 

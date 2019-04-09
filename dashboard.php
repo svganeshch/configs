@@ -1,6 +1,10 @@
 <?php
     include('session.php');
     include('connect_moi.php');
+
+    if (isset($_SESSION['cur_device'])) {
+        unset($_SESSION['cur_device']);
+    }
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -69,7 +73,7 @@
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="alert alert-info">
-                             <strong>Welcome <?php echo $_SESSION['username'] ?>!</strong>
+                             <strong>Welcome <?php echo $_SESSION['login_user'] ?>!</strong>
                         </div>                       
                     </div>
                 </div>
@@ -104,10 +108,6 @@
             </div>
             
             <?php
-                session_start();
-                if (isset($_GET['select_device'])) {
-                    $_SESSION['select_device']=$_GET['select_device'];
-                }
             	$url = 'https://raw.githubusercontent.com/ArrowOS/android_vendor_arrow/arrow-9.x/arrow.devices';
             	
                 $devices_list = nl2br( file_get_contents("$url") );

@@ -137,7 +137,7 @@ $(document).ready(function(){
 		$.ajax({
 		    url:"send_data.php",
 		    method:"POST",
-		    data:$('#add_name').serialize(),
+		    data:$('#device_changes').serialize(),
 		    success:function(data)
 		    {
 			    alert(data);

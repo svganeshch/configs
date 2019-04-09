@@ -1,6 +1,5 @@
 ﻿<?php
 include('session.php');
-session_start();
 
 function geturlresp($jenurl) {
   $url = $jenurl;
@@ -81,7 +80,7 @@ function geturlresp($jenurl) {
         <?php } ?>
 
         <!-- Text Fields -->
-        <form name="add_name" id="add_name">
+        <form name="device_changes" id="device_changes">
             <div class="container-fluid" >
                 <?php if ($_SESSION["cur_device"] == "common_config") { ?>           
                     <div class="form-group">

@@ -1,7 +1,6 @@
 <?php
 include('session.php');
 include('connect_moi.php');
-session_start();
 
 function pushQuery($device_data, $row_name, $cur_device) {
     global $db;
