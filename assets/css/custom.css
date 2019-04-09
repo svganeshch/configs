@@ -207,3 +207,9 @@ img.arrow-logo {
 #total-menu-block li#total-menu-list {
     border-color: #999;
 }
+
+br#custom_br.custom_br {
+   display: block;
+   margin: 3px;
+   content: "";
+}

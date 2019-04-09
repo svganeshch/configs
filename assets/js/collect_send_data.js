@@ -9,7 +9,7 @@ $(document).ready(function(){
   });
   $('body').on('click', '#add2', function(){
 		i++;
-		$('#dynamic_field-2-').append('<li class="list-group-item" style="border:none" id="dynamic_field'+i+'"><div class="row"> <div class="col-md-11 col-xs-11" style="padding-left:0px"> <div class="form-group"> <input autocomplete="on" type="text" id="text_field'+i+'" name="repo_clones[]" class="form-control" /> </div> </div> <button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove" style="margin-top: 5px;">X</button></div></li>');
+		$('#dynamic_field-2-').append('<li class="list-group-item" style="border:none" id="dynamic_field'+i+'"><div class="row"> <div class="col-md-11 col-xs-11" style="padding-left:0px"> <div class="form-group"> <input placeholder="Enter repo url" autocomplete="on" type="text" id="text_field'+i+'" name="repo_clones[]" class="form-control" /> <br class="custom_br" id="custom_br"/> <input placeholder="Enter clone path for repo" autocomplete="on" type="text" name="repo_clones_paths[]" class="form-control" /> </div> </div> <button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove" style="margin-top: 5px;">X</button></div></li>');
 		$('#text_field'+i+'').focus();
   });
   $('body').on('click', '#add3', function(){

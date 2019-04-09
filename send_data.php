@@ -46,6 +46,7 @@ $cur_device = $_SESSION["cur_device"];
 // Overriden device Constants
 $repo_path_count = count($_POST["repo_paths"]);
 $repo_clone_count = count($_POST["repo_clones"]);
+$repo_clone_paths_count = count($_POST["repo_clones_paths"]);
 $repo_topic_count = count($_POST["repopick_topics"]);
 $repo_change_count = count($_POST["repopick_changes"]);
 
@@ -65,6 +66,7 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     // Overriden device Json repos data query calls
     genJsonData($repo_path_count, 'ovr_repo_paths');
     genJsonData($repo_clone_count, 'ovr_repo_clones');
+    genJsonData($repo_clone_count, 'ovr_repo_clones_paths');
     genJsonData($repo_topic_count, 'ovr_repopick_topics');
     genJsonData($repo_change_count, 'ovr_repopick_changes');
 
@@ -82,6 +84,7 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     // Json repos data query calls
     genJsonData($repo_path_count, 'repo_paths');
     genJsonData($repo_clone_count, 'repo_clones');
+    genJsonData($repo_clone_count, 'repo_clones_paths');
     genJsonData($repo_topic_count, 'repopick_topics');
     genJsonData($repo_change_count, 'repopick_changes');
 

@@ -207,7 +207,9 @@ function geturlresp($jenurl) {
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <input autocomplete="on" type="text" name="repo_clones[]" class="form-control" />
+                                                    <input placeholder="Enter repo url" autocomplete="on" type="text" name="repo_clones[]" class="form-control" />
+                                                    <br class="custom_br" id="custom_br"/>
+                                                    <input placeholder="Enter clone path for repo" autocomplete="on" type="text" name="repo_clones_paths[]" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
