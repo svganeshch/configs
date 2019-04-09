@@ -145,21 +145,15 @@ $(document).ready(function(){
 		    }
 		});
   });
-  $( "#global_override" ).trigger( "change" );
+  //$( "#global_override" ).trigger( "change" );
+  $("#global_override").bootstrapToggle('off');
 
   $('body').on('click', '#reset-hard', function(){
   	//set defaults
-	$('#is_official').prop('checked', true);
-	$('#test_build').prop('checked', false);
-	$('#force_clean').prop('checked', false);
-	$('#buildtype').prop('checked', true);
-	$('#bootimage').prop('checked', false);
-
-	// trigger defaults
-	$("#is_official").trigger("change");
-	$("#test_build").trigger("change");
-	$("#force_clean").trigger("change");
-	$("#buildtype").trigger("change");
-	$("#bootimage").trigger("change");
+	$('#is_official').bootstrapToggle('on');
+	$('#test_build').bootstrapToggle('off');
+	$('#force_clean').bootstrapToggle('off');
+	$('#buildtype').bootstrapToggle('on');
+	$('#bootimage').bootstrapToggle('off');
   });
 });
