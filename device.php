@@ -192,7 +192,7 @@ function geturlresp($jenurl) {
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <input autocomplete="on" type="text" name="repo_paths[]" class="form-control" />
+                                                    <input autocomplete="on" type="text" id="int_repo_paths_text_field" name="repo_paths[]" class="form-control" />
                                                 </div>
                                             </div>                                
                                         </div>
@@ -206,9 +206,9 @@ function geturlresp($jenurl) {
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <input placeholder="Enter repo url" autocomplete="on" type="text" name="repo_clones[]" class="form-control" />
+                                                    <input placeholder="Enter repo url" autocomplete="on" type="text" id="int_repo_clones_text_field" name="repo_clones[]" class="form-control" />
                                                     <br class="custom_br" id="custom_br"/>
-                                                    <input placeholder="Enter clone path for repo" autocomplete="on" type="text" name="repo_clones_paths[]" class="form-control" />
+                                                    <input placeholder="Enter clone path for repo" autocomplete="on" type="text" id="int_repo_clones_paths_text_field" name="repo_clones_paths[]" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
@@ -222,7 +222,7 @@ function geturlresp($jenurl) {
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <input autocomplete="on" type="text" name="repopick_topics[]" class="form-control" />
+                                                    <input autocomplete="on" type="text" id="int_repopick_topics_text_field" name="repopick_topics[]" class="form-control" />
                                                 </div>
                                             </div>                                
                                         </div>
@@ -236,7 +236,7 @@ function geturlresp($jenurl) {
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <input autocomplete="on" type="text" name="repopick_changes[]" class="form-control" />
+                                                    <input autocomplete="on" type="text" id="int_repopick_changes_text_field" name="repopick_changes[]" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>

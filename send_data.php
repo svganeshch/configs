@@ -4,6 +4,7 @@ include('connect_moi.php');
 
 function pushQuery($device_data, $row_name, $cur_device) {
     global $db;
+    global $push_count;
 
     $check_query = "SELECT `$row_name` FROM `$cur_device`";
     $check_res = mysqli_query($db, $check_query) or die("Checking for table failed!" . mysqli_error($db));
@@ -17,10 +18,8 @@ function pushQuery($device_data, $row_name, $cur_device) {
 
     $final_res = mysqli_query($db, $final_query) or die(mysqli_error($db));
 
-    if (empty($final_res)) {
-        echo "Failed to insert into database!";
-    } else {
-        echo "Successfully inserted into database";
+    if (!empty($final_res)) {
+        $push_count++;
     }
 
 }
@@ -39,8 +38,23 @@ function genJsonData ($counts, $key_value_name) {
     pushQuery($repo_data, $key_value_name, $cur_device);
 }
 
+function genOvrJsonData ($counts, $key_value_name, $row_value_name) {
+    global $cur_device;
+
+    for ($i=0; $i < $counts; $i++) { 
+        if (trim($_POST["$row_value_name"][$i] != '')) {
+            $content [] = $_POST["$row_value_name"][$i];
+        }
+    }
+
+    $repo_data = array($key_value_name => $content);
+    $repo_data = json_encode($repo_data);
+    pushQuery($repo_data, $key_value_name, $cur_device);
+}
+
 // Start
 $cur_device = $_SESSION["cur_device"];
+$push_count = 0;
 
 // device repo values
 $repo_path_count = count($_POST["repo_paths"]);
@@ -63,11 +77,11 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     $override_name = $_POST["lunch_override_name"];
 
     // Overriden device Json repos data query calls
-    genJsonData($repo_path_count, 'ovr_repo_paths');
-    genJsonData($repo_clone_count, 'ovr_repo_clones');
-    genJsonData($repo_clone_count, 'ovr_repo_clones_paths');
-    genJsonData($repo_topic_count, 'ovr_repopick_topics');
-    genJsonData($repo_change_count, 'ovr_repopick_changes');
+    genOvrJsonData($repo_path_count, 'ovr_repo_paths', 'repo_paths');
+    genOvrJsonData($repo_clone_count, 'ovr_repo_clones', 'repo_clones');
+    genOvrJsonData($repo_clone_count, 'ovr_repo_clones_paths', 'repo_clones_paths');
+    genOvrJsonData($repo_topic_count, 'ovr_repopick_topics', 'repopick_topics');
+    genOvrJsonData($repo_change_count, 'ovr_repopick_changes', 'repopick_changes');
 
     // Overriden device Switch vals and changelog query calls
     pushQuery($is_official, 'ovr_is_official', $cur_device);
@@ -77,6 +91,11 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($bootimage, 'ovr_bootimage', $cur_device);
     pushQuery($changelog, 'ovr_changelog', $cur_device);
     pushQuery($override_name, 'lunch_override_name', $cur_device);
+    $chk_count = 12;
+
+    if ($push_count == $chk_count) {
+        echo "Successfully inserted override device".$override_name."data!";
+    }
 
 } else {
 
@@ -90,6 +109,9 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     // Switch vals and changelog query calls
     if (isset($_POST['hidden_global_override'])) {
         pushQuery($global_override, 'global_override', $cur_device);
+        $chk_count = 12;
+    } else {
+        $chk_count = 11;
     }
     pushQuery($is_official, 'is_official', $cur_device);
     pushQuery($test_build, 'test_build', $cur_device);
@@ -97,6 +119,10 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($buildtype, 'buildtype', $cur_device);
     pushQuery($bootimage, 'bootimage', $cur_device);
     pushQuery($changelog, 'changelog', $cur_device);
+
+    if ( $push_count == $chk_count ) {
+        echo "Successfully inserted ".$cur_device." data!";
+    }
 
 }
 
