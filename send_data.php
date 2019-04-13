@@ -71,6 +71,7 @@ $force_clean = $_POST["hidden_force_clean"];
 $buildtype = $_POST["hidden_buildtype"];
 $bootimage = $_POST["hidden_bootimage"];
 $changelog = $_POST["changelog"];
+$lunch_override_state = $_POST['hidden_override_lunch'];
 
 if ($_POST['hidden_override_lunch'] == 'yes') {
 
@@ -91,10 +92,11 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($bootimage, 'ovr_bootimage', $cur_device);
     pushQuery($changelog, 'ovr_changelog', $cur_device);
     pushQuery($override_name, 'lunch_override_name', $cur_device);
-    $chk_count = 12;
+    pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
+    $chk_count = 13;
 
     if ($push_count == $chk_count) {
-        echo "Successfully inserted override device".$override_name."data!";
+        echo "Successfully inserted override device ".$override_name." data!";
     }
 
 } else {
@@ -109,9 +111,9 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     // Switch vals and changelog query calls
     if (isset($_POST['hidden_global_override'])) {
         pushQuery($global_override, 'global_override', $cur_device);
-        $chk_count = 12;
+        $chk_count = 13;
     } else {
-        $chk_count = 11;
+        $chk_count = 12;
     }
     pushQuery($is_official, 'is_official', $cur_device);
     pushQuery($test_build, 'test_build', $cur_device);
@@ -119,6 +121,7 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($buildtype, 'buildtype', $cur_device);
     pushQuery($bootimage, 'bootimage', $cur_device);
     pushQuery($changelog, 'changelog', $cur_device);
+    pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
 
     if ( $push_count == $chk_count ) {
         echo "Successfully inserted ".$cur_device." data!";

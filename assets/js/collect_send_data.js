@@ -2,6 +2,7 @@ $(document).ready(function(){
   var a=0,b=0,c=0,d=0;
 	var cur_devname = $("#config_dev_name").text();
 	var lunch_override_name = '';
+	var initial_override_show_done = 'no';
 	
 	function cur_devdata (which_dev) {
 		$.ajax({
@@ -17,6 +18,8 @@ $(document).ready(function(){
 						if (which_dev == 'cur_dev') {
 							// set switch states
 							lunch_override_name = value['lunch_override_name'];
+							if (initial_override_show_done == 'no')
+								$('#override_lunch').bootstrapToggle((value['lunch_override_state'] == 'yes') ? 'on' : 'off');
 							$('#global_override').bootstrapToggle((value['global_override'] == 'yes') ? 'on' : 'off');
 							$('#is_official').bootstrapToggle((value['is_official'] == 'yes') ? 'on' : 'off');
 							$('#test_build').bootstrapToggle((value['test_build'] == 'yes') ? 'on' : 'off');
@@ -62,7 +65,7 @@ $(document).ready(function(){
 										if (j != 0) {
 											if ($('#' + 'repo_paths_text_field'+j+'').length == 0)
 												$( "#add1" ).trigger( "click" );
-											$('#repo_paths_text_field'+j+'').val(value[j]);
+											$('#repo_paths_text_field'+a+'').val(value[j]);
 										}
 									}
 								} else {
@@ -86,7 +89,7 @@ $(document).ready(function(){
 										if (j != 0) {
 											if ($('#' + 'repo_clones_text_field'+j+'').length == 0)
 												$( "#add2" ).trigger( "click" );
-											$('#repo_clones_text_field'+j+'').val(value[j]);
+											$('#repo_clones_text_field'+b+'').val(value[j]);
 										}
 									}
 								} else {
@@ -108,7 +111,7 @@ $(document).ready(function(){
 										}
 
 										if (j != 0) {
-											$('#repo_clones_paths_text_field'+j+'').val(value[j]);
+											$('#repo_clones_paths_text_field'+b+'').val(value[j]);
 										}
 									}
 								} else {
@@ -132,7 +135,7 @@ $(document).ready(function(){
 										if (j != 0) {
 											if ($('#' + 'repopick_topics_text_field'+j+'').length == 0)
 												$( "#add3" ).trigger( "click" );
-											$('#repopick_topics_text_field'+j+'').val(value[j]);
+											$('#repopick_topics_text_field'+c+'').val(value[j]);
 										}
 									}
 								} else {
@@ -156,7 +159,7 @@ $(document).ready(function(){
 										if (j != 0) {
 											if ($('#' + 'repopick_changes_text_field'+j+'').length == 0)
 												$( "#add4" ).trigger( "click" );
-											$('#repopick_changes_text_field'+j+'').val(value[j]);
+											$('#repopick_changes_text_field'+d+'').val(value[j]);
 										}
 									}
 								} else {
@@ -304,6 +307,7 @@ $(document).ready(function(){
 			$('#lunch_override_name').focus();
 			if (lunch_override_name != null && lunch_override_name != 'null' && lunch_override_name != 'NULL') {
 				$('#lunch_override_name').val(lunch_override_name);
+				initial_override_show_done = 'yes';
 				cur_devdata('ovr_dev');
 			}
 		} else {
