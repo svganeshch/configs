@@ -213,3 +213,9 @@ br#custom_br.custom_br {
    margin: 3px;
    content: "";
 }
+
+i.fa.fa-info-circle {
+    float: right;
+    color: blue;
+    padding-top: 20px;
+}

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
   var a=0,b=0,c=0,d=0;
 	var cur_devname = $("#config_dev_name").text();
 	var lunch_override_name = '';
@@ -302,6 +303,7 @@ $(document).ready(function(){
   $('body').on('change', '#override_lunch', function(){
 		if ($(this).prop('checked')) {
 			$('#hidden_override_lunch').val('yes');
+			$('#info-con-rem').remove();
 			$('#config_dev_name').text("Enter lunch name of the device to override:");
 			$('#config_dev_name').append('<div class="row"> <div class="col-md-12 col-xs-12"> <div class="form-group"> <input autocomplete="on" type="text" name="lunch_override_name" id="lunch_override_name" class="form-control" /> </div> </div> </div>');
 			$('#lunch_override_name').focus();
@@ -313,6 +315,9 @@ $(document).ready(function(){
 		} else {
 			$('#hidden_override_lunch').val('no');
 			$('#config_dev_name').text(cur_devname);
+			initial_override_show_done = 'yes';
+			if (lunch_override_name != null && lunch_override_name != 'null' && lunch_override_name != 'NULL')
+				$('#info-con').append('<i data-toggle="tooltip" class="fa fa-info-circle fa-lg" id="info-con-rem" title="Override data present for '+lunch_override_name+'"></i>');
 			cur_devdata('cur_dev');
 		}
   });

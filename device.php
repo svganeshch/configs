@@ -169,11 +169,13 @@ function geturlresp($jenurl) {
                     <div class="col-md-5 col-xs-12" id="total-menu-block">
                         <li class="list-group-item" id="total-menu-list">
 
+                            <div class="info-con" id="info-con"></div>
+
                             <?php if ($_SESSION["cur_device"] != "common_config") { ?>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>Override lunch?</label>
-                                    <input type="checkbox" name="override_lunch" id="override_lunch" />
+                                    <input type="checkbox" name="override_lunch" id="override_lunch" /> 
                                 </div>
                             </div>
                             <input type="hidden" name="hidden_override_lunch" id="hidden_override_lunch" value="no" />
