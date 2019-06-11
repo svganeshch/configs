@@ -268,7 +268,7 @@ $(document).ready(function(){
 
   $('#buildtype').bootstrapToggle({
     on: 'User',
-    off: 'Eng',
+    off: 'Userdebug',
     onstyle: 'success',
     offstyle: 'danger'
   });
@@ -276,7 +276,7 @@ $(document).ready(function(){
 		if ($(this).prop('checked')) {
 			$('#hidden_buildtype').val('user');
 		} else {
-			$('#hidden_buildtype').val('eng');
+			$('#hidden_buildtype').val('userdebug');
 		}
   });
 
