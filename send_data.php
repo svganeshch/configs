@@ -121,7 +121,9 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($buildtype, 'buildtype', $cur_device);
     pushQuery($bootimage, 'bootimage', $cur_device);
     pushQuery($changelog, 'changelog', $cur_device);
-    pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
+    if (isset($_POST['hidden_override_lunch'])) {
+        pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
+    }
 
     if ( $push_count == $chk_count ) {
         echo "Successfully inserted ".$cur_device." data!";
