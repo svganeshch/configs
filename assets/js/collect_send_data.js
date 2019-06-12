@@ -112,6 +112,7 @@ $(document).ready(function(){
 										}
 
 										if (j != 0) {
+											b=j;
 											$('#repo_clones_paths_text_field'+b+'').val(value[j]);
 										}
 									}
