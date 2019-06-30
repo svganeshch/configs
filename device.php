@@ -245,6 +245,21 @@ function geturlresp($jenurl) {
                                     </li>
                                 </ul>
 
+                                <?php if ($_SESSION["cur_device"] != "common_config") { ?>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>XDA thread link:</label>
+                                                        <textarea class="form-control" name="xda_link" id="xda_link" rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                <?php } ?>
+
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <div class="row">

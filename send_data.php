@@ -1,6 +1,6 @@
 <?php
 include('session.php');
-include('connect_moi.php');
+error_reporting(E_ALL & ~E_NOTICE);
 
 function pushQuery($device_data, $row_name, $cur_device) {
     global $db;
@@ -71,6 +71,7 @@ $force_clean = $_POST["hidden_force_clean"];
 $buildtype = $_POST["hidden_buildtype"];
 $bootimage = $_POST["hidden_bootimage"];
 $changelog = $_POST["changelog"];
+$xda_link = $_POST["xda_link"];
 $lunch_override_state = $_POST['hidden_override_lunch'];
 
 if ($_POST['hidden_override_lunch'] == 'yes') {
@@ -91,9 +92,10 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($buildtype, 'ovr_buildtype', $cur_device);
     pushQuery($bootimage, 'ovr_bootimage', $cur_device);
     pushQuery($changelog, 'ovr_changelog', $cur_device);
+    pushQuery($xda_link, 'ovr_xda_link', $cur_device);
     pushQuery($override_name, 'lunch_override_name', $cur_device);
     pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
-    $chk_count = 13;
+    $chk_count = 14;
 
     if ($push_count == $chk_count) {
         echo "Successfully inserted override device ".$override_name." data!";
@@ -121,8 +123,10 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
     pushQuery($buildtype, 'buildtype', $cur_device);
     pushQuery($bootimage, 'bootimage', $cur_device);
     pushQuery($changelog, 'changelog', $cur_device);
+    pushQuery($xda_link, 'xda_link', $cur_device);
     if (isset($_POST['hidden_override_lunch'])) {
         pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
+        $chk_count++;
     }
 
     if ( $push_count == $chk_count ) {

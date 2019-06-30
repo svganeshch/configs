@@ -35,6 +35,7 @@ $(document).ready(function(){
 							var repopick_topics = $.parseJSON(value['repopick_topics']);
 							var repopick_changes = $.parseJSON(value['repopick_changes']);
 							var changelog = value['changelog'];
+							var xda_link = value['xda_link'];
 						} 
 						else if (which_dev == 'ovr_dev') {
 							lunch_override_name = value['lunch_override_name'];
@@ -52,6 +53,7 @@ $(document).ready(function(){
 							var repopick_topics = $.parseJSON(value['ovr_repopick_topics']);
 							var repopick_changes = $.parseJSON(value['ovr_repopick_changes']);
 							var changelog = value['ovr_changelog'];
+							var xda_link = value['ovr_xda_link'];
 						}
 
 						// repo paths to delete json data
@@ -171,6 +173,12 @@ $(document).ready(function(){
 									.remove();
 								}
 							});
+						}
+
+						if (xda_link != null && value != 'null' && value != 'NULL') {
+							$('#xda_link').val(xda_link);
+						} else {
+							$('#xda_link').val('');
 						}
 
 						if (changelog != null && value != 'null' && value != 'NULL') {

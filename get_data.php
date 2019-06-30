@@ -1,6 +1,5 @@
 <?php
 include('session.php');
-include('connect_moi.php');
 
 function getData($cur_device) {
     global $db;

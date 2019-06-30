@@ -1,6 +1,5 @@
 <?php
     include('session.php');
-    include('connect_moi.php');
 
     if (isset($_SESSION['cur_device'])) {
         unset($_SESSION['cur_device']);
@@ -164,6 +163,7 @@
                                                             buildtype varchar(10) NULL,
                                                             bootimage varchar(10) NULL,
                                                             changelog LONGTEXT NULL,
+                                                            xda_link LONGTEXT NULL,
                                                             lunch_override_name varchar(50) NULL,
                                                             lunch_override_state varchar(10) NULL,
                                                             ovr_repo_paths JSON NULL,
@@ -176,7 +176,8 @@
                                                             ovr_is_official varchar(10) NULL,
                                                             ovr_buildtype varchar(10) NULL,
                                                             ovr_bootimage varchar(10) NULL,
-                                                            ovr_changelog LONGTEXT NULL)
+                                                            ovr_changelog LONGTEXT NULL,
+                                                            ovr_xda_link LONGTEXT NULL)
                                                            AS SELECT
                                                              'no' AS force_clean,
                                                              'no' AS test_build,
@@ -190,6 +191,10 @@
                                                              'user' AS ovr_buildtype,
                                                              'no' AS ovr_bootimage";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
+
+                                    /* to add a new column
+                                    $alter_table_query = "ALTER TABLE $device ADD xda_link LONGTEXT NULL AFTER changelog";
+                                    mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
                                 ?>
                             </div>
                         </a>                                         

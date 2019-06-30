@@ -1,5 +1,5 @@
 <?php
-require('connect_moi.php');
+require_once('connect_moi.php');
 session_start();
 
 if (isset($_POST['username']) and isset($_POST['password'])){
