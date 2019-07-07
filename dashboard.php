@@ -53,7 +53,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="/">
                         <img class="arrow-logo" src="assets/img/logo.png" />
 
                     </a>
@@ -69,11 +69,14 @@
                     <li class="active-link">
                         <a href="dashboard.php" ><i class="fa fa-home "></i>Dashboard</a>
                     </li>
-                   
+
+                    <li>
+                        <a href="profile.php" style="color: #000000"><i class="fa fa-user "></i>Profile</a>
+                    </li>
 
                     <li>
                         <a href="logout.php" style="color: #a94442"><i class="fa fa-sign-out "></i>Logout</a>
-                    </li>                   
+                    </li>             
                 </ul>
             </div>
         </nav>
@@ -98,6 +101,7 @@
                 </div>
 
             <!-- /. ROW  -->
+            <?php if ($_SESSION['is_admin']) { ?>
             <div class="row text-center pad-top">
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
                     <a class="nolink" href="device.php?select_device=<?php echo "common_config" ?>" >
@@ -132,6 +136,7 @@
                     </a>
                 </div>
             </div>
+            <?php } ?>
             
             <?php
             	$url = 'https://raw.githubusercontent.com/ArrowOS/android_vendor_arrow/arrow-9.x/arrow.devices';
@@ -142,6 +147,9 @@
                 <?php
                 foreach(preg_split("/((\r?\n)|(\r\n?))/", $devices_list) as $device){
                     $device = substr($device, 0, strpos($device, 'userdebug'));
+                    if (!$_SESSION['is_admin']) {
+                        $device = $_SESSION['maintainer_device'];
+                    }
                     if ($device != null) {
                     ?>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -200,6 +208,9 @@
                         </a>                                         
                     </div>           
                 <?php 
+                    }
+                    if (!$_SESSION['is_admin']) {
+                        break;
                     }
                 }
                 ?>

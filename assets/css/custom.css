@@ -219,3 +219,11 @@ i.fa.fa-info-circle {
     color: blue;
     padding-top: 20px;
 }
+
+label#profile_label {
+    padding-right: 10px;
+}
+
+input#update{
+    margin-top: 10px;
+}

@@ -8,17 +8,31 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 	$username = stripslashes($username);
 	$password = stripslashes($password);
 
-	$username_query = "SELECT * from `admin_login` WHERE `admin_username`='$username'";
+	$username_query = "SELECT * from `login` WHERE `username`='$username'";
 	$username_query_res = mysqli_query($db, $username_query) or die(mysqli_error($db));
 	$user_row_chk = mysqli_num_rows($username_query_res);
 	if ($user_row_chk == 1) {
-		$password_hash_query = "SELECT `admin_password` FROM `admin_login` WHERE `admin_username`='$username'";
+		$password_hash_query = "SELECT `password` FROM `login` WHERE `username`='$username'";
 		$password_hash_res = mysqli_query($db, $password_hash_query) or die(mysqli_error($db));
 		$pass_hash = mysqli_fetch_assoc($password_hash_res);
-		$pass_hash = $pass_hash['admin_password'];
+		$pass_hash = $pass_hash['password'];
 
 		if (password_verify($password, $pass_hash)){
 			$_SESSION['login_user'] = $username;
+
+			$is_admin_check_query = "SELECT `is_admin` FROM `login` WHERE `username`='$username'";
+			$is_admin_check_res = mysqli_query($db, $is_admin_check_query) or die(mysqli_error($db));
+			$is_admin = mysqli_fetch_assoc($is_admin_check_res);
+			$is_admin = $is_admin['is_admin'];
+			$_SESSION['is_admin'] = $is_admin;
+
+			// get maintainer device
+			$maintainer_device_query = "SELECT `maintainer_device` FROM `login` WHERE `username`='$username'";
+			$maintainer_device = mysqli_query($db, $maintainer_device_query) or die(mysqli_error($db));
+			$maintainer_device = mysqli_fetch_assoc($maintainer_device);
+			$maintainer_device = $maintainer_device['maintainer_device'];
+			$_SESSION['maintainer_device'] = $maintainer_device;
+
 		}else{
 			$fmsg = "Invalid Password!";
 		}
@@ -27,7 +41,7 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 	}
 }
 
-if (isset($_SESSION['login_user'])){
+if (isset($_SESSION['login_user']) && isset($_SESSION['is_admin']) && isset($_SESSION['maintainer_device'])){
     header("Location: dashboard.php");
     exit();
 }else{

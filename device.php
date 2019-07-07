@@ -1,6 +1,13 @@
 ﻿<?php
 include('session.php');
 
+if (!$_SESSION['is_admin']) {
+    if ($_GET['select_device'] != $_SESSION['maintainer_device']) {
+        header("Location: device404.php");
+        exit();
+    }
+}
+
 function geturlresp($jenurl) {
   $url = $jenurl;
   $output = file_get_contents("$url");
@@ -33,8 +40,6 @@ function geturlresp($jenurl) {
    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
 <body>
-     
-           
           
 <div id="wrapper">
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -292,18 +297,25 @@ function geturlresp($jenurl) {
     </div>
   </div>
 </div>
-          
 
-     <!-- /. WRAPPER  -->
+    <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
       <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <script src="assets/js/collect_send_data.js"></script>
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <?php if (!$_SESSION['is_admin']) { ?>
+    <script type="text/javascript">
+    $(window).on("load", function(){
+        $("#device_changes :input:not([id=xda_link], [id=changelog], [id=submit])").prop("disabled", true).prop("readonly", true);
+    });
+    </script>
+    <?php } ?>
    
 </body>
 </html>

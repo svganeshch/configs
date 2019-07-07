@@ -76,26 +76,33 @@ $lunch_override_state = $_POST['hidden_override_lunch'];
 
 if ($_POST['hidden_override_lunch'] == 'yes') {
 
-    $override_name = $_POST["lunch_override_name"];
+    if ($_SESSION['is_admin']) {
 
-    // Overriden device Json repos data query calls
-    genOvrJsonData($repo_path_count, 'ovr_repo_paths', 'repo_paths');
-    genOvrJsonData($repo_clone_count, 'ovr_repo_clones', 'repo_clones');
-    genOvrJsonData($repo_clone_count, 'ovr_repo_clones_paths', 'repo_clones_paths');
-    genOvrJsonData($repo_topic_count, 'ovr_repopick_topics', 'repopick_topics');
-    genOvrJsonData($repo_change_count, 'ovr_repopick_changes', 'repopick_changes');
+        $override_name = $_POST["lunch_override_name"];
 
-    // Overriden device Switch vals and changelog query calls
-    pushQuery($is_official, 'ovr_is_official', $cur_device);
-    pushQuery($test_build, 'ovr_test_build', $cur_device);
-    pushQuery($force_clean, 'ovr_force_clean', $cur_device);
-    pushQuery($buildtype, 'ovr_buildtype', $cur_device);
-    pushQuery($bootimage, 'ovr_bootimage', $cur_device);
-    pushQuery($changelog, 'ovr_changelog', $cur_device);
-    pushQuery($xda_link, 'ovr_xda_link', $cur_device);
-    pushQuery($override_name, 'lunch_override_name', $cur_device);
-    pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
-    $chk_count = 14;
+        // Overriden device Json repos data query calls
+        genOvrJsonData($repo_path_count, 'ovr_repo_paths', 'repo_paths');
+        genOvrJsonData($repo_clone_count, 'ovr_repo_clones', 'repo_clones');
+        genOvrJsonData($repo_clone_count, 'ovr_repo_clones_paths', 'repo_clones_paths');
+        genOvrJsonData($repo_topic_count, 'ovr_repopick_topics', 'repopick_topics');
+        genOvrJsonData($repo_change_count, 'ovr_repopick_changes', 'repopick_changes');
+
+        // Overriden device Switch vals and changelog query calls
+        pushQuery($is_official, 'ovr_is_official', $cur_device);
+        pushQuery($test_build, 'ovr_test_build', $cur_device);
+        pushQuery($force_clean, 'ovr_force_clean', $cur_device);
+        pushQuery($buildtype, 'ovr_buildtype', $cur_device);
+        pushQuery($bootimage, 'ovr_bootimage', $cur_device);
+        pushQuery($changelog, 'ovr_changelog', $cur_device);
+        pushQuery($xda_link, 'ovr_xda_link', $cur_device);
+        pushQuery($override_name, 'lunch_override_name', $cur_device);
+        pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
+        $chk_count = 14;
+    } else {
+        pushQuery($changelog, 'ovr_changelog', $cur_device);
+        pushQuery($xda_link, 'ovr_xda_link', $cur_device);
+        $chk_count = 2;
+    }
 
     if ($push_count == $chk_count) {
         echo "Successfully inserted override device ".$override_name." data!";
@@ -103,32 +110,38 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
 
 } else {
 
-    // Json repos data query calls
-    genJsonData($repo_path_count, 'repo_paths');
-    genJsonData($repo_clone_count, 'repo_clones');
-    genJsonData($repo_clone_count, 'repo_clones_paths');
-    genJsonData($repo_topic_count, 'repopick_topics');
-    genJsonData($repo_change_count, 'repopick_changes');
+    if ($_SESSION['is_admin']) {
 
-    // Switch vals and changelog query calls
-    if (isset($_POST['hidden_global_override'])) {
-        pushQuery($global_override, 'global_override', $cur_device);
-        $chk_count = 13;
+        // Json repos data query calls
+        genJsonData($repo_path_count, 'repo_paths');
+        genJsonData($repo_clone_count, 'repo_clones');
+        genJsonData($repo_clone_count, 'repo_clones_paths');
+        genJsonData($repo_topic_count, 'repopick_topics');
+        genJsonData($repo_change_count, 'repopick_changes');
+
+        // Switch vals and changelog query calls
+        if ($_POST['hidden_global_override'] == 'yes') {
+            pushQuery($global_override, 'global_override', $cur_device);
+            $chk_count = 13;
+        } else {
+            $chk_count = 12;
+        }
+        pushQuery($is_official, 'is_official', $cur_device);
+        pushQuery($test_build, 'test_build', $cur_device);
+        pushQuery($force_clean, 'force_clean', $cur_device);
+        pushQuery($buildtype, 'buildtype', $cur_device);
+        pushQuery($bootimage, 'bootimage', $cur_device);
+        pushQuery($changelog, 'changelog', $cur_device);
+        pushQuery($xda_link, 'xda_link', $cur_device);
+        if (isset($_POST['hidden_override_lunch'])) {
+            pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
+            $chk_count++;
+        }
     } else {
-        $chk_count = 12;
+        pushQuery($changelog, 'changelog', $cur_device);
+        pushQuery($xda_link, 'xda_link', $cur_device);
+        $chk_count = 2;
     }
-    pushQuery($is_official, 'is_official', $cur_device);
-    pushQuery($test_build, 'test_build', $cur_device);
-    pushQuery($force_clean, 'force_clean', $cur_device);
-    pushQuery($buildtype, 'buildtype', $cur_device);
-    pushQuery($bootimage, 'bootimage', $cur_device);
-    pushQuery($changelog, 'changelog', $cur_device);
-    pushQuery($xda_link, 'xda_link', $cur_device);
-    if (isset($_POST['hidden_override_lunch'])) {
-        pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
-        $chk_count++;
-    }
-
     if ( $push_count == $chk_count ) {
         echo "Successfully inserted ".$cur_device." data!";
     }
