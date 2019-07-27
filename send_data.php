@@ -110,8 +110,6 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
 
 } else {
 
-    if ($_SESSION['is_admin']) {
-
         // Json repos data query calls
         genJsonData($repo_path_count, 'repo_paths');
         genJsonData($repo_clone_count, 'repo_clones');
@@ -120,28 +118,27 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
         genJsonData($repo_change_count, 'repopick_changes');
 
         // Switch vals and changelog query calls
-        if ($_POST['hidden_global_override'] == 'yes') {
-            pushQuery($global_override, 'global_override', $cur_device);
-            $chk_count = 13;
-        } else {
-            $chk_count = 12;
-        }
-        pushQuery($is_official, 'is_official', $cur_device);
-        pushQuery($test_build, 'test_build', $cur_device);
         pushQuery($force_clean, 'force_clean', $cur_device);
         pushQuery($buildtype, 'buildtype', $cur_device);
         pushQuery($bootimage, 'bootimage', $cur_device);
         pushQuery($changelog, 'changelog', $cur_device);
         pushQuery($xda_link, 'xda_link', $cur_device);
+        $chk_count=10;
+
+        if ($_SESSION['is_admin']) {
+            pushQuery($is_official, 'is_official', $cur_device);
+            $chk_count++;
+            pushQuery($test_build, 'test_build', $cur_device);
+            $chk_count++;
+        }
+        if ($_POST['hidden_global_override'] == 'yes') {
+            pushQuery($global_override, 'global_override', $cur_device);
+            $chk_count++;
+        }
         if (isset($_POST['hidden_override_lunch'])) {
             pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
             $chk_count++;
         }
-    } else {
-        pushQuery($changelog, 'changelog', $cur_device);
-        pushQuery($xda_link, 'xda_link', $cur_device);
-        $chk_count = 2;
-    }
     if ( $push_count == $chk_count ) {
         echo "Successfully inserted ".$cur_device." data!";
     }

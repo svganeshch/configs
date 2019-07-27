@@ -225,9 +225,11 @@ $(document).ready(function(){
   });
   $('body').on('change', '#global_override', function(){
 		if ($(this).prop('checked')) {
+			$('#default_buildtype').trigger("change");
 			$('#hidden_global_override').val('yes');
 			$('#switch-block').show();
 		} else {
+			$('#default_buildtype').trigger("change");
 			$('#hidden_global_override').val('no');
 			$('#switch-block').hide();
 		}
@@ -286,6 +288,22 @@ $(document).ready(function(){
 			$('#hidden_buildtype').val('user');
 		} else {
 			$('#hidden_buildtype').val('userdebug');
+		}
+  });
+
+  $('#default_buildtype').bootstrapToggle({
+    on: 'Yes',
+    off: 'No',
+    onstyle: 'success',
+    offstyle: 'danger'
+  });
+  $('body').on('change', '#default_buildtype', function(){
+		if ($(this).prop('checked')) {
+			$('#hidden_default_buildtype').val('yes');
+			$('#buildtype_div').hide();
+		} else {
+			$('#hidden_default_buildtype').val('no');
+			$('#buildtype_div').show();
 		}
   });
 

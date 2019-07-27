@@ -139,7 +139,19 @@ function geturlresp($jenurl) {
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3 col-xs-4">
+                                    <?php if ($_SESSION["cur_device"] == "common_config") { ?>
+                                        <div class="col-md-3 col-xs-4">
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>Default Buildtypes</label>
+                                                    <input type="checkbox" name="default_buildtype" id="default_buildtype" checked />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="hidden_default_buildtype" id="hidden_default_buildtype" value="yes" />
+                                    <?php } ?>
+
+                                    <div class="col-md-3 col-xs-4" id="buildtype_div">
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <label>Buildtype</label>
@@ -312,7 +324,13 @@ function geturlresp($jenurl) {
     <?php if (!$_SESSION['is_admin']) { ?>
     <script type="text/javascript">
     $(window).on("load", function(){
-        $("#device_changes :input:not([id=xda_link], [id=changelog], [id=submit])").prop("disabled", true).prop("readonly", true);
+        //$("#device_changes :input([id=xda_link], [id=changelog], [id=submit])").prop("disabled", true).prop("readonly", true);
+        $('#is_official').bootstrapToggle('off');
+        $('#test_build').bootstrapToggle('on');
+        $('#override_lunch').bootstrapToggle('off');
+        $("#is_official").attr("disabled", "disabled").prop("readonly", true);
+        $("#test_build").attr("disabled", "disabled").prop("readonly", true);
+        $("#override_lunch").attr("disabled", "disabled").prop("readonly", true);
     });
     </script>
     <?php } ?>

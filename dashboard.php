@@ -120,6 +120,7 @@
                                                         test_build varchar(10) NULL,
                                                         is_official varchar(10) NULL,
                                                         buildtype varchar(10) NULL,
+                                                        default_buildtype_state varchar(10) NULL,
                                                         bootimage varchar(10) NULL,
                                                         global_override varchar(10) NULL,
                                                         changelog LONGTEXT NULL)
@@ -128,9 +129,14 @@
                                                         'no' AS test_build,
                                                         'yes' AS is_official,
                                                         'user' AS buildtype,
+                                                        'yes' AS default_buildtype_state,
                                                         'no' AS bootimage,
                                                         'no' AS global_override";
                                 mysqli_query($db, $create_table_query) or die(mysqli_error($db));
+
+                                /* to add a new column 
+                                $alter_table_query = "ALTER TABLE common_config ADD default_buildtype_state varchar(10) NULL AFTER buildtype";
+                                mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
                             ?>
                         </div>
                     </a>
@@ -146,12 +152,15 @@
                 <div class="row text-center pad-top">
                 <?php
                 foreach(preg_split("/((\r?\n)|(\r\n?))/", $devices_list) as $device){
-                    $device = substr($device, 0, strpos($device, 'userdebug'));
-                    if (!$_SESSION['is_admin']) {
-                        $device = $_SESSION['maintainer_device'];
-                    }
                     if ($device != null) {
-                    ?>
+                        $fetch_device = explode(' ', trim($device));
+                        $device = $fetch_device[0];
+                        $device_buildtype = explode('<', $fetch_device[1], 2);
+
+                        if (!$_SESSION['is_admin']) {
+                            $device = $_SESSION['maintainer_device'];
+                        }
+                ?>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
                         <a class="nolink" href="device.php?select_device=<?php echo $device ?>" >
                             <div class="div-square">
@@ -172,6 +181,7 @@
                                                             bootimage varchar(10) NULL,
                                                             changelog LONGTEXT NULL,
                                                             xda_link LONGTEXT NULL,
+                                                            default_buildtype TEXT(20) NULL,
                                                             lunch_override_name varchar(50) NULL,
                                                             lunch_override_state varchar(10) NULL,
                                                             ovr_repo_paths JSON NULL,
@@ -193,6 +203,7 @@
                                                              'user' AS buildtype,
                                                              'no' AS bootimage,
                                                              'no' AS lunch_override_state,
+                                                             '$device_buildtype[0]' AS default_buildtype,
                                                              'no' AS ovr_force_clean,
                                                              'no' AS ovr_test_build,
                                                              'yes' AS ovr_is_official,
@@ -200,8 +211,8 @@
                                                              'no' AS ovr_bootimage";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
 
-                                    /* to add a new column
-                                    $alter_table_query = "ALTER TABLE $device ADD xda_link LONGTEXT NULL AFTER changelog";
+                                    /* to add a new column 
+                                    $alter_table_query = "ALTER TABLE $device ADD default_buildtype TEXT(20) NULL AFTER xda_link";
                                     mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
                                 ?>
                             </div>
