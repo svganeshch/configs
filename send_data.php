@@ -135,9 +135,11 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
             pushQuery($test_build, 'test_build', $cur_device);
             $chk_count++;
         }
-        if ($_POST['hidden_global_override'] == 'yes') {
-            pushQuery($global_override, 'global_override', $cur_device);
-            $chk_count++;
+        if ($cur_device == 'common_config') {
+            if (isset($_POST['hidden_global_override'])) {
+                pushQuery($global_override, 'global_override', $cur_device);
+                $chk_count++;
+            }
         }
         if (isset($_POST['hidden_override_lunch'])) {
             pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
