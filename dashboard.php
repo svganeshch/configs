@@ -211,6 +211,10 @@
                                                              'no' AS ovr_bootimage";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
 
+                                    /* update the default buildtype eachtime on login or dashboard */
+                                    $update_default_buildtype = "UPDATE `$device` SET `default_buildtype`='$device_buildtype[0]'";
+                                    mysqli_query($db, $update_default_buildtype) or die(mysqli_error($db));
+
                                     /* to add a new column 
                                     $alter_table_query = "ALTER TABLE $device ADD default_buildtype TEXT(20) NULL AFTER xda_link";
                                     mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
