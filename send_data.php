@@ -122,8 +122,12 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
         pushQuery($buildtype, 'buildtype', $cur_device);
         pushQuery($bootimage, 'bootimage', $cur_device);
         pushQuery($changelog, 'changelog', $cur_device);
-        pushQuery($xda_link, 'xda_link', $cur_device);
-        $chk_count=10;
+        $chk_count=9;
+
+        if ($cur_device != 'common_config') {
+            pushQuery($xda_link, 'xda_link', $cur_device);
+            $chk_count++;
+        }
 
         if ($_SESSION['is_admin']) {
             pushQuery($is_official, 'is_official', $cur_device);
