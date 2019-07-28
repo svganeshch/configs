@@ -2,7 +2,8 @@
 include('session.php');
 
 if (!$_SESSION['is_admin']) {
-    if ($_GET['select_device'] != $_SESSION['maintainer_device']) {
+    $pattern = "/\b" . $_GET['select_device'] . "\b/i";
+    if(!preg_match($pattern, $_SESSION['maintainer_device'])) {
         header("Location: device404.php");
         exit();
     }

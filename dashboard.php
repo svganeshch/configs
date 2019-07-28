@@ -158,7 +158,13 @@
                         $device_buildtype = explode('<', $fetch_device[1], 2);
 
                         if (!$_SESSION['is_admin']) {
-                            $device = $_SESSION['maintainer_device'];
+                            /*if(strpos($_SESSION['maintainer_device'], $device) !== false) {
+                            } else {
+                                continue;
+                            }*/
+                            $pattern = "/\b" . $device . "\b/i";
+                            if(!preg_match($pattern, $_SESSION['maintainer_device']))
+                                continue;
                         }
                 ?>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -223,9 +229,6 @@
                         </a>                                         
                     </div>           
                 <?php 
-                    }
-                    if (!$_SESSION['is_admin']) {
-                        break;
                     }
                 }
                 ?>
