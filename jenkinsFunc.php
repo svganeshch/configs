@@ -32,6 +32,15 @@ function isBuildRunning() {
     else return false;
 }
 
+function getBuildInfo($key) {
+    global $lastBuild_url;
+    $lastBuildInfo = responseHandler($lastBuild_url);
+    $lastBuildInfo = json_decode($lastBuildInfo, true);
+    $key_info = $lastBuildInfo[$key];
+
+    if($key_info != "") return $key_info;
+}
+
 function isBuildInQueue() {
     global $lastBuild_queue_url;
     $lastBuildQueueInfo = responseHandler($lastBuild_queue_url);
@@ -63,6 +72,18 @@ if($_POST['getBuildStatus'] == 'yes') {
     else exit("idle");
 }
 
+// GetProgressStatus
+if($_POST['getProgressStatus'] == 'yes') {
+    if(isBuildRunning()) {
+        $currentTime = time();
+        $buildTime = round(getBuildInfo("timestamp")/1000);
+        $buildEstimatedDuration = getBuildInfo("estimatedDuration");
+        $progressRes = round(($currentTime - $buildTime) / $buildEstimatedDuration * 100);
+        if($progressRes == 0)exit("1");
+        else exit($progressRes);
+    }
+}
+
 // Jenkins button actions
 // stop the build
 if($_POST['buildStop'] == 'yes') {
@@ -72,7 +93,7 @@ if($_POST['buildStop'] == 'yes') {
 
     if(isBuildRunning()) {
         $stopRes=responseHandler($build_stop);
-        if($stopRes == "") exit($stopRes);
+        if($stopRes == "") exit("Stopped the build!");
         else exit("Something went wrong while trying to stop the build");
     }
     else exit("What are you trying to stop!\nThere's no build running currently!");

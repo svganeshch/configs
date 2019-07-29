@@ -395,9 +395,30 @@ $(document).ready(function(){
 	});
   });
 
+  // set build progress
+  $('#build-progress-bar').hide();
+  function getProgress(){
+    $.ajax({
+        method:"POST",
+		url: "jenkinsFunc.php",
+		data: {
+			getProgressStatus: 'yes'
+		},
+        success:function(data)
+        {
+            $('.progress-bar').css('width', data+'%').attr('aria-valuenow', data).text(data+'%');
+        }
+    });
+  }
+
   // set jenkins build status
   function getJenkinsBuildStatus() {
-	$('#buildStatus').load("/jenkinsFunc.php", { getBuildStatus: 'yes' });
+	$('#buildStatus').load("jenkinsFunc.php", { getBuildStatus: 'yes' }, function(resp) {
+		if(resp == 'building') {
+			$('#build-progress-bar').show();
+			getProgress();
+		}
+	});
   }
   getJenkinsBuildStatus();
   setInterval(function() {

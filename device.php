@@ -318,6 +318,14 @@ function geturlresp($jenurl) {
                                 <input type="button" name="buildTrigger" id="buildTrigger" class="btn btn-success" value="Build" />
                                 <input type="button" name="buildStop" id="buildStop" class="btn btn-danger" value="Abort" />
                                 <input type="button" name="buildRemoveQueue" id="buildRemoveQueue" class="btn btn-danger" value="Remove from queue" />
+
+                            <br>
+                                <div id="build-progress-bar">
+                                    <strong><label>Build Progress:</label></strong><br>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                    </div>
+                                </div>
                             </li>
                         </div>
                     </div>
@@ -333,7 +341,7 @@ function geturlresp($jenurl) {
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
                             <div class="panel-body">
-                                <p>THIS IS WIP!</p>
+                                <p id="buildOut">THIS IS WIP!</p>
                             </div>
                         </div>
                     </div>
