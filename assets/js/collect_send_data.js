@@ -25,7 +25,7 @@ $(document).ready(function(){
 							$('#is_official').bootstrapToggle((value['is_official'] == 'yes') ? 'on' : 'off');
 							$('#test_build').bootstrapToggle((value['test_build'] == 'yes') ? 'on' : 'off');
 							$('#force_clean').bootstrapToggle((value['force_clean'] == 'yes') ? 'on' : 'off');
-							$('#buildtype').bootstrapToggle((value['buildtype'] == 'user') ? 'on' : 'off');
+							$('#buildtype').val(value['buildtype']);
 							$('#bootimage').bootstrapToggle((value['bootimage'] == 'yes') ? 'on' : 'off');
 
 							// text fields
@@ -43,7 +43,7 @@ $(document).ready(function(){
 							$('#is_official').bootstrapToggle((value['ovr_is_official'] == 'yes') ? 'on' : 'off');
 							$('#test_build').bootstrapToggle((value['ovr_test_build'] == 'yes') ? 'on' : 'off');
 							$('#force_clean').bootstrapToggle((value['ovr_force_clean'] == 'yes') ? 'on' : 'off');
-							$('#buildtype').bootstrapToggle((value['ovr_buildtype'] == 'user') ? 'on' : 'off');
+							$('#buildtype').val(value['ovr_buildtype']);
 							$('#bootimage').bootstrapToggle((value['ovr_bootimage'] == 'yes') ? 'on' : 'off');
 
 							// text fields
@@ -277,20 +277,6 @@ $(document).ready(function(){
 		}
   });
 
-  $('#buildtype').bootstrapToggle({
-    on: 'User',
-    off: 'Userdebug',
-    onstyle: 'success',
-    offstyle: 'danger'
-  });
-  $('body').on('change', '#buildtype', function(){
-		if ($(this).prop('checked')) {
-			$('#hidden_buildtype').val('user');
-		} else {
-			$('#hidden_buildtype').val('userdebug');
-		}
-  });
-
   $('#default_buildtype').bootstrapToggle({
     on: 'Yes',
     off: 'No',
@@ -367,12 +353,54 @@ $(document).ready(function(){
 		});
   });
 
+  $('body').on('click', '#buildTrigger', function(){
+	$.ajax({
+		url:"jenkinsFunc.php",
+		method:"POST",
+		data: {
+			buildTrigger: 'yes'
+		},
+		success:function(data)
+		{
+			alert(data);
+		}
+	});
+  });
+
+  $('body').on('click', '#buildRemoveQueue', function(){
+	$.ajax({
+		url:"jenkinsFunc.php",
+		method:"POST",
+		data: {
+			buildRemoveQueue: 'yes'
+		},
+		success:function(data)
+		{
+			alert(data);
+		}
+	});
+  });
+
+  $('body').on('click', '#buildStop', function(){
+	$.ajax({
+		url:"jenkinsFunc.php",
+		method:"POST",
+		data: {
+			buildStop: 'yes'
+		},
+		success:function(data)
+		{
+			alert(data);
+		}
+	});
+  });
+
   $('body').on('click', '#reset-hard', function(){
   	//set defaults
 		$('#is_official').bootstrapToggle('on');
 		$('#test_build').bootstrapToggle('off');
 		$('#force_clean').bootstrapToggle('off');
-		$('#buildtype').bootstrapToggle('on');
+		$('#buildtype').val('user');
 		$('#bootimage').bootstrapToggle('off');
   });
 });

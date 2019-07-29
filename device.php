@@ -55,6 +55,8 @@ function geturlresp($jenurl) {
 
 <!-- /. NAV SIDE  -->
 <div id="page-wrapper-device" >
+<div class="row">
+  <div class="col-sm-6">
     <div id="page-inner">
         <div class="row">
             <div class="col-md-12">
@@ -67,7 +69,7 @@ function geturlresp($jenurl) {
         <?php if ($_SESSION["cur_device"] != "common_config") { ?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-5 col-xs-12">
+                <div class="col-md-12 col-xs-12">
                     <div class="alert alert-info">
                     Last successful build for
                     <strong>
@@ -100,7 +102,7 @@ function geturlresp($jenurl) {
 
                 <div class="switch-block" id="switch-block">
                     <div class="row">
-                        <div class="col-md-5 col-xs-12" id="total-menu-block">
+                        <div class="col-md-12 col-xs-12" id="total-menu-block">
                             <li class="list-group-item" id="total-menu-list">
 
 
@@ -140,6 +142,15 @@ function geturlresp($jenurl) {
                                         </div>
                                     </div>
 
+                                    <div class="col-md-3 col-xs-4" title="builds only bootimage!!">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>Bootimage!</label>
+                                                <input type="checkbox" name="bootimage" id="bootimage" />
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <?php if ($_SESSION["cur_device"] == "common_config") { ?>
                                         <div class="col-md-3 col-xs-4">
                                             <div class="form-group">
@@ -154,19 +165,12 @@ function geturlresp($jenurl) {
 
                                     <div class="col-md-3 col-xs-4" id="buildtype_div">
                                         <div class="form-group">
-                                            <div class="checkbox">
-                                                <label>Buildtype</label>
-                                                <input type="checkbox" name="buildtype" id="buildtype" checked />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-xs-4" title="builds only bootimage!!">
-                                        <div class="form-group">
-                                            <div class="checkbox">
-                                                <label>Bootimage!</label>
-                                                <input type="checkbox" name="bootimage" id="bootimage" />
-                                            </div>
+                                            <label for="buildtype">Buildtype:</label>
+                                            <select name="buildtype" class="form-control" id="buildtype" selected="selected">
+                                                <option>user</option>
+                                                <option>userdebug</option>
+                                                <option>eng</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -177,14 +181,13 @@ function geturlresp($jenurl) {
                 <input type="hidden" name="hidden_is_official" id="hidden_is_official" value="yes" />
                 <input type="hidden" name="hidden_test_build" id="hidden_test_build" value="no" />
                 <input type="hidden" name="hidden_force_clean" id="hidden_force_clean" value="no" />
-                <input type="hidden" name="hidden_buildtype" id="hidden_buildtype" value="user" />
                 <input type="hidden" name="hidden_bootimage" id="hidden_bootimage" value="no" />
                 <br/>
             </div>
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-5 col-xs-12" id="total-menu-block">
+                    <div class="col-md-12 col-xs-12" id="total-menu-block">
                         <li class="list-group-item" id="total-menu-list">
 
                             <div class="info-con" id="info-con"></div>
@@ -300,6 +303,41 @@ function geturlresp($jenurl) {
 
              <!-- /. PAGE INNER  -->
     </div>
+  </div>
+  <!-- Jenkins block -->
+    <div class="col-sm-6">
+        <div id="page-inner-buildoutput">
+            <!-- jenkins build buttons -->
+                <div class="row">
+                    <div class="col-md-12 col-xs-12" id="total-menu-block">
+                        <li class="list-group-item" id="total-menu-list">
+                        <strong><label>Device jenkins options:</label></strong><br>
+                            <input type="button" name="buildTrigger" id="buildTrigger" class="btn btn-warning" value="Build" />
+                            <input type="button" name="buildStop" id="buildStop" class="btn btn-danger" value="Abort" />
+                            <input type="button" name="buildRemoveQueue" id="buildRemoveQueue" class="btn btn-danger" value="Remove from queue" />
+                        </li>
+                    </div>
+                </div>
+            <br>
+
+            <!-- jenkins device build output -->
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed"><h4 class="panel-title">Build Output</h4></a>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
+                            <div class="panel-body">
+                                <p>THIS IS WIP!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
          <!-- /. PAGE WRAPPER  -->
 </div>
 

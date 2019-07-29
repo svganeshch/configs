@@ -1,0 +1,6 @@
+// rename this file extension to .php after setting up the config //
+<?php
+define('jenkins_username', ' '); // your jenkins username
+define('jenkins_user_api', ' '); // your jenkins user api
+define('jenkins_url', ' '); // your jenkins website domain or IP
+?>

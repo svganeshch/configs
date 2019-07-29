@@ -44,6 +44,17 @@ body {
     min-height:1050px;
     border-radius: 6px;
 }
+
+#page-inner-buildoutput {
+    width:100%;
+    margin:10px 20px 10px 0px;
+    background-color:#fff!important;
+    padding:10px;
+    min-height:100%;
+    max-height: 600px;
+    border-radius: 6px;
+}
+
 .pad-top {
     padding-top:15px;
 }
