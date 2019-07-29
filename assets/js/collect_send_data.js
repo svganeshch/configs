@@ -395,6 +395,15 @@ $(document).ready(function(){
 	});
   });
 
+  // set jenkins build status
+  function getJenkinsBuildStatus() {
+	$('#buildStatus').load("/jenkinsFunc.php", { getBuildStatus: 'yes' });
+  }
+  getJenkinsBuildStatus();
+  setInterval(function() {
+	  getJenkinsBuildStatus();
+  }, 10000);
+
   $('body').on('click', '#reset-hard', function(){
   	//set defaults
 		$('#is_official').bootstrapToggle('on');

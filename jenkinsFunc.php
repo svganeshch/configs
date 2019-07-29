@@ -21,26 +21,67 @@ $lastBuild_url = $device_url.'/lastBuild/api/json?pretty=true';
 $lastBuild_queue_url = $device_url.'/api/json?pretty=true';
 $build_stop = $device_url.'/lastBuild/stop';
 
-// stop the build
-if($_POST['buildStop'] == 'yes') {
-    // check if a build is running first
+// get build status functions
+function isBuildRunning() {
+    global $lastBuild_url;
     $lastBuildInfo = responseHandler($lastBuild_url);
     $lastBuildInfo = json_decode($lastBuildInfo, true);
     $build_status = $lastBuildInfo['building'];
 
-    if($build_status == 'true') {
+    if($build_status == 'true') return true;
+    else return false;
+}
+
+function isBuildInQueue() {
+    global $lastBuild_queue_url;
+    $lastBuildQueueInfo = responseHandler($lastBuild_queue_url);
+    $lastBuildQueueInfo = json_decode($lastBuildQueueInfo, true);
+    if(isset($lastBuildQueueInfo['queueItem'])) return true;
+    else return false;
+}
+
+function getBuildQueueId() {
+    global $lastBuild_queue_url;
+    $lastBuildQueueInfo = responseHandler($lastBuild_queue_url);
+    $lastBuildQueueInfo = json_decode($lastBuildQueueInfo, true);
+    if(isset($lastBuildQueueInfo['queueItem'])) return $lastBuildQueueInfo['queueItem']['id'];
+    else return "";
+}
+
+function getBuildQueueMsg() {
+    global $lastBuild_queue_url;
+    $lastBuildQueueInfo = responseHandler($lastBuild_queue_url);
+    $lastBuildQueueInfo = json_decode($lastBuildQueueInfo, true);
+    if(isset($lastBuildQueueInfo['queueItem'])) return $lastBuildQueueInfo['queueItem']['why'];
+    else return "";
+}
+
+// GetBuildStatus
+if($_POST['getBuildStatus'] == 'yes') {
+    if(isBuildRunning()) exit("building");
+    elseif(isBuildInQueue()) exit("waiting");
+    else exit("idle");
+}
+
+// Jenkins button actions
+// stop the build
+if($_POST['buildStop'] == 'yes') {
+    if(isBuildInQueue()) {
+        exit("There's a build waiting in queue!\nTry remove from queue option instead.");
+    }
+
+    if(isBuildRunning()) {
         $stopRes=responseHandler($build_stop);
-        exit($stopRes);
+        if($stopRes == "") exit($stopRes);
+        else exit("Something went wrong while trying to stop the build");
     }
     else exit("What are you trying to stop!\nThere's no build running currently!");
 }
 
 // remove from queue
 if($_POST["buildRemoveQueue"] == 'yes') {
-    $lastBuildQueueInfo = responseHandler($lastBuild_queue_url);
-    $lastBuildQueueInfo = json_decode($lastBuildQueueInfo, true);
-    if(isset($lastBuildQueueInfo['queueItem'])) {
-        $queueID = $lastBuildQueueInfo['queueItem']['id'];
+    if(isBuildInQueue()) {
+        $queueID = getBuildQueueId();
         $queue_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/queue/cancelItem?id='.$queueID;
         $queueCancelRes = responseHandler($queue_url);
         if($queueCancelRes == "") exit("Removed the build from queue");
@@ -51,18 +92,14 @@ if($_POST["buildRemoveQueue"] == 'yes') {
     }
 }
 
+// initiate a build
 if($_POST["buildTrigger"] == 'yes') {
     // check if a build is already running
-    $lastBuildInfo = responseHandler($lastBuild_url);
-    $lastBuildInfo = json_decode($lastBuildInfo, true);
-    $build_status = $lastBuildInfo['building'];
-    if($build_status == 'true') exit("A build is already running for your device!");
+    if(isBuildRunning()) exit("A build is already running for your device!");
 
     // check if a build is already in queue
-    $lastBuildQueueInfo = responseHandler($lastBuild_queue_url);
-    $lastBuildQueueInfo = json_decode($lastBuildQueueInfo, true);
-    if(isset($lastBuildQueueInfo['queueItem'])) {
-        $msg = $lastBuildQueueInfo['queueItem']['why'];
+    if(isBuildInQueue()) {
+        $msg = getBuildQueueMsg();
         exit("There's a build already in queue for your device\n".$msg);
     }
 

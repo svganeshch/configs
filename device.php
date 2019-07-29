@@ -309,13 +309,17 @@ function geturlresp($jenurl) {
         <div id="page-inner-buildoutput">
             <!-- jenkins build buttons -->
                 <div class="row">
-                    <div class="col-md-12 col-xs-12" id="total-menu-block">
-                        <li class="list-group-item" id="total-menu-list">
-                        <strong><label>Device jenkins options:</label></strong><br>
-                            <input type="button" name="buildTrigger" id="buildTrigger" class="btn btn-warning" value="Build" />
-                            <input type="button" name="buildStop" id="buildStop" class="btn btn-danger" value="Abort" />
-                            <input type="button" name="buildRemoveQueue" id="buildRemoveQueue" class="btn btn-danger" value="Remove from queue" />
-                        </li>
+                    <div class="container-fluid">
+                        <div class="col-md-12 col-xs-12" id="total-menu-block">
+                            <li class="list-group-item" id="total-menu-list">
+                            <strong><label>Device jenkins options:</label></strong>
+                            <strong><label class="pull-right">Status: <span class="badge" id="buildStatus"></span></label></strong>
+                            <br>
+                                <input type="button" name="buildTrigger" id="buildTrigger" class="btn btn-success" value="Build" />
+                                <input type="button" name="buildStop" id="buildStop" class="btn btn-danger" value="Abort" />
+                                <input type="button" name="buildRemoveQueue" id="buildRemoveQueue" class="btn btn-danger" value="Remove from queue" />
+                            </li>
+                        </div>
                     </div>
                 </div>
             <br>
