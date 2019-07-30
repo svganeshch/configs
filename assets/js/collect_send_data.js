@@ -413,17 +413,26 @@ $(document).ready(function(){
 
   // set jenkins build status
   function getJenkinsBuildStatus() {
-	$('#buildStatus').load("jenkinsFunc.php", { getBuildStatus: 'yes' }, function(resp) {
-		if(resp == 'building') {
-			$('#build-progress-bar').show();
-			getProgress();
-		}
-	});
+	$.ajax({
+        method:"POST",
+		url: "jenkinsFunc.php",
+		data: {
+			getBuildStatus: 'yes'
+		},
+        success:function(data)
+        {
+			$('#buildStatus').text(data);
+			if(data == 'building') {
+				$('#build-progress-bar').show();
+				getProgress();
+			}
+			setTimeout(function() {
+				getJenkinsBuildStatus();
+			}, 10000);
+        }
+    });
   }
   getJenkinsBuildStatus();
-  setInterval(function() {
-	  getJenkinsBuildStatus();
-  }, 10000);
 
   $('body').on('click', '#reset-hard', function(){
   	//set defaults
