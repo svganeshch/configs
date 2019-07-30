@@ -14,12 +14,37 @@ function responseHandler($url) {
     return $response;
 }
 
+$headers = [];
+function buildOutputHandler($url) {
+    $data = curl_init();
+    global $headers;
+    $response = [];
+    curl_setopt($data, CURLOPT_URL, $url);
+    curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($data, CURLOPT_HEADERFUNCTION,
+        function($curl, $header) use (&$headers)
+        {
+            $len = strlen($header);
+            $header = explode(':', $header, 2);
+            if (count($header) < 2) // ignore invalid headers
+            return $len;
+
+            $headers[strtolower(trim($header[0]))][] = trim($header[1]);
+
+            return $len;
+        }
+    );
+    $response['body'] = curl_exec($data);
+    $response['headers'] = json_encode($headers);
+    return json_encode($response);
+}
+
 $device = $_SESSION["cur_device"];
 $device_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/job/'.urlencode($device);
 $build_url = $device_url.'/build?cause=Started+by+ArrowConfigs';
 $lastBuild_url = $device_url.'/lastBuild/api/json?pretty=true';
 $lastBuild_queue_url = $device_url.'/api/json?pretty=true';
-$build_stop = $device_url.'/lastBuild/stop';
+$build_stop_url = $device_url.'/lastBuild/stop';
 
 // get build status functions
 function isBuildRunning() {
@@ -65,6 +90,13 @@ function getBuildQueueMsg() {
     else return "";
 }
 
+function getBuildOutput($headerTextSize) {
+    global $device_url;
+    $build_output_url = $device_url.'/lastBuild/logText/progressiveText?start='.$headerTextSize[0];
+    $buildOutput = buildOutputHandler($build_output_url);
+    return $buildOutput;
+}
+
 // GetBuildStatus
 if($_POST['getBuildStatus'] == 'yes') {
     if(isBuildRunning()) exit("building");
@@ -84,6 +116,12 @@ if($_POST['getProgressStatus'] == 'yes') {
     }
 }
 
+// GetBuildOutput
+if($_POST['getBuildOutput'] == 'yes') {
+    $responseData = getBuildOutput($_POST['headerTextSize']);
+    exit($responseData);
+}
+
 // Jenkins button actions
 // stop the build
 if($_POST['buildStop'] == 'yes') {
@@ -92,7 +130,7 @@ if($_POST['buildStop'] == 'yes') {
     }
 
     if(isBuildRunning()) {
-        $stopRes=responseHandler($build_stop);
+        $stopRes=responseHandler($build_stop_url);
         if($stopRes == "") exit("Stopped the build!");
         else exit("Something went wrong while trying to stop the build");
     }

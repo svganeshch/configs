@@ -335,13 +335,15 @@ function geturlresp($jenurl) {
             <!-- jenkins device build output -->
             <div class="row">
                 <div class="container-fluid">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed"><h4 class="panel-title">Build Output</h4></a>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
-                            <div class="panel-body">
-                                <p id="buildOut">THIS IS WIP!</p>
+                    <div id="buildOutputBox">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed"><h4 class="panel-title">Build Output</h4></a>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
+                                <div class="panel-body">
+                                    <pre id="buildOutput"></pre>
+                                </div>
                             </div>
                         </div>
                     </div>

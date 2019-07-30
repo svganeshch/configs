@@ -422,17 +422,52 @@ $(document).ready(function(){
         success:function(data)
         {
 			$('#buildStatus').text(data);
-			if(data == 'building') {
+			if((data.localeCompare('building')) == 0 || window.Morelog == 'true') {
 				$('#build-progress-bar').show();
 				getProgress();
+				getBuildOutput();
 			}
 			setTimeout(function() {
 				getJenkinsBuildStatus();
-			}, 10000);
+			}, 5000);
         }
     });
   }
   getJenkinsBuildStatus();
+
+  // get build log output
+  var prevHeaderTextSize = 0;
+  function getBuildOutput(){
+    $.ajax({
+        method:"POST",
+		url: "jenkinsFunc.php",
+		data: {
+			getBuildOutput: 'yes',
+			headerTextSize: prevHeaderTextSize
+		},
+        success:function(data)
+        {
+			if(data != null) {
+				var parsedData = JSON.parse(data);
+				var headerData = JSON.parse(parsedData.headers);
+				var bodyData = parsedData.body;
+
+				if(['x-more-data'] in headerData)
+					window.Morelog = headerData['x-more-data'];
+				else
+					window.Morelog = false;
+
+				//alert('prevdata'+prevHeaderTextSize+'\n'+'newHead'+headerData['x-text-size']);
+				if(Number(prevHeaderTextSize) == Number(headerData['x-text-size'])) return;
+				else {
+					prevHeaderTextSize = headerData['x-text-size'];
+					$('#buildOutput').append('<p id="logs">'+bodyData+'</p>');
+					$('#buildOutput').scrollTop($('#buildOutput').prop("scrollHeight"));
+				}
+			}
+        }
+    });
+  }
 
   $('body').on('click', '#reset-hard', function(){
   	//set defaults
