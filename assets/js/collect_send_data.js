@@ -347,6 +347,7 @@ $(document).ready(function(){
 		    data:$('#device_changes').serialize(),
 		    success:function(data)
 		    {
+					data = data.trim();
 			    alert(data);
 			    //$('#add_name')[0].reset();
 		    }
@@ -354,118 +355,123 @@ $(document).ready(function(){
   });
 
   $('body').on('click', '#buildTrigger', function(){
-	$.ajax({
-		url:"jenkinsFunc.php",
-		method:"POST",
-		data: {
-			buildTrigger: 'yes'
-		},
-		success:function(data)
-		{
-			alert(data);
-		}
-	});
+		$.ajax({
+			url:"jenkinsFunc.php",
+			method:"POST",
+			data: {
+				buildTrigger: 'yes'
+			},
+			success:function(data)
+			{
+				data = data.trim();
+				alert(data);
+			}
+		});
   });
 
   $('body').on('click', '#buildRemoveQueue', function(){
-	$.ajax({
-		url:"jenkinsFunc.php",
-		method:"POST",
-		data: {
-			buildRemoveQueue: 'yes'
-		},
-		success:function(data)
-		{
-			alert(data);
-		}
-	});
+		$.ajax({
+			url:"jenkinsFunc.php",
+			method:"POST",
+			data: {
+				buildRemoveQueue: 'yes'
+			},
+			success:function(data)
+			{
+				data = data.trim();
+				alert(data);
+			}
+		});
   });
 
   $('body').on('click', '#buildStop', function(){
-	$.ajax({
-		url:"jenkinsFunc.php",
-		method:"POST",
-		data: {
-			buildStop: 'yes'
-		},
-		success:function(data)
-		{
-			alert(data);
-		}
-	});
+		$.ajax({
+			url:"jenkinsFunc.php",
+			method:"POST",
+			data: {
+				buildStop: 'yes'
+			},
+			success:function(data)
+			{
+				data = data.trim();
+				alert(data);
+			}
+		});
   });
 
   // set build progress
   $('#build-progress-bar').hide();
   function getProgress(){
     $.ajax({
-        method:"POST",
+    method:"POST",
 		url: "jenkinsFunc.php",
 		data: {
 			getProgressStatus: 'yes'
 		},
         success:function(data)
         {
-            $('.progress-bar').css('width', data+'%').attr('aria-valuenow', data).text(data+'%');
+					data = data.trim();
+        	$('.progress-bar').css('width', data+'%').attr('aria-valuenow', data).text(data+'%');
         }
     });
   }
 
   // set jenkins build status
   function getJenkinsBuildStatus() {
-	$.ajax({
-        method:"POST",
-		url: "jenkinsFunc.php",
-		data: {
-			getBuildStatus: 'yes'
-		},
-        success:function(data)
-        {
-			$('#buildStatus').text(data);
-			if((data.localeCompare('building')) == 0 || window.Morelog == 'true') {
-				$('#build-progress-bar').show();
-				getProgress();
-				getBuildOutput();
-			}
-			setTimeout(function() {
-				getJenkinsBuildStatus();
-			}, 5000);
-        }
-    });
-  }
+		$.ajax({
+			method:"POST",
+			url: "jenkinsFunc.php",
+			data: {
+				getBuildStatus: 'yes'
+			},
+				success:function(data)
+				{
+					$('#buildStatus').text(data);
+					data = data.trim(); // cuz whitespaces are gey
+					if((data.localeCompare('building')) == 0 || window.Morelog == 'true') {
+						$('#build-progress-bar').show();
+						getProgress();
+						getBuildOutput();
+					}
+					setTimeout(function() {
+						getJenkinsBuildStatus();
+					}, 5000);
+				}
+			});
+  	}
   getJenkinsBuildStatus();
 
   // get build log output
   var prevHeaderTextSize = 0;
   function getBuildOutput(){
     $.ajax({
-        method:"POST",
+    method:"POST",
 		url: "jenkinsFunc.php",
 		data: {
 			getBuildOutput: 'yes',
 			headerTextSize: prevHeaderTextSize
 		},
-        success:function(data)
-        {
-			if(data != null) {
-				var parsedData = JSON.parse(data);
-				var headerData = JSON.parse(parsedData.headers);
-				var bodyData = parsedData.body;
+      success:function(data)
+      {
+				if(data != null) {
+					var parsedData = JSON.parse(data);
+					var headerData = JSON.parse(parsedData.headers);
+					var bodyData = parsedData.body;
 
-				if(['x-more-data'] in headerData)
-					window.Morelog = headerData['x-more-data'];
-				else
-					window.Morelog = false;
+					if(['x-more-data'] in headerData)
+						window.Morelog = headerData['x-more-data'];
+					else
+						window.Morelog = false;
 
-				//alert('prevdata'+prevHeaderTextSize+'\n'+'newHead'+headerData['x-text-size']);
-				if(Number(prevHeaderTextSize) == Number(headerData['x-text-size'])) return;
-				else {
-					prevHeaderTextSize = headerData['x-text-size'];
-					$('#buildOutput').append('<p id="logs">'+bodyData+'</p>');
-					$('#buildOutput').scrollTop($('#buildOutput').prop("scrollHeight"));
+					//alert('prevdata'+prevHeaderTextSize+'\n'+'newHead'+headerData['x-text-size']);
+					if(Number(prevHeaderTextSize) == Number(headerData['x-text-size'])) return;
+					else {
+						prevHeaderTextSize = headerData['x-text-size'];
+						$('#buildOutput').append('<p id="logs">'+bodyData+'</p>');
+						$('#buildOutput').scrollTop($('#buildOutput').prop("scrollHeight"));
+					}
 				}
-			}
-        }
+      }
     });
   }
 

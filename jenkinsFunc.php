@@ -1,7 +1,7 @@
 <?php
 include('session.php');
 include('jenkins_config.php');
-error_reporting(E_ALL & ~E_NOTICE);
+//error_reporting(E_ALL & ~E_NOTICE);
 
 function responseHandler($url) {
     $data = curl_init();
@@ -92,20 +92,20 @@ function getBuildQueueMsg() {
 
 function getBuildOutput($headerTextSize) {
     global $device_url;
-    $build_output_url = $device_url.'/lastBuild/logText/progressiveText?start='.$headerTextSize[0];
+    $build_output_url = $device_url.'/lastBuild/logText/progressiveText?start='.urlencode($headerTextSize[0]);
     $buildOutput = buildOutputHandler($build_output_url);
     return $buildOutput;
 }
 
 // GetBuildStatus
-if($_POST['getBuildStatus'] == 'yes') {
+if(isset($_POST['getBuildStatus']) && $_POST['getBuildStatus'] == 'yes') {
     if(isBuildRunning()) exit("building");
     elseif(isBuildInQueue()) exit("waiting");
     else exit("idle");
 }
 
 // GetProgressStatus
-if($_POST['getProgressStatus'] == 'yes') {
+if(isset($_POST['getProgressStatus']) && $_POST['getProgressStatus'] == 'yes') {
     if(isBuildRunning()) {
         $currentTime = time();
         $buildTime = round(getBuildInfo("timestamp")/1000);
@@ -117,14 +117,16 @@ if($_POST['getProgressStatus'] == 'yes') {
 }
 
 // GetBuildOutput
-if($_POST['getBuildOutput'] == 'yes') {
+if(isset($_POST['getBuildOutput']) && $_POST['getBuildOutput'] == 'yes') {
+    if(isset($_POST['headerTextSize'])) {
     $responseData = getBuildOutput($_POST['headerTextSize']);
     exit($responseData);
+    } else exit();
 }
 
 // Jenkins button actions
 // stop the build
-if($_POST['buildStop'] == 'yes') {
+if(isset($_POST['buildStop']) && $_POST['buildStop'] == 'yes') {
     if(isBuildInQueue()) {
         exit("There's a build waiting in queue!\nTry remove from queue option instead.");
     }
@@ -138,7 +140,7 @@ if($_POST['buildStop'] == 'yes') {
 }
 
 // remove from queue
-if($_POST["buildRemoveQueue"] == 'yes') {
+if(isset($_POST["buildRemoveQueue"]) && $_POST["buildRemoveQueue"] == 'yes') {
     if(isBuildInQueue()) {
         $queueID = getBuildQueueId();
         $queue_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/queue/cancelItem?id='.$queueID;
@@ -152,7 +154,7 @@ if($_POST["buildRemoveQueue"] == 'yes') {
 }
 
 // initiate a build
-if($_POST["buildTrigger"] == 'yes') {
+if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
     // check if a build is already running
     if(isBuildRunning()) exit("A build is already running for your device!");
 
