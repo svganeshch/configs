@@ -338,6 +338,7 @@ function geturlresp($jenurl) {
                     <div id="buildOutputBox">
                         <div class="panel panel-default">
                             <div class="panel-heading">
+                                <strong><label class="pull-right"><span id="fullLog" class="badge"><a>more log</a></span></label></strong>
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed"><h4 class="panel-title">Build Output</h4></a>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">

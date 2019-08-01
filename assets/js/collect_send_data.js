@@ -363,6 +363,7 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
+				$('#buildOutput').empty();
 				data = data.trim();
 				alert(data);
 			}
@@ -410,11 +411,42 @@ $(document).ready(function(){
 		},
         success:function(data)
         {
-					data = data.trim();
+				 	data = data.trim();
         	$('.progress-bar').css('width', data+'%').attr('aria-valuenow', data).text(data+'%');
         }
     });
-  }
+	}
+	
+	// split textsize
+	function getHeaderTextSize() {
+		$.ajax({
+			method:"POST",
+			url: "jenkinsFunc.php",
+			data: {
+				getHeaderTextSize: 'yes',
+			},
+				success:function(data)
+				{
+					if(data != null) {
+						var headerData = JSON.parse(data);
+						window.curTextSize = Number(headerData['x-text-size']);
+					}
+				}
+		});
+	}
+	getHeaderTextSize();
+
+	// set more log option
+	function setIdleMoreLog() {
+		if(window.curTextSize != null) {
+			if(window.curTextSize >= 1000) {
+				window.curTextSize = window.curTextSize - 1000;
+				$('#fullLog').show();
+				getBuildOutput();
+			}
+			getBuildOutput();
+		}
+	}
 
   // set jenkins build status
   function getJenkinsBuildStatus() {
@@ -432,24 +464,26 @@ $(document).ready(function(){
 						$('#build-progress-bar').show();
 						getProgress();
 						getBuildOutput();
+					} else if((data.localeCompare('idle')) == 0) {
+						if(!window.idleLogSetShown) setIdleMoreLog();
 					}
-					setTimeout(function() {
+					window.jenkinsLooper = setTimeout(function() {
 						getJenkinsBuildStatus();
 					}, 5000);
 				}
 			});
   	}
-  getJenkinsBuildStatus();
+	getJenkinsBuildStatus();
 
   // get build log output
-  var prevHeaderTextSize = 0;
   function getBuildOutput(){
+		window.idleLogSetShown = true;
     $.ajax({
     method:"POST",
 		url: "jenkinsFunc.php",
 		data: {
-			getBuildOutput: 'yes',
-			headerTextSize: prevHeaderTextSize
+			getBodyOutput: 'yes',
+			headerTextSize: window.curTextSize
 		},
       success:function(data)
       {
@@ -463,17 +497,42 @@ $(document).ready(function(){
 					else
 						window.Morelog = false;
 
-					//alert('prevdata'+prevHeaderTextSize+'\n'+'newHead'+headerData['x-text-size']);
-					if(Number(prevHeaderTextSize) == Number(headerData['x-text-size'])) return;
+					if(Number(window.curTextSize) == Number(headerData['x-text-size'])) return;
 					else {
-						prevHeaderTextSize = headerData['x-text-size'];
+						window.curTextSize = Number(headerData['x-text-size']);
 						$('#buildOutput').append('<p id="logs">'+bodyData+'</p>');
+
+						if (!$('#buildOutput').is(':hover'))
 						$('#buildOutput').scrollTop($('#buildOutput').prop("scrollHeight"));
 					}
 				}
       }
     });
-  }
+	}
+	
+	$('body').on('click', '#fullLog', function(){
+		$.ajax({
+			url:"jenkinsFunc.php",
+			method:"POST",
+			data: {
+				getBodyOutput: 'yes',
+				headerTextSize: 0
+			},
+			success:function(data)
+			{
+				if(data != null) {
+					clearTimeout(window.jenkinsLooper);
+					var parsedData = JSON.parse(data);
+					var headerData = JSON.parse(parsedData.headers);
+					var bodyData = parsedData.body;
+					window.curTextSize = Number(headerData['x-text-size']);
+					$('#buildOutput').empty();
+					$('#buildOutput').append('<p id="logs">'+bodyData+'</p>');
+					getJenkinsBuildStatus();
+				}
+			}
+		});
+  });
 
   $('body').on('click', '#reset-hard', function(){
   	//set defaults

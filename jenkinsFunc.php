@@ -1,24 +1,47 @@
 <?php
 include('session.php');
 include('jenkins_config.php');
-//error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 function responseHandler($url) {
     $data = curl_init();
     curl_setopt($data, CURLOPT_URL, $url);
     curl_setopt($data, CURLOPT_POST, 1);
-    curl_setopt($data, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
     $response = curl_exec($data);
     curl_close($data);
 
     return $response;
 }
 
-$headers = [];
-function buildOutputHandler($url) {
+function buildOutputHeader($url) {
     $data = curl_init();
-    global $headers;
+    $headers = [];
+    curl_setopt($data, CURLOPT_URL, $url);
+    curl_setopt($data, CURLOPT_NOBODY, 1);
+    curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($data, CURLOPT_HEADERFUNCTION,
+        function($curl, $header) use (&$headers)
+        {
+            $len = strlen($header);
+            $header = explode(':', $header, 2);
+            if (count($header) < 2) // ignore invalid headers
+            return $len;
+
+            $headers[strtolower(trim($header[0]))][] = trim($header[1]);
+
+            return $len;
+        }
+    );
+    curl_exec($data);
+    curl_close($data);
+    return json_encode($headers);
+}
+
+function buildOutputBody($url) {
+    $data = curl_init();
     $response = [];
+    $headers = [];
     curl_setopt($data, CURLOPT_URL, $url);
     curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($data, CURLOPT_HEADERFUNCTION,
@@ -34,8 +57,10 @@ function buildOutputHandler($url) {
             return $len;
         }
     );
+
     $response['body'] = curl_exec($data);
     $response['headers'] = json_encode($headers);
+    curl_close($data);
     return json_encode($response);
 }
 
@@ -90,11 +115,18 @@ function getBuildQueueMsg() {
     else return "";
 }
 
-function getBuildOutput($headerTextSize) {
+function getBodyOutput($headerTextSize) {
     global $device_url;
-    $build_output_url = $device_url.'/lastBuild/logText/progressiveText?start='.urlencode($headerTextSize[0]);
-    $buildOutput = buildOutputHandler($build_output_url);
-    return $buildOutput;
+    $build_output_url = $device_url.'/lastBuild/logText/progressiveHtml?start='.urlencode($headerTextSize);
+    $bodyOutput = buildOutputBody($build_output_url);
+    return $bodyOutput;
+}
+
+function getHeaderOutput() {
+    global $device_url;
+    $build_output_url = $device_url.'/lastBuild/logText/progressiveHtml';
+    $headerOutput = buildOutputHeader($build_output_url);
+    return $headerOutput;
 }
 
 // GetBuildStatus
@@ -116,10 +148,15 @@ if(isset($_POST['getProgressStatus']) && $_POST['getProgressStatus'] == 'yes') {
     }
 }
 
-// GetBuildOutput
-if(isset($_POST['getBuildOutput']) && $_POST['getBuildOutput'] == 'yes') {
+// GetHeaderTextSize
+if(isset($_POST['getHeaderTextSize']) && $_POST['getHeaderTextSize'] == 'yes') {
+    exit(getHeaderOutput());
+}
+
+// GetBodyOutput
+if(isset($_POST['getBodyOutput']) && $_POST['getBodyOutput'] == 'yes') {
     if(isset($_POST['headerTextSize'])) {
-    $responseData = getBuildOutput($_POST['headerTextSize']);
+    $responseData = getBodyOutput($_POST['headerTextSize']);
     exit($responseData);
     } else exit();
 }
