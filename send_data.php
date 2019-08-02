@@ -24,11 +24,47 @@ function pushQuery($device_data, $row_name, $cur_device) {
 
 }
 
+function genJsonCloneData ($counts, $key_value_name, $branch) {
+    global $cur_device;
+
+    for ($i=0; $i < $counts; $i++) { 
+        if (trim($_POST["$key_value_name"][$i]) != '') {
+            if (isset($_POST["$branch"][$i]) && trim($_POST["$branch"][$i]) != '') {
+                $content [] = $_POST["$key_value_name"][$i]." -b ".$_POST["$branch"][$i];
+            } else {
+                $content [] = $_POST["$key_value_name"][$i];
+            }
+        }
+    }
+
+    $repo_data = array($key_value_name => $content);
+    $repo_data = json_encode($repo_data);
+    pushQuery($repo_data, $key_value_name, $cur_device);
+}
+
+function genOvrJsonCloneData ($counts, $key_value_name, $row_value_name, $branch) {
+    global $cur_device;
+
+    for ($i=0; $i < $counts; $i++) { 
+        if (trim($_POST["$row_value_name"][$i]) != '') {
+            if (isset($_POST["$branch"][$i]) && trim($_POST["$branch"][$i]) != '') {
+                $content [] = $_POST["$row_value_name"][$i]." -b ".$_POST["$branch"][$i];
+            } else {
+                $content [] = $_POST["$row_value_name"][$i];
+            }
+        }
+    }
+
+    $repo_data = array($key_value_name => $content);
+    $repo_data = json_encode($repo_data);
+    pushQuery($repo_data, $key_value_name, $cur_device);
+}
+
 function genJsonData ($counts, $key_value_name) {
     global $cur_device;
 
     for ($i=0; $i < $counts; $i++) { 
-        if (trim($_POST["$key_value_name"][$i] != '')) {
+        if (trim($_POST["$key_value_name"][$i]) != '') {
             $content [] = $_POST["$key_value_name"][$i];
         }
     }
@@ -42,7 +78,7 @@ function genOvrJsonData ($counts, $key_value_name, $row_value_name) {
     global $cur_device;
 
     for ($i=0; $i < $counts; $i++) { 
-        if (trim($_POST["$row_value_name"][$i] != '')) {
+        if (trim($_POST["$row_value_name"][$i]) != '') {
             $content [] = $_POST["$row_value_name"][$i];
         }
     }
@@ -82,7 +118,7 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
 
         // Overriden device Json repos data query calls
         genOvrJsonData($repo_path_count, 'ovr_repo_paths', 'repo_paths');
-        genOvrJsonData($repo_clone_count, 'ovr_repo_clones', 'repo_clones');
+        genOvrJsonCloneData($repo_clone_count, 'ovr_repo_clones', 'repo_clones', 'repo_clone_branch');
         genOvrJsonData($repo_clone_count, 'ovr_repo_clones_paths', 'repo_clones_paths');
         genOvrJsonData($repo_topic_count, 'ovr_repopick_topics', 'repopick_topics');
         genOvrJsonData($repo_change_count, 'ovr_repopick_changes', 'repopick_changes');
@@ -112,7 +148,7 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
 
         // Json repos data query calls
         genJsonData($repo_path_count, 'repo_paths');
-        genJsonData($repo_clone_count, 'repo_clones');
+        genJsonCloneData($repo_clone_count, 'repo_clones', 'repo_clone_branch');
         genJsonData($repo_clone_count, 'repo_clones_paths');
         genJsonData($repo_topic_count, 'repopick_topics');
         genJsonData($repo_change_count, 'repopick_changes');

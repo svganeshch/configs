@@ -86,13 +86,28 @@ $(document).ready(function(){
 								if ( value != null && value != 'null' && value != 'NULL') {
 									for (j=0; j <= value.length-1; j++) {
 										if (j == 0) {
-											$("#int_repo_clones_text_field").val(value[j]);
+											var clone_url = value[j];
+											if (clone_url.includes("-b")) {
+												var splitString = clone_url.split('-b');
+												$("#int_repo_clones_text_field").val(splitString[0].trim());
+												$("#int_repo_clone_branch_text_field").val(splitString[1].trim());
+											} else {
+												$("#int_repo_clones_text_field").val(clone_url);
+											}
 										}
 
 										if (j != 0) {
 											if ($('#' + 'repo_clones_text_field'+j+'').length == 0)
 												$( "#add2" ).trigger( "click" );
-											$('#repo_clones_text_field'+b+'').val(value[j]);
+
+											var clone_url = value[j];
+											if (clone_url.includes("-b")) {
+												var splitString = clone_url.split('-b');
+												$('#repo_clones_text_field'+b+'').val(splitString[0].trim());
+												$('#repo_clone_branch_text_field'+b+'').val(splitString[1].trim());
+											} else {
+												$('#repo_clones_text_field'+b+'').val(clone_url);
+											}
 										}
 									}
 								} else {
@@ -110,11 +125,11 @@ $(document).ready(function(){
 								if ( value != null && value != 'null' && value != 'NULL') {
 									for (j=0; j <= value.length-1; j++) {
 										if (j == 0) {
-											$("#int_repo_clones_paths_text_field").val(value[j]);
+												$("#int_repo_clones_paths_text_field").val(value[j]);
 										}
 
 										if (j != 0) {
-											b=j;
+											b=j;										
 											$('#repo_clones_paths_text_field'+b+'').val(value[j]);
 										}
 									}
@@ -202,7 +217,13 @@ $(document).ready(function(){
   });
   $('body').on('click', '#add2', function(){
 		b++;
-		$('#dynamic_field-2-').append('<li class="list-group-item" style="border:none" id="dynamic_field-repo_clones'+b+'"><div class="row"> <div class="col-md-11 col-xs-11" style="padding-left:0px"> <div class="form-group"> <input placeholder="Enter repo url" autocomplete="on" type="text" id="repo_clones_text_field'+b+'" name="repo_clones[]" class="form-control" /> <br class="custom_br" id="custom_br"/> <input placeholder="Enter clone path for repo" autocomplete="on" type="text" id="repo_clones_paths_text_field'+b+'" name="repo_clones_paths[]" class="form-control" /> </div> </div> <button type="button" name="remove" id="repo_clones'+b+'" class="btn btn-danger btn_remove" style="margin-top: 5px;">X</button></div></li>');
+		$('#dynamic_field-2-').append('<li class="list-group-item" style="border:none" id="dynamic_field-repo_clones'+b+'"><div class="row"> <div class="col-md-11 col-xs-11" style="padding-left:0px"> <div class="form-group">' +
+		'<div class="row"> <div class="col-md-8 col-xs-8">' +
+		'<input placeholder="repo url" autocomplete="on" type="text" id="repo_clones_text_field'+b+'" name="repo_clones[]" class="form-control" /></div>' +
+		'<div class="col-md-4 col-xs-4"> <input placeholder="branch" autocomplete="on" type="text" id="repo_clone_branch_text_field'+b+'" name="repo_clone_branch[]" class="form-control" /> </div></div>' +
+		'<br class="custom_br" id="custom_br"/>' +
+		'<input placeholder="path for repo" autocomplete="on" type="text" id="repo_clones_paths_text_field'+b+'" name="repo_clones_paths[]" class="form-control" /> </div>' +
+		'</div> <button type="button" name="remove" id="repo_clones'+b+'" class="btn btn-danger btn_remove" style="margin-top: 5px;">X</button></div></li>');
 		$('#repo_clones_text_field'+b+'').focus();
   });
   $('body').on('click', '#add3', function(){
