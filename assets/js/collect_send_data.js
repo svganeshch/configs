@@ -495,8 +495,10 @@ $(document).ready(function(){
 					}, 5000);
 				}
 			});
-  	}
-	getJenkinsBuildStatus();
+		}
+	var dev_name = $('#config_dev_name').text().trim();
+	if (dev_name != 'Common_config config:')
+		getJenkinsBuildStatus();
 
   // get build log output
   function getBuildOutput(){

@@ -311,6 +311,7 @@ function geturlresp($jenurl) {
              <!-- /. PAGE INNER  -->
     </div>
   </div>
+  <?php if ($_SESSION["cur_device"] != "common_config") { ?>
   <!-- Jenkins block -->
     <div class="col-sm-6">
         <div id="page-inner-buildoutput">
@@ -359,6 +360,7 @@ function geturlresp($jenurl) {
             </div>
         </div>
     </div>
+    <?php } ?>
 </div>
          <!-- /. PAGE WRAPPER  -->
 </div>
@@ -380,7 +382,7 @@ function geturlresp($jenurl) {
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-    <script src="assets/js/mainHandler.min.js"></script>
+    <script src="assets/js/collect_send_data.js"></script>
 
     <?php if (!$_SESSION['is_admin']) { ?>
     <script type="text/javascript">
