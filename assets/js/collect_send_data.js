@@ -457,7 +457,8 @@ $(document).ready(function(){
 				}
 		});
 	}
-	getHeaderTextSize();
+	if (dev_name != 'Common_config config:')
+		getHeaderTextSize();
 
 	// set more log option
 	function setIdleMoreLog() {

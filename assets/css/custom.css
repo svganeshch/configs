@@ -246,3 +246,8 @@ pre {
     max-height: 600px;
     width: 100%;
 }
+
+.disabledDiv {
+    pointer-events: none;
+    opacity: 0.4;
+}

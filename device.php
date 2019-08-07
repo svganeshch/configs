@@ -316,25 +316,33 @@ function geturlresp($jenurl) {
     <div class="col-sm-6">
         <div id="page-inner-buildoutput">
             <!-- jenkins build buttons -->
-                <div class="row">
-                    <div class="container-fluid">
-                        <div class="col-md-12 col-xs-12" id="total-menu-block">
-                            <li class="list-group-item" id="total-menu-list">
-                            <strong><label>Device jenkins options:</label></strong>
-                            <strong><label class="pull-right">Status: <span class="badge" id="buildStatus"></span></label></strong>
-                            <br>
-                                <input type="button" name="buildTrigger" id="buildTrigger" class="btn btn-success" value="Build" />
-                                <input type="button" name="buildStop" id="buildStop" class="btn btn-danger" value="Abort" />
-                                <input type="button" name="buildRemoveQueue" id="buildRemoveQueue" class="btn btn-danger" value="Remove from queue" />
+                <?php
+                    $global_state_query = "SELECT `global_override` from `common_config`"; 
+                    $global_state_query_res = mysqli_query($db, $global_state_query) or die(mysqli_error($db)); 
+                    $global_state = mysqli_fetch_assoc($global_state_query_res);
+                    $global_state = $global_state['global_override']; 
+                ?>
+                <div <?php if ($global_state == 'yes' && !$_SESSION['is_admin']) { ?>class="disabledDiv"<?php } ?> id="jenkinsButtons">
+                    <div class="row">
+                        <div class="container-fluid">
+                            <div class="col-md-12 col-xs-12" id="total-menu-block">
+                                <li class="list-group-item" id="total-menu-list">
+                                <strong><label>Device jenkins options:</label></strong>
+                                <strong><label class="pull-right">Status: <span class="badge" id="buildStatus"></span></label></strong>
+                                <br>
+                                    <input type="button" name="buildTrigger" id="buildTrigger" class="btn btn-success" value="Build" />
+                                    <input type="button" name="buildStop" id="buildStop" class="btn btn-danger" value="Abort" />
+                                    <input type="button" name="buildRemoveQueue" id="buildRemoveQueue" class="btn btn-danger" value="Remove from queue" />
 
-                            <br>
-                                <div id="build-progress-bar">
-                                    <strong><label>Build Progress:</label></strong><br>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                <br>
+                                    <div id="build-progress-bar">
+                                        <strong><label>Build Progress:</label></strong><br>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -382,7 +390,7 @@ function geturlresp($jenurl) {
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-    <script src="assets/js/collect_send_data.js"></script>
+    <script src="assets/js/mainHandler.min.js"></script>
 
     <?php if (!$_SESSION['is_admin']) { ?>
     <script type="text/javascript">
@@ -391,9 +399,9 @@ function geturlresp($jenurl) {
         $('#is_official').bootstrapToggle('off');
         $('#test_build').bootstrapToggle('on');
         $('#override_lunch').bootstrapToggle('off');
-        $("#is_official").attr("disabled", "disabled").prop("readonly", true);
-        $("#test_build").attr("disabled", "disabled").prop("readonly", true);
-        $("#override_lunch").attr("disabled", "disabled").prop("readonly", true);
+        $("#is_official").prop("disabled", true).prop("readonly", true);
+        $("#test_build").prop("disabled", true).prop("readonly", true);
+        $("#override_lunch").prop("disabled", true).prop("readonly", true);
     });
     </script>
     <?php } ?>
