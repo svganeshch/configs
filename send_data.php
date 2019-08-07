@@ -101,6 +101,7 @@ $repo_change_count = count($_POST["repopick_changes"]);
 
 // device Switch vals and changelog
 $global_override = $_POST["hidden_global_override"];
+$default_buildtype_state = $_POST["hidden_default_buildtype_state"];
 $is_official = $_POST["hidden_is_official"];
 $test_build = $_POST["hidden_test_build"];
 $force_clean = $_POST["hidden_force_clean"];
@@ -174,6 +175,12 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
         if ($cur_device == 'common_config') {
             if (isset($_POST['hidden_global_override'])) {
                 pushQuery($global_override, 'global_override', $cur_device);
+                $chk_count++;
+            }
+        }
+        if ($cur_device == 'common_config') {
+            if (isset($_POST['hidden_default_buildtype_state'])) {
+                pushQuery($default_buildtype_state, 'default_buildtype_state', $cur_device);
                 $chk_count++;
             }
         }

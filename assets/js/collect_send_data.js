@@ -25,6 +25,7 @@ $(document).ready(function(){
 							$('#is_official').bootstrapToggle((value['is_official'] == 'yes') ? 'on' : 'off');
 							$('#test_build').bootstrapToggle((value['test_build'] == 'yes') ? 'on' : 'off');
 							$('#force_clean').bootstrapToggle((value['force_clean'] == 'yes') ? 'on' : 'off');
+							$('#default_buildtype_state').bootstrapToggle((value['default_buildtype_state'] == 'yes') ? 'on' : 'off');
 							$('#buildtype').val(value['buildtype']);
 							$('#bootimage').bootstrapToggle((value['bootimage'] == 'yes') ? 'on' : 'off');
 
@@ -43,6 +44,7 @@ $(document).ready(function(){
 							$('#is_official').bootstrapToggle((value['ovr_is_official'] == 'yes') ? 'on' : 'off');
 							$('#test_build').bootstrapToggle((value['ovr_test_build'] == 'yes') ? 'on' : 'off');
 							$('#force_clean').bootstrapToggle((value['ovr_force_clean'] == 'yes') ? 'on' : 'off');
+							$('#default_buildtype_state').bootstrapToggle((value['default_buildtype_state'] == 'yes') ? 'on' : 'off');
 							$('#buildtype').val(value['ovr_buildtype']);
 							$('#bootimage').bootstrapToggle((value['ovr_bootimage'] == 'yes') ? 'on' : 'off');
 
@@ -246,11 +248,11 @@ $(document).ready(function(){
   });
   $('body').on('change', '#global_override', function(){
 		if ($(this).prop('checked')) {
-			$('#default_buildtype').trigger("change");
+			$('#default_buildtype_state').trigger("change");
 			$('#hidden_global_override').val('yes');
 			$('#switch-block').show();
 		} else {
-			$('#default_buildtype').trigger("change");
+			$('#default_buildtype_state').trigger("change");
 			$('#hidden_global_override').val('no');
 			$('#switch-block').hide();
 		}
@@ -298,18 +300,18 @@ $(document).ready(function(){
 		}
   });
 
-  $('#default_buildtype').bootstrapToggle({
+  $('#default_buildtype_state').bootstrapToggle({
     on: 'Yes',
     off: 'No',
     onstyle: 'success',
     offstyle: 'danger'
   });
-  $('body').on('change', '#default_buildtype', function(){
+  $('body').on('change', '#default_buildtype_state', function(){
 		if ($(this).prop('checked')) {
-			$('#hidden_default_buildtype').val('yes');
+			$('#hidden_default_buildtype_state').val('yes');
 			$('#buildtype_div').hide();
 		} else {
-			$('#hidden_default_buildtype').val('no');
+			$('#hidden_default_buildtype_state').val('no');
 			$('#buildtype_div').show();
 		}
   });

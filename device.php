@@ -156,11 +156,11 @@ function geturlresp($jenurl) {
                                             <div class="form-group">
                                                 <div class="checkbox">
                                                     <label>Default Buildtypes</label>
-                                                    <input type="checkbox" name="default_buildtype" id="default_buildtype" checked />
+                                                    <input type="checkbox" name="default_buildtype_state" id="default_buildtype_state" checked />
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="hidden_default_buildtype" id="hidden_default_buildtype" value="yes" />
+                                        <input type="hidden" name="hidden_default_buildtype_state" id="hidden_default_buildtype_state" value="yes" />
                                     <?php } ?>
 
                                     <div class="col-md-3 col-xs-4" id="buildtype_div">
