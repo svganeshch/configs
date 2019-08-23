@@ -1,10 +1,15 @@
 <?php
     include('session.php');
+
+    if (!$_SESSION['is_admin']) {
+        header("Location: device404.php");
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-      <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ArrowOS Jenkins</title>
 	<!-- BOOTSTRAP STYLES-->
@@ -66,41 +71,66 @@
         <div id="page-inner">
             <div class="row">
                 <div class="col-lg-12">
-                     <h2>Profile Settings</h2>   
+                    <h2>Maintainers Management</h2>
                 </div>
             </div>
 
             <hr />
             <div class="row">
-                <div class="col-lg-12 ">
+                <div class="col-lg-12">
                     <div class="alert alert-info">
-                        <strong><label id="profile_update_msg">Profile settings of current user <?php echo $_SESSION['login_user'] ?></label></strong>
+                        <strong><label id="maintainer_info_msg"></label></strong>
                     </div>                       
                 </div>
             </div>
 
-            <input type="hidden" id="username" value="<?php echo $_SESSION['login_user'] ?>"/>
-                <form name="profileData" id="profileData">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-5 col-xs-12">
-                                <label id="profile_label">Username :</label>
-                                <input type="text" id="profile_username" name="profile_username" class="form-control" required />
-
-                                <label id="profile_label">Current password :</label>
-                                <input type="password" id="current_profile_password" name="current_profile_password" class="form-control" required />
-
-                                <label id="profile_label">New password :</label>
-                                <input type="password" id="profile_password" name="profile_password" class="form-control" required />
-
-                                <label id="profile_label">Retype new password :</label>
-                                <input type="password" id="re_profile_password" name="re_profile_password" class="form-control" required />
+            <form id="MaintainersData">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <h4><strong>Add New Maintainers:</strong></h4>
+                            <div class="col-md-6">
+                                <label id="profile_label">Maintainer Username :</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" id="new_maintainer_username" name="new_maintainer_username" class="form-control" required />
                             </div>
                         </div>
-                        <input type="button" name="update" id="update" class="btn btn-info" value="update profile" />
-                    </div>
-                </form>
 
+                        <div class="col-xs-12 col-md-12">
+                            <div class="col-md-6">
+                                <label id="profile_label">Maintainer Devices :</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input placeholder="separate by spaces if more than one device" type="text" id="new_maintainer_devices" name="new_maintainer_devices" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <input type="button" name="add_maintainer" id="add_maintainer" class="btn btn-info btn-xs pull-right" value="Add Maintainer" />
+                </div>
+
+                <br/>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <h4><strong>Current Maintainers:</strong></h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Device</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="maintainersTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
     	</div>
              <!-- /. PAGE INNER  -->
     </div>
@@ -124,7 +154,7 @@
     <script src="assets/js/bootstrap.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-    <script src="assets/js/profile_data.js"></script>
+    <script src="assets/js/maintainer_data.js"></script>
    
 </body>
 </html>

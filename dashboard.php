@@ -74,6 +74,12 @@
                         <a href="profile.php" style="color: #000000"><i class="fa fa-user "></i>Profile</a>
                     </li>
 
+                    <?php if ($_SESSION['is_admin']) { ?>
+                    <li>
+                        <a href="maintainers.php" style="color: #000000"><i class="fa fa-users "></i>Maintainers</a>
+                    </li>
+                    <?php } ?>
+
                     <li>
                         <a href="logout.php" style="color: #a94442"><i class="fa fa-sign-out "></i>Logout</a>
                     </li>             

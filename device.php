@@ -3,6 +3,10 @@ include('session.php');
 
 if (!$_SESSION['is_admin']) {
     $pattern = "/\b" . $_GET['select_device'] . "\b/i";
+
+    if($_SESSION['maintainer_status'] != 'active') {
+        header("Location: revoked404.php");
+    }
     if(!preg_match($pattern, $_SESSION['maintainer_device'])) {
         header("Location: device404.php");
         exit();

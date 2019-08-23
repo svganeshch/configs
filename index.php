@@ -33,6 +33,13 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 			$maintainer_device = $maintainer_device['maintainer_device'];
 			$_SESSION['maintainer_device'] = $maintainer_device;
 
+			// get maintainer status
+			$maintainer_status_query = "SELECT `status` FROM `login` WHERE `username`='$username'";
+			$maintainer_status = mysqli_query($db, $maintainer_status_query) or die(mysqli_error($db));
+			$maintainer_status = mysqli_fetch_assoc($maintainer_status);
+			$maintainer_status = $maintainer_status['status'];
+			$_SESSION['maintainer_status'] = $maintainer_status;
+
 		}else{
 			$fmsg = "Invalid Password!";
 		}
