@@ -151,7 +151,7 @@
             <?php } ?>
             
             <?php
-            	$url = 'https://raw.githubusercontent.com/ArrowOS/android_vendor_arrow/arrow-9.x/arrow.devices';
+            	$url = 'https://raw.githubusercontent.com/ArrowOS/android_vendor_arrow/arrow-10.0/arrow.devices';
             	
                 $devices_list = nl2br( file_get_contents("$url") );
                 ?>
