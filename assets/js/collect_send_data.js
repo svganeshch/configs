@@ -386,6 +386,7 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
+				$('#submit').trigger('click');
 				$('#buildOutput').empty();
 				data = data.trim();
 				alert(data);

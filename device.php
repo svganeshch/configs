@@ -403,9 +403,11 @@ function geturlresp($jenurl) {
         $('#is_official').bootstrapToggle('off');
         $('#test_build').bootstrapToggle('on');
         $('#override_lunch').bootstrapToggle('off');
+        $('#force_clean').bootstrapToggle('off');
         $("#is_official").prop("disabled", true).prop("readonly", true);
         $("#test_build").prop("disabled", true).prop("readonly", true);
         $("#override_lunch").prop("disabled", true).prop("readonly", true);
+        $("#force_clean").prop("disabled", true).prop("readonly", true);
     });
     </script>
     <?php } ?>
