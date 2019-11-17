@@ -147,6 +147,13 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
 
 } else {
 
+        // Check to see if any admin specific toggles have been messed with
+        if (!$_SESSION['is_admin']) {
+            if (($is_official == 'yes') || ($test_build == 'no') || ($force_clean == 'yes')) {
+                exit("Some admin specific fields seem to have been altered!\nThis incident will be reported!\nContact the ADMIN!");
+            }
+        }
+
         // Json repos data query calls
         genJsonData($repo_path_count, 'repo_paths');
         genJsonCloneData($repo_clone_count, 'repo_clones', 'repo_clone_branch');
@@ -155,23 +162,19 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
         genJsonData($repo_change_count, 'repopick_changes');
 
         // Switch vals and changelog query calls
+        pushQuery($is_official, 'is_official', $cur_device);
+        pushQuery($test_build, 'test_build', $cur_device);
         pushQuery($force_clean, 'force_clean', $cur_device);
         pushQuery($buildtype, 'buildtype', $cur_device);
         pushQuery($bootimage, 'bootimage', $cur_device);
         pushQuery($changelog, 'changelog', $cur_device);
-        $chk_count=9;
+        $chk_count=11;
 
         if ($cur_device != 'common_config') {
             pushQuery($xda_link, 'xda_link', $cur_device);
             $chk_count++;
         }
 
-        if ($_SESSION['is_admin']) {
-            pushQuery($is_official, 'is_official', $cur_device);
-            $chk_count++;
-            pushQuery($test_build, 'test_build', $cur_device);
-            $chk_count++;
-        }
         if ($cur_device == 'common_config') {
             if (isset($_POST['hidden_global_override'])) {
                 pushQuery($global_override, 'global_override', $cur_device);
