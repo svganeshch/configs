@@ -68,11 +68,24 @@ if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes')
     else
         exit('No devices specified for new maintainer!');
 
-    $add_new_maintainer_query = "INSERT into `login` (`username`, `maintainer_device`) VALUES ('$maintainer_username', '$maintainer_devices')";
-    if(mysqli_query($db, $add_new_maintainer_query))
-        exit('New maintainer '.$username.' for devices '.$maintainer_devices.' has been added successfully!');
-    else
-        exit('Something went wrong, Failed to add new maintainer! '.mysqli_error($db));
+    $check_maintainer_query = "SELECT `username` from `login` WHERE `username`='$maintainer_username'";
+    $check_maintainer_query_res = mysqli_query($db, $check_maintainer_query) or die("Checking for maintainer failed!" . mysqli_error($db));
+    $check_maintainer_query_res = mysqli_num_rows($check_maintainer_query_res);
+
+    if ($check_maintainer_query_res == 1) {
+        $update_maintainer_query = "UPDATE `login` SET `maintainer_device`='$maintainer_devices' WHERE `username`='$maintainer_username'";
+        if(mysqli_query($db, $update_maintainer_query))
+            exit('Maintainer ( '.$maintainer_username.' ) data has been updated successfully!');
+        else
+            exit('Something went wrong, Failed to update maintainer data! '.mysqli_error($db));
+    }
+    else {
+        $add_new_maintainer_query = "INSERT into `login` (`username`, `maintainer_device`) VALUES ('$maintainer_username', '$maintainer_devices')";
+        if(mysqli_query($db, $add_new_maintainer_query))
+            exit('New maintainer '.$username.' for devices '.$maintainer_devices.' has been added successfully!');
+        else
+            exit('Something went wrong, Failed to add new maintainer! '.mysqli_error($db));
+    }
 }
 
 ?>
