@@ -134,7 +134,7 @@
                                                         'no' AS force_clean,
                                                         'no' AS test_build,
                                                         'yes' AS is_official,
-                                                        'user' AS buildtype,
+                                                        'userdebug' AS buildtype,
                                                         'yes' AS default_buildtype_state,
                                                         'no' AS bootimage,
                                                         'no' AS global_override";
@@ -212,14 +212,14 @@
                                                              'no' AS force_clean,
                                                              'no' AS test_build,
                                                              'yes' AS is_official,
-                                                             'user' AS buildtype,
+                                                             '$device_buildtype[0]' AS buildtype,
                                                              'no' AS bootimage,
                                                              'no' AS lunch_override_state,
                                                              '$device_buildtype[0]' AS default_buildtype,
                                                              'no' AS ovr_force_clean,
                                                              'no' AS ovr_test_build,
                                                              'yes' AS ovr_is_official,
-                                                             'user' AS ovr_buildtype,
+                                                             '$device_buildtype[0]' AS ovr_buildtype,
                                                              'no' AS ovr_bootimage";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
 

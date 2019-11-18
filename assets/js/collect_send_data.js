@@ -566,7 +566,7 @@ $(document).ready(function(){
 		$('#is_official').bootstrapToggle('on');
 		$('#test_build').bootstrapToggle('off');
 		$('#force_clean').bootstrapToggle('off');
-		$('#buildtype').val('user');
+		$('#buildtype').val('userdebug');
 		$('#bootimage').bootstrapToggle('off');
   });
 });
