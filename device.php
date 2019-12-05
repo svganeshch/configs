@@ -298,7 +298,7 @@ function geturlresp($jenurl) {
                                             <div class="col-md-12 col-xs-12">
                                                 <div class="form-group">
                                                     <label>Changelog:</label>
-                                                    <textarea class="form-control" name="changelog" id="changelog" rows="3"></textarea>
+                                                    <textarea class="form-control" name="changelog" id="changelog" rows="10"></textarea>
                                                 </div>
                                             </div>
                                         </div>
