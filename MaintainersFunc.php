@@ -2,6 +2,8 @@
 include('session.php');
 error_reporting(E_ALL & ~E_NOTICE);
 
+$default_pass_hash = "$2y$10$7eq56qYax0VLu/EcVJVwRO6V92fugE3zzddyjzAUI69q20uvmasNi"; //maintainer@arrowos
+
 /* Nuke Maintainer */
 if(isset($_POST['nuke_maintainer']) && $_POST['nuke_maintainer'] == 'yes') {
     global $db;
@@ -44,9 +46,9 @@ if(isset($_POST['revoke_maintainer']) && $_POST['revoke_maintainer'] == 'yes') {
 /* Reset password to default */
 if(isset($_POST['reset_pass']) && $_POST['reset_pass'] == 'yes') {
     global $db;
+    global $default_pass_hash;
     $username = $_POST['user'];
-    $default_pass_hash = "$2y$10$7eq56qYax0VLu/EcVJVwRO6V92fugE3zzddyjzAUI69q20uvmasNi"; //maintainer@arrowos
-
+    
     $reset_maintainer_pass_query = "UPDATE `login` SET `password`='$default_pass_hash' WHERE `username`='$username'";
     if(mysqli_query($db, $reset_maintainer_pass_query))
         exit('Password has been reset to default for '.$username.' successfully!');
@@ -57,6 +59,7 @@ if(isset($_POST['reset_pass']) && $_POST['reset_pass'] == 'yes') {
 /* Add new maintainer */
 if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes') {
     global $db;
+    global $default_pass_hash;
 
     if(isset($_POST['new_maintainer_username']) && $_POST['new_maintainer_username'] != "")
         $maintainer_username = $_POST['new_maintainer_username'];
@@ -80,7 +83,7 @@ if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes')
             exit('Something went wrong, Failed to update maintainer data! '.mysqli_error($db));
     }
     else {
-        $add_new_maintainer_query = "INSERT into `login` (`username`, `maintainer_device`) VALUES ('$maintainer_username', '$maintainer_devices')";
+        $add_new_maintainer_query = "INSERT into `login` (`username`, `password`, `maintainer_device`) VALUES ('$maintainer_username', '$default_pass_hash', '$maintainer_devices')";
         if(mysqli_query($db, $add_new_maintainer_query))
             exit('New maintainer '.$username.' for devices '.$maintainer_devices.' has been added successfully!');
         else
