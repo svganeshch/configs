@@ -1,5 +1,7 @@
 // rename this file extension to .php after setting up the config //
 <?php
+define('no_of_nodes', '3'); // no.of jenkins nodes available
+define('node_name_prefix', 'arrow'); // nodes name prefix (Ex:'arrow' is the prefix for a node named arrow-1)
 define('jenkins_username', ' '); // your jenkins username
 define('jenkins_user_api', ' '); // your jenkins user api
 define('jenkins_url', ' '); // your jenkins website domain or IP
