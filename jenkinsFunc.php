@@ -64,9 +64,14 @@ function buildOutputBody($url) {
     return json_encode($response);
 }
 
-$device = $_SESSION["cur_device"];
+if ($_SESSION["cur_device"] == "common_config")
+    $device = "ArrowOS_build-kicker";
+else
+    $device = $_SESSION["cur_device"];
+
 $device_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/job/'.urlencode($device);
 $build_url = $device_url.'/build?cause=Started+by+ArrowConfigs';
+$build_pipeline_url = $device_url.'/buildWithParameters?cause=Started+by+ArrowConfigs&active_devices=';
 $lastBuild_url = $device_url.'/lastBuild/api/json?pretty=true';
 $lastBuild_queue_url = $device_url.'/api/json?pretty=true';
 $build_stop_url = $device_url.'/lastBuild/stop';
@@ -203,5 +208,33 @@ if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
 
     if(responseHandler($build_url) == "") exit("Build initiated!");
     else exit("Something went wrong!");
+}
+
+// get all non-revoked devices and initiate builds
+if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'yes') {
+    global $build_pipeline_url;
+
+    $active_devices = array();
+    $get_active_devices_query = "SELECT `maintainer_device` FROM `login` WHERE `maintainer_device`!='all' and `status`='active'";
+    $active_devices_list = mysqli_query($db, $get_active_devices_query) or die("Failed to fetch active devices".mysqli_error($db));
+    $active_devices_list = mysqli_fetch_all($active_devices_list, MYSQLI_ASSOC);
+
+    $maintainer_devices = array_merge_recursive(...$active_devices_list);
+    foreach($maintainer_devices['maintainer_device'] as $got_devices) {
+        foreach(explode(' ', $got_devices) as $ad) {
+            if (!in_array($ad, $active_devices))
+                array_push($active_devices, $ad);
+        }
+    }
+    
+    // Construct pipline url with parameters
+    foreach($active_devices as $params) {
+        $build_pipeline_url = $build_pipeline_url.$params.',';
+    }
+
+    $pipeline_response = responseHandler($build_pipeline_url);
+
+    if ($pipeline_response == "") exit("Pipeline triggered!");
+    else exit("Failed to trigger pipeline!\n".$pipeline_response);
 }
 ?>

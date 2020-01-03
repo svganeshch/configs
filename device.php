@@ -95,13 +95,17 @@ function geturlresp($jenurl) {
         <form name="device_changes" id="device_changes">
             <div class="container-fluid" >
                 <?php if ($_SESSION["cur_device"] == "common_config") { ?>           
-                    <div class="form-group">
+                    <div class="pull-left form-group">
                         <div class="checkbox">
                             <label>Global override</label> 
                             <input type="checkbox" name="global_override" id="global_override" />
                         </div>
                     </div>
                 <input type="hidden" name="hidden_global_override" id="hidden_global_override" value="no" />
+
+                <div class="pull-right form-group">
+                    <input type="button" name="PipelineBuildTrigger" id="PipelineBuildTrigger" class="btn btn-success" value="Pipeline Build" />
+                </div>
                 <?php } ?>
 
                 <div class="switch-block" id="switch-block">
@@ -395,6 +399,7 @@ function geturlresp($jenurl) {
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <script src="assets/js/mainHandler.min.js"></script>
+    <!--<script src="assets/js/collect_send_data.js"></script>-->
 
     <?php if (!$_SESSION['is_admin']) { ?>
     <script type="text/javascript">

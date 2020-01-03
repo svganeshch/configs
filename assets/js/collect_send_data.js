@@ -316,6 +316,21 @@ $(document).ready(function(){
 		}
   });
 
+  $('body').on('click', '#PipelineBuildTrigger', function(){
+		$.ajax({
+			url:"jenkinsFunc.php",
+			method:"POST",
+			data: {
+				PipelineBuildTrigger: 'yes'
+			},
+			success:function(data)
+			{
+				data = data.trim();
+				alert(data);
+			}
+		});
+	});
+
   $('#bootimage').bootstrapToggle({
     on: 'Yes',
     off: 'No',
