@@ -6,7 +6,7 @@ function get_maintainers() {
     global $db;
     global $maintainer_data;
 
-    $get_maintainer_data_query = "SELECT `username`,`maintainer_device`,`status` FROM `login` WHERE `is_admin`=0";
+    $get_maintainer_data_query = "SELECT `username`,`maintainer_device`,`status`,`is_admin` FROM `login`";
     $get_maintainer_data_query_res = mysqli_query($db, $get_maintainer_data_query) or die("Fetching maintainer names failed!" . mysqli_error($db));
     $get_maintainer_data_query_rows = mysqli_num_rows($get_maintainer_data_query_res);
 

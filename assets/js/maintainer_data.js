@@ -25,6 +25,9 @@ $(document).ready(function() {
                     if (value['status'].trim() != 'active') {
                         $('#maintainer'+i).addClass('danger').removeClass('success');
                     }
+                    if (value['is_admin'].trim() == '0') {
+                        $('#maintainer'+i).addClass('table-primary').removeClass('success');
+                    }
                     i++;
                 });
             }
