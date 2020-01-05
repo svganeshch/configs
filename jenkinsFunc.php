@@ -65,7 +65,7 @@ function buildOutputBody($url) {
 }
 
 if ($_SESSION["cur_device"] == "common_config")
-    $device = "ArrowOS_build-kicker";
+    $device = "	ArrowBuild-Scheduler";
 else
     $device = $_SESSION["cur_device"];
 
