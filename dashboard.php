@@ -200,9 +200,9 @@
                     // Sort devices according to our node_structure
                     foreach($devices_list as $device) {
                         if ($device != null && $device[0] != '#') {
-                            $fetch_device = explode(' ', $device, 3);
-                            $device = $fetch_device[0];
-                            $device_hal = $fetch_device[2];
+                            $fetch_device = explode(' ', $device, 4);
+                            $device = $fetch_device[1];
+                            $device_hal = $fetch_device[3];
 
                             for ($a=1; $a<=$NO_OF_NODES; $a++) {
                                 if (in_array($device_hal, $node_structure[$NODE_NAME_PREFIX."-".$a][0]["hals"])) {
@@ -217,9 +217,9 @@
                 <?php
                 foreach($devices_list as $device) {
                     if ($device != null && $device[0] != '#') {
-                        $fetch_device = explode(' ', $device, 3);
-                        $device = $fetch_device[0];
-                        $device_buildtype = $fetch_device[1];
+                        $fetch_device = explode(' ', $device, 4);
+                        $device = $fetch_device[1];
+                        $device_buildtype = $fetch_device[3];
 
                         if (!$_SESSION['is_admin']) {
                             $pattern = "/\b" . $device . "\b/i";
