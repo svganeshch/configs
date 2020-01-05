@@ -65,7 +65,7 @@ function buildOutputBody($url) {
 }
 
 if ($_SESSION["cur_device"] == "common_config")
-    $device = "	ArrowBuild-Scheduler";
+    $device = "ArrowBuild-Scheduler";
 else
     $device = $_SESSION["cur_device"];
 
