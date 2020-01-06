@@ -219,7 +219,7 @@
                     if ($device != null && $device[0] != '#') {
                         $fetch_device = explode(' ', $device, 4);
                         $device = $fetch_device[1];
-                        $device_buildtype = $fetch_device[3];
+                        $device_buildtype = $fetch_device[2];
 
                         if (!$_SESSION['is_admin']) {
                             $pattern = "/\b" . $device . "\b/i";
