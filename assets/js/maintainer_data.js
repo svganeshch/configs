@@ -10,23 +10,26 @@ $(document).ready(function() {
             if (maintainerData != null) {
                 $.each( maintainerData, function( key, value ) {
                     $('#maintainersTable').append(
-                        '<tr class="success" id="maintainer' + i + '">' +
-                        '<td>' + i + '</td>' +
-                        '<td id="username'+i+'">' + value['username'] + '</td>' +
-                        '<td>' + value['maintainer_device'] + '</td>' +
-                        '<td>' + value['status'] + '</td>' +
-                        '<td>' +
-                        '<button type="button" id="'+i+'" class="btn btn-primary btn-xs nuke_button">' + 'nuke' + '</button>' +
-                        '<button type="button" id="'+i+'" class="btn btn-danger btn-xs revoke_button">' + 'revoke' + '</button>' +
-                        '<button type="button" id="'+i+'" class="btn btn-success btn-xs reset_pass">' + 'def passwd' + '</button>' +
-                        '</td>' +
+                        '<tr class="success clickable" id="maintainer' + i + '" data-toggle="collapse" data-target=".maintainer' + i + '">' +
+                            '<td><i class="glyphicon glyphicon-chevron-down"></i></td>' +
+                            '<td>' + i + '</td>' +
+                            '<td id="username'+i+'">' + value['username'] + '</td>' +
+                            '<td>' + value['maintainer_device'] + '</td>' +
+                            '<td>' + value['status'] + '</td>' +
+                        '</tr>' +
+                        '<tr class="collapse maintainer' + i + '">' +
+                            '<td><button type="button" id="'+i+'" class="btn btn-primary btn-xs nuke_button">' + 'nuke' + '</button></td>' +
+                            '<td><button type="button" id="'+i+'" class="btn btn-danger btn-xs revoke_button">' + 'revoke' + '</button></td>' +
+                            '<td><button type="button" id="'+i+'" class="btn btn-success btn-xs reset_pass">' + 'def passwd' + '</button></td>' +
                         '</tr>'
                     );
                     if (value['status'].trim() != 'active') {
                         $('#maintainer'+i).addClass('danger').removeClass('success');
+                        $('button#'+i+'.revoke_button').text('un-revoke');
                     }
-                    if (value['is_admin'].trim() == '0') {
-                        $('#maintainer'+i).addClass('table-primary').removeClass('success');
+                    if (value['is_admin'].trim() == '1') {
+                        $('#maintainer'+i).addClass('p-3 mb-2 bg-primary text-white').removeClass('success');
+                        $('button#'+i).remove();
                     }
                     i++;
                 });

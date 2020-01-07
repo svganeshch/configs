@@ -251,3 +251,7 @@ pre {
     pointer-events: none;
     opacity: 0.4;
 }
+
+table .collapse.in {
+	display:table-row;
+}

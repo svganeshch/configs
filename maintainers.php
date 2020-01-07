@@ -115,9 +115,10 @@
                     <div class="col-xs-12 col-md-12">
                         <h4><strong>Current Maintainers:</strong></h4>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-responsive table-hover">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Device</th>
