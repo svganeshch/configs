@@ -1,5 +1,4 @@
 <?php
-   define('NODE_STRUCTURE_URL', ''); // Node structure json file to assign nodes according to hals
    define('DEVICES_LIST_URL', ''); // Official devices list
    define('DB_SERVER', 'localhost:3306'); // DB server url. Usually localhost:3306
    define('DB_USERNAME', 'username'); // DB username

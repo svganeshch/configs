@@ -1,6 +1,5 @@
 <?php
     include('session.php');
-    include('jenkins_config.php');
 
     if (isset($_SESSION['cur_device'])) {
         unset($_SESSION['cur_device']);
@@ -152,66 +151,8 @@
             <?php } ?>
             
             <?php
-                // Get all the current jenkins jobs list to cross check against our official devices
-                $jenkins_credential_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url);
-                $got_jenkins_job_list = array(); 
-                $jenkins_jobs_list_url = $jenkins_credential_url.'/api/json?pretty=true';
-                $curl_jenkins_job_list = curl_init();
-                curl_setopt($curl_jenkins_job_list, CURLOPT_URL, $jenkins_jobs_list_url);
-                curl_setopt($curl_jenkins_job_list, CURLOPT_POST, 1);
-                curl_setopt($curl_jenkins_job_list, CURLOPT_RETURNTRANSFER, 1);
-                $jobs_list = curl_exec($curl_jenkins_job_list);
-                curl_close($curl_jenkins_job_list);
-                $jobs_list = json_decode($jobs_list, true);
-                $jobs_count = count($jobs_list["jobs"]);
-
-                for ($i=0; $i < $jobs_count; $i++) {
-                    array_push($got_jenkins_job_list, $jobs_list["jobs"][$i]["name"]);
-                }
-
-                if (empty($got_jenkins_job_list)) { ?>
-                    <hr />
-                    <div class="row">
-                        <div class="col-lg-12 ">
-                            <div class="alert alert-info">
-                                <strong>Failed to fetch Jenkins jobs list!</strong>
-                            </div>                       
-                        </div>
-                    </div>
-                <?php }
-
-                if (!empty($got_jenkins_job_list)) {
-                    // Jenkins nodes configuration
-                    $jobs_created = array();
-                    $jobs_failed_create = array();
-                    $undefined_hal_fail = array();
-                    $NO_OF_NODES = no_of_nodes;
-                    $NODE_NAME_PREFIX = node_name_prefix;
-                    $node_structure_url = NODE_STRUCTURE_URL;
-                    $node_structure = json_decode(file_get_contents($node_structure_url), true);
-
-                    for ($count = 1; $count <= $NO_OF_NODES; $count++) {
-                        ${$NODE_NAME_PREFIX."-".$count} = array();
-                        ${"node_temp".$count."_config"} = $jenkins_credential_url."/job/node".$count."_template/config.xml";
-                    }
-
-                    $devices_list_url = DEVICES_LIST_URL;
-                    $devices_list = explode(PHP_EOL, file_get_contents($devices_list_url));
-                    // Sort devices according to our node_structure
-                    foreach($devices_list as $device) {
-                        if ($device != null && $device[0] != '#') {
-                            $fetch_device = explode(' ', $device, 4);
-                            $device = $fetch_device[1];
-                            $device_hal = $fetch_device[3];
-
-                            for ($a=1; $a<=$NO_OF_NODES; $a++) {
-                                if (in_array($device_hal, $node_structure[$NODE_NAME_PREFIX."-".$a][0]["hals"])) {
-                                    array_push(${$NODE_NAME_PREFIX."-".$a}, $device);
-                                }
-                            }
-                        }
-                    }
-                }
+            	$devices_list_url = DEVICES_LIST_URL;
+                $devices_list = explode(PHP_EOL, file_get_contents($devices_list_url));
                 ?>
                 <div class="row text-center pad-top">
                 <?php
@@ -222,6 +163,10 @@
                         $device_buildtype = $fetch_device[2];
 
                         if (!$_SESSION['is_admin']) {
+                            /*if(strpos($_SESSION['maintainer_device'], $device) !== false) {
+                            } else {
+                                continue;
+                            }*/
                             $pattern = "/\b" . $device . "\b/i";
                             if(!preg_match($pattern, $_SESSION['maintainer_device']))
                                 continue;
@@ -281,12 +226,6 @@
                                     $update_default_buildtype = "UPDATE `$device` SET `default_buildtype`='$device_buildtype'";
                                     mysqli_query($db, $update_default_buildtype) or die(mysqli_error($db));
 
-                                    if (!empty($got_jenkins_job_list)) {
-                                        if (!in_array($device, $got_jenkins_job_list)) {
-                                            createJenkinsJob($device);
-                                        }
-                                    }
-
                                     /* to add a new column 
                                     $alter_table_query = "ALTER TABLE $device ADD default_buildtype TEXT(20) NULL AFTER xda_link";
                                     mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
@@ -301,129 +240,6 @@
                 </div>
                 <?php
             ?>
-
-            <?php
-                /* TODO : Move this code into jenkinsFunc.php */
-                /* Check if the jenkins job exists, if doesn't create one and assign it to the
-                    appropriate node as defined by our node structure */
-                function createJenkinsJob($device) {
-                    // Global vars
-                    global $jenkins_credential_url;
-                    global $NO_OF_NODES;
-                    global $NODE_NAME_PREFIX;
-                    global $undefined_hal_fail;
-                    global $jobs_created;
-                    global $jobs_failed_create;
-                    for ($x=0; $x <= $NO_OF_NODES; $x++) {
-                        global ${$NODE_NAME_PREFIX."-".$x};
-                        global ${"node_temp".$x."_config"};
-                    }
-
-                    $jenkins_job_url = curl_init($jenkins_credential_url."/job/".$device."/");
-                    curl_setopt($jenkins_job_url,  CURLOPT_RETURNTRANSFER, TRUE);
-                    curl_setopt($jenkins_job_url, CURLOPT_HEADER, TRUE);
-                    curl_setopt($jenkins_job_url, CURLOPT_NOBODY, TRUE);
-                    curl_setopt($jenkins_job_url, CURLOPT_TIMEOUT, 10);
-                    curl_exec($jenkins_job_url);
-                    $httpCode = curl_getinfo($jenkins_job_url, CURLINFO_HTTP_CODE);
-                    curl_close($jenkins_job_url);
-
-                    if ($httpCode == 404) {
-                        $node_temp_config = null;
-
-                        for ($b=0; $b <= $NO_OF_NODES; $b++) {
-                            if (in_array($device, ${$NODE_NAME_PREFIX."-".$b})) {
-                                $node_temp_config = file_get_contents(${"node_temp".$b."_config"});
-                                $which_node = $NODE_NAME_PREFIX."-".$b;
-                            }
-                        }
-
-                        if (empty($node_temp_config)) {
-                            array_push($undefined_hal_fail, $device);
-                            return;
-                        }
-
-                        $create_job_url = $jenkins_credential_url.'/createItem?name='.$device;
-                        $create_job_data = curl_init();
-                        curl_setopt($create_job_data, CURLOPT_URL, $create_job_url);
-                        curl_setopt($create_job_data, CURLOPT_HEADER, TRUE);
-                        curl_setopt($create_job_data, CURLOPT_CUSTOMREQUEST, 'POST');
-                        curl_setopt($create_job_data, CURLOPT_POST, 1);
-                        curl_setopt($create_job_data,  CURLOPT_RETURNTRANSFER, TRUE);
-                        curl_setopt($create_job_data, CURLOPT_TIMEOUT, 10);
-                        curl_setopt($create_job_data, CURLOPT_POSTFIELDS, $node_temp_config);
-                        curl_setopt($create_job_data, CURLOPT_HTTPHEADER, array(
-                            'Content-type: application/xml', 
-                            'Content-length: ' . strlen($node_temp_config)
-                        ));
-                        $response = curl_exec($create_job_data);
-                        $httpCode = curl_getinfo($create_job_data, CURLINFO_HTTP_CODE);
-                        curl_close($create_job_data);
-
-                        if ( $httpCode != 404 )
-                            array_push($jobs_created, $device." (".$which_node.")");
-                        else
-                            array_push($jobs_failed_create, $device." (".$which_node.")");
-                    }
-                }
-            ?>
-
-            <?php
-            if (!empty($undefined_hal_fail)) { ?>
-            <hr />
-            <div class="row">
-                <div class="col-lg-12 ">
-                    <div class="alert alert-danger">
-                        <strong>
-                        <?php
-                            echo nl2br("Cannot assign node for these devices. New/Unknown HAL defined\n");
-                            foreach($undefined_hal_fail as $hal_failed) {
-                                echo nl2br("- ".$hal_failed."\n");
-                            }
-                        ?>
-                        </strong>
-                    </div>                       
-                </div>
-            </div>
-            <?php } ?>
-
-            <?php
-            if (!empty($jobs_created)) { ?>
-                <hr />
-                <div class="row">
-                    <div class="col-lg-12 ">
-                        <div class="alert alert-info">
-                            <strong>
-                            <?php
-                                echo nl2br("Jenkins job successfully created for new devices!\n");
-                                foreach($jobs_created as $created) {
-                                    echo nl2br("- ".$created."\n");
-                                }
-                            ?>
-                            </strong>
-                        </div>                       
-                    </div>
-                </div>
-            <?php } ?>
-
-            <?php
-            if (!empty($jobs_failed_create)) { ?>
-            <hr />
-            <div class="row">
-                <div class="col-lg-12 ">
-                    <div class="alert alert-danger">
-                        <strong>
-                        <?php
-                            echo nl2br("Jenkins job failed to create for new devices!\n");
-                            foreach($jobs_failed_create as $failed) {
-                                echo nl2br("- ".$failed."\n");
-                            }
-                        ?>
-                        </strong>
-                    </div>                       
-                </div>
-            </div>
-            <?php } ?>
                  
             <!-- /. ROW  -->   
 				<!--<div class="row">
