@@ -318,7 +318,7 @@ $(document).ready(function(){
 
   $('body').on('click', '#PipelineBuildTrigger', function(){
 		$.ajax({
-			url:"jenkinsFunc.php",
+			url:"jenkinsBlueFunc.php",
 			method:"POST",
 			data: {
 				PipelineBuildTrigger: 'yes'
@@ -394,7 +394,7 @@ $(document).ready(function(){
 
   $('body').on('click', '#buildTrigger', function(){
 		$.ajax({
-			url:"jenkinsFunc.php",
+			url:"jenkinsBlueFunc.php",
 			method:"POST",
 			data: {
 				buildTrigger: 'yes'
@@ -411,7 +411,7 @@ $(document).ready(function(){
 
   $('body').on('click', '#buildRemoveQueue', function(){
 		$.ajax({
-			url:"jenkinsFunc.php",
+			url:"jenkinsBlueFunc.php",
 			method:"POST",
 			data: {
 				buildRemoveQueue: 'yes'
@@ -426,7 +426,7 @@ $(document).ready(function(){
 
   $('body').on('click', '#buildStop', function(){
 		$.ajax({
-			url:"jenkinsFunc.php",
+			url:"jenkinsBlueFunc.php",
 			method:"POST",
 			data: {
 				buildStop: 'yes'
@@ -434,6 +434,7 @@ $(document).ready(function(){
 			success:function(data)
 			{
 				data = data.trim();
+				//$('#buildOutput').text(data);
 				alert(data);
 			}
 		});
@@ -444,7 +445,7 @@ $(document).ready(function(){
   function getProgress(){
     $.ajax({
     method:"POST",
-		url: "jenkinsFunc.php",
+		url: "jenkinsBlueFunc.php",
 		data: {
 			getProgressStatus: 'yes'
 		},
@@ -460,7 +461,7 @@ $(document).ready(function(){
 	function getHeaderTextSize() {
 		$.ajax({
 			method:"POST",
-			url: "jenkinsFunc.php",
+			url: "jenkinsBlueFunc.php",
 			data: {
 				getHeaderTextSize: 'yes',
 			},
@@ -492,7 +493,7 @@ $(document).ready(function(){
   function getJenkinsBuildStatus() {
 		$.ajax({
 			method:"POST",
-			url: "jenkinsFunc.php",
+			url: "jenkinsBlueFunc.php",
 			data: {
 				getBuildStatus: 'yes'
 			},
@@ -522,7 +523,7 @@ $(document).ready(function(){
 		window.idleLogSetShown = true;
     $.ajax({
     method:"POST",
-		url: "jenkinsFunc.php",
+		url: "jenkinsBlueFunc.php",
 		data: {
 			getBodyOutput: 'yes',
 			headerTextSize: window.curTextSize
@@ -554,7 +555,7 @@ $(document).ready(function(){
 	
 	$('body').on('click', '#fullLog', function(){
 		$.ajax({
-			url:"jenkinsFunc.php",
+			url:"jenkinsBlueFunc.php",
 			method:"POST",
 			data: {
 				getBodyOutput: 'yes',

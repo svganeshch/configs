@@ -1,5 +1,7 @@
 // rename this file extension to .php after setting up the config //
 <?php
+define('kicker_pipeline', ' '); // your jenkins kicker/scheduler pipeline name
+define('builder_pipeline', ' '); // your jenkins builder pipeline name
 define('jenkins_username', ' '); // your jenkins username
 define('jenkins_user_api', ' '); // your jenkins user api
 define('jenkins_url', ' '); // your jenkins website domain or IP
