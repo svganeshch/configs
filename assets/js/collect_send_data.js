@@ -617,10 +617,11 @@ $(document).ready(function(){
 
   $('body').on('click', '#reset-hard', function(){
   	//set defaults
-		$('#is_official').bootstrapToggle('on');
-		$('#test_build').bootstrapToggle('off');
-		$('#force_clean').bootstrapToggle('off');
-		$('#buildtype').val('userdebug');
-		$('#bootimage').bootstrapToggle('off');
+	$('#is_official').bootstrapToggle('on');
+	$('#test_build').bootstrapToggle('off');
+	$('#force_clean').bootstrapToggle('off');
+	$('#buildtype').val('userdebug');
+	$('#bootimage').bootstrapToggle('off');
+	$('default_buildtype_state').bootstrapToggle('on');
   });
 });
