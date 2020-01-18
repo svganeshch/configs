@@ -169,13 +169,13 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
         pushQuery($force_clean, 'force_clean', $cur_device);
         pushQuery($buildtype, 'buildtype', $cur_device);
         pushQuery($bootimage, 'bootimage', $cur_device);
-        pushQuery($weeklies_opt, 'weeklies_opt', $cur_device);
         pushQuery($changelog, 'changelog', $cur_device);
-        $chk_count=12;
+        $chk_count=11;
 
         if ($cur_device != 'common_config') {
+            pushQuery($weeklies_opt, 'weeklies_opt', $cur_device);
             pushQuery($xda_link, 'xda_link', $cur_device);
-            $chk_count++;
+            $chk_count=13;
         }
 
         if ($cur_device == 'common_config') {
