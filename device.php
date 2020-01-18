@@ -389,6 +389,17 @@ function geturlresp($jenurl) {
   </div>
 </div>
 
+<!-- NotifyDialog -->
+<div class="modal fade" role="dialog" id="notifyDialog">
+  <div class="modal-dialog model-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p id="notifyDialogData"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
     <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->

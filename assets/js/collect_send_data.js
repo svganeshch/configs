@@ -317,6 +317,11 @@ $(document).ready(function(){
   });
 
   $('body').on('click', '#PipelineBuildTrigger', function(){
+	$('#notifyDialog').modal({
+		backdrop: "static",
+		keyboard: false,
+		show: true});
+	$('#notifyDialogData').text('Please wait...!')
 		$.ajax({
 			url:"jenkinsBlueFunc.php",
 			method:"POST",
@@ -326,7 +331,10 @@ $(document).ready(function(){
 			success:function(data)
 			{
 				data = data.trim();
-				alert(data);
+				$('#notifyDialogData').text(data);
+				setTimeout(function() {
+					$("#notifyDialog").modal("hide");
+				}, 2000);
 			}
 		});
 	});
@@ -379,20 +387,33 @@ $(document).ready(function(){
   });
   
   $('body').on('click', '#submit', function(){
+	$('#notifyDialog').modal({
+		backdrop: "static",
+		keyboard: false,
+		show: true});
+	$('#notifyDialogData').text('Please wait...!')
 		$.ajax({
 		    url:"send_data.php",
 		    method:"POST",
 		    data:$('#device_changes').serialize(),
 		    success:function(data)
 		    {
-					data = data.trim();
-			    alert(data);
-			    //$('#add_name')[0].reset();
+				data = data.trim();
+				$('#notifyDialogData').text(data);
+				setTimeout(function() {
+					$("#notifyDialog").modal("hide");
+				}, 2000);
 		    }
 		});
   });
 
   $('body').on('click', '#buildTrigger', function(){
+	$('#submit').trigger('click');
+	$('#notifyDialog').modal({
+		backdrop: "static",
+		keyboard: false,
+		show: true});
+	$('#notifyDialogData').text('Please wait...!')
 		$.ajax({
 			url:"jenkinsBlueFunc.php",
 			method:"POST",
@@ -401,15 +422,22 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
-				$('#submit').trigger('click');
 				$('#buildOutput').empty();
 				data = data.trim();
-				alert(data);
+				$('#notifyDialogData').text(data);
+				setTimeout(function() {
+					$("#notifyDialog").modal("hide");
+				}, 2000);
 			}
 		});
   });
 
   $('body').on('click', '#buildRemoveQueue', function(){
+	$('#notifyDialog').modal({
+		backdrop: "static",
+		keyboard: false,
+		show: true});
+	$('#notifyDialogData').text('Please wait...!')
 		$.ajax({
 			url:"jenkinsBlueFunc.php",
 			method:"POST",
@@ -419,12 +447,20 @@ $(document).ready(function(){
 			success:function(data)
 			{
 				data = data.trim();
-				alert(data);
+				$('#notifyDialogData').text(data);
+				setTimeout(function() {
+					$("#notifyDialog").modal("hide");
+				}, 2000);
 			}
 		});
   });
 
   $('body').on('click', '#buildStop', function(){
+	$('#notifyDialog').modal({
+		backdrop: "static",
+		keyboard: false,
+		show: true});
+	$('#notifyDialogData').text('Please wait...!')
 		$.ajax({
 			url:"jenkinsBlueFunc.php",
 			method:"POST",
@@ -434,8 +470,10 @@ $(document).ready(function(){
 			success:function(data)
 			{
 				data = data.trim();
-				//$('#buildOutput').text(data);
-				alert(data);
+				$('#notifyDialogData').text(data);
+				setTimeout(function() {
+					$("#notifyDialog").modal("hide");
+				}, 2000);
 			}
 		});
   });
@@ -451,7 +489,7 @@ $(document).ready(function(){
 		},
         success:function(data)
         {
-				 	data = data.trim();
+			data = data.trim();
         	$('.progress-bar').css('width', data+'%').attr('aria-valuenow', data).text(data+'%');
         }
     });
