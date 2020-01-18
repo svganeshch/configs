@@ -28,8 +28,8 @@ $(document).ready(function() {
                         $('button#'+i+'.revoke_button').text('un-revoke');
                     }
                     if (value['is_admin'].trim() == '1') {
-                        $('#maintainer'+i).addClass('p-3 mb-2 bg-primary text-white').removeClass('success');
-                        $('button#'+i).remove();
+                        $('#maintainer'+i).addClass('info').removeClass('success');
+                        $('button#'+i+'.nuke_button').remove();
                     }
                     i++;
                 });
