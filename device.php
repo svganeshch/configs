@@ -1,9 +1,21 @@
 ﻿<?php
 include('session.php');
 
+if (isset($_GET['select_device']))
+    $_SESSION["cur_device"]=$_GET['select_device'];
+
+if ($_SESSION["cur_device"] != "common_config") {
+    $get_opts_query = "SELECT `opts` FROM `".$_SESSION['cur_device']."`";
+    $get_opts_query_res = mysqli_query($db, $get_opts_query) or die(mysqli_error($db));
+    $get_opts_query_res = mysqli_fetch_assoc($get_opts_query_res)['opts'];
+}
+
 if (!$_SESSION['is_admin']) {
     $pattern = "/\b" . $_GET['select_device'] . "\b/i";
 
+    if($get_opts_query_res > 3) {
+        header("Location: locked404.php");
+    }
     if($_SESSION['maintainer_status'] != 'active') {
         header("Location: revoked404.php");
     }
@@ -12,12 +24,6 @@ if (!$_SESSION['is_admin']) {
         exit();
     }
 }
-
-function geturlresp($jenurl) {
-  $url = $jenurl;
-  $output = file_get_contents("$url");
-  return $output;
-}
 ?>
 
 <!DOCTYPE html>
@@ -25,15 +31,7 @@ function geturlresp($jenurl) {
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <?php
-    if (isset($_GET['select_device'])) {
-      $_SESSION["cur_device"]=$_GET['select_device'];
-      $cur_device_url="https://jenkins.arrowos.net/job/".$_SESSION["cur_device"]."/";
-      ?>
-      <title><?php echo ucfirst($_SESSION["cur_device"]) ?></title>
-      <?php
-    }
-    ?>
+    <title><?php echo ucfirst($_SESSION["cur_device"]) ?></title>
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -69,27 +67,6 @@ function geturlresp($jenurl) {
         </div>              
         <!-- /. ROW  -->
         <hr />
-
-        <?php if ($_SESSION["cur_device"] != "common_config") { ?>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 col-xs-12">
-                    <div class="alert alert-info">
-                    Last successful build for
-                    <strong>
-                    <?php 
-                        $jsonresp = geturlresp($cur_device_url.'lastSuccessfulBuild/api/json');
-                        $obj = json_decode($jsonresp);
-                        $build_id = $obj->{'displayName'};
-                        $build_date = $obj->{'timestamp'}/1000;
-                    ?>
-                    <?php echo ucfirst($_SESSION["cur_device"]); echo " "; echo $build_id; ?> on <?php echo date('d/m/Y h:i', "$build_date"); ?>
-                    </strong>
-                    </div>                  
-                </div>
-            </div>
-        </div>
-        <?php } ?>
 
         <!-- Text Fields -->
         <form name="device_changes" id="device_changes">
@@ -158,6 +135,20 @@ function geturlresp($jenurl) {
                                             </div>
                                         </div>
                                     </div>
+
+                                    <?php if ($_SESSION["cur_device"] != "common_config") { ?>
+                                        <div class="col-md-3 col-xs-4" title="Opting out of more than 3 weeklies consequently will lock you out from using configs!">
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>Weeklies <span class="badge badge-light pull-right"><?php echo $get_opts_query_res ?></span>
+                                                    <span class="sr-only">unread messages</span>
+                                                    </label>
+                                                    <input type="checkbox" name="weeklies_opt" id="weeklies_opt" checked />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="hidden_weeklies_opt" id="hidden_weeklies_opt" value="yes" />
+                                    <?php } ?>
 
                                     <?php if ($_SESSION["cur_device"] == "common_config") { ?>
                                         <div class="col-md-3 col-xs-4">

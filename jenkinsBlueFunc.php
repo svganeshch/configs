@@ -137,7 +137,27 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
     
     // Construct pipline url with parameters
     foreach($active_devices as $params) {
-        $kicker_build_pipeline_url = $kicker_build_pipeline_url.$params.',';
+        // Check if the device is opted for weekly
+        $check_device_override_query = "SELECT `lunch_override_state` FROM `$params`";
+        $check_device_override_res = mysqli_query($db, $check_device_override_query) or die(mysqli_error($db));
+        $check_device_override_res = mysqli_fetch_assoc($check_device_override_res)['lunch_override_state'];
+
+        if($check_device_override_res == 'yes') {
+            $check_weekly_opt_query = "SELECT `ovr_weeklies_opt` FROM `$params`";
+            $check_weekly_opt_res = mysqli_query($db, $check_weekly_opt_query) or die(mysqli_error($db));
+            $check_weekly_opt_res = mysqli_fetch_assoc($check_weekly_opt_res)['ovr_weeklies_opt'];
+        } else {
+            $check_weekly_opt_query = "SELECT `weeklies_opt` FROM `$params`";
+            $check_weekly_opt_res = mysqli_query($db, $check_weekly_opt_query) or die(mysqli_error($db));
+            $check_weekly_opt_res = mysqli_fetch_assoc($check_weekly_opt_res)['weeklies_opt'];
+        }
+
+        if($check_weekly_opt_res != null && $check_weekly_opt_res == 'yes') {
+            $kicker_build_pipeline_url = $kicker_build_pipeline_url.$params.',';
+        } else if($check_weekly_opt_res != null && $check_weekly_opt_res == 'no') {
+            $trip_opts_query = "UPDATE `$params` SET `opts`=`opts`+1";
+            mysqli_query($db, $trip_opts_query) or die(mysqli_error($db));
+        }
     }
 
     $pipeline_response = responseHandler($kicker_build_pipeline_url);

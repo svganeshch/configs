@@ -91,4 +91,32 @@ if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes')
     }
 }
 
+/* Fetch device opts */
+if(isset($_POST['fetch_devopts']) && $_POST['fetch_devopts'] == 'yes') {
+    $devices = array();
+    $dev_opts = array();
+    $devices = explode(' ', $_POST['got_devices']);
+
+    foreach($devices as $dev) {
+        $fetch_dev_opt_query = "SELECT `opts` FROM `$dev`";
+        $fetch_dev_opt_query_res = mysqli_query($db, $fetch_dev_opt_query) or die(mysqli_error($db));
+        $fetch_dev_opt_query_res = mysqli_fetch_assoc($fetch_dev_opt_query_res)['opts'];
+
+        array_push($dev_opts, $fetch_dev_opt_query_res);
+    }
+
+    exit(json_encode($dev_opts));
+}
+
+/* Reset opts */
+if(isset($_POST['reset_opts']) && $_POST['reset_opts'] == 'yes') {
+    global $db;
+    $main_device = $_POST['main_device'];
+    
+    $reset_opts_query = "UPDATE `$main_device` SET `opts`='0'";
+    if(mysqli_query($db, $reset_opts_query))
+        exit('Opts has been reset for '.$main_device.' successfully!');
+    else
+        exit('Something went wrong, Failed to reset opts for this maintainer! '.mysqli_error($db));
+}
 ?>

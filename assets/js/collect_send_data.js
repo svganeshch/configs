@@ -28,6 +28,7 @@ $(document).ready(function(){
 							$('#default_buildtype_state').bootstrapToggle((value['default_buildtype_state'] == 'yes') ? 'on' : 'off');
 							$('#buildtype').val(value['buildtype']);
 							$('#bootimage').bootstrapToggle((value['bootimage'] == 'yes') ? 'on' : 'off');
+							$('#weeklies_opt').bootstrapToggle((value['weeklies_opt'] == 'yes') ? 'on' : 'off');
 
 							// text fields
 							var repo_paths = $.parseJSON(value['repo_paths']);
@@ -47,6 +48,7 @@ $(document).ready(function(){
 							$('#default_buildtype_state').bootstrapToggle((value['default_buildtype_state'] == 'yes') ? 'on' : 'off');
 							$('#buildtype').val(value['ovr_buildtype']);
 							$('#bootimage').bootstrapToggle((value['ovr_bootimage'] == 'yes') ? 'on' : 'off');
+							$('#weeklies_opt').bootstrapToggle((value['ovr_weeklies_opt'] == 'yes') ? 'on' : 'off');
 
 							// text fields
 							var repo_paths = $.parseJSON(value['ovr_repo_paths']);
@@ -353,6 +355,20 @@ $(document).ready(function(){
 		}
   });
 
+  $('#weeklies_opt').bootstrapToggle({
+    on: 'Opt In',
+    off: 'Opt Out',
+    onstyle: 'success',
+    offstyle: 'danger'
+  });
+  $('body').on('change', '#weeklies_opt', function(){
+		if ($(this).prop('checked')) {
+			$('#hidden_weeklies_opt').val('yes');
+		} else {
+			$('#hidden_weeklies_opt').val('no');
+		}
+  });
+
   $('#override_lunch').bootstrapToggle({
     on: 'Yes',
     off: 'No',
@@ -622,6 +638,7 @@ $(document).ready(function(){
 	$('#force_clean').bootstrapToggle('off');
 	$('#buildtype').val('userdebug');
 	$('#bootimage').bootstrapToggle('off');
+	$('#weeklies_opt').bootstrapToggle('on');
 	$('default_buildtype_state').bootstrapToggle('on');
   });
 });

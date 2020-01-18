@@ -123,6 +123,7 @@
                                         <th>Name</th>
                                         <th>Device</th>
                                         <th>Status</th>
+                                        <th>Weekly Opts</th>
                                     </tr>
                                 </thead>
                                 <tbody id="maintainersTable">

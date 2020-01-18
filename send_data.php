@@ -107,6 +107,7 @@ $test_build = $_POST["hidden_test_build"];
 $force_clean = $_POST["hidden_force_clean"];
 $buildtype = $_POST["buildtype"];
 $bootimage = $_POST["hidden_bootimage"];
+$weeklies_opt = $_POST["hidden_weeklies_opt"];
 $changelog = $_POST["changelog"];
 $xda_link = $_POST["xda_link"];
 $lunch_override_state = $_POST['hidden_override_lunch'];
@@ -130,11 +131,12 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
         pushQuery($force_clean, 'ovr_force_clean', $cur_device);
         pushQuery($buildtype, 'ovr_buildtype', $cur_device);
         pushQuery($bootimage, 'ovr_bootimage', $cur_device);
+        pushQuery($weeklies_opt, 'ovr_weeklies_opt', $cur_device);
         pushQuery($changelog, 'ovr_changelog', $cur_device);
         pushQuery($xda_link, 'ovr_xda_link', $cur_device);
         pushQuery($override_name, 'lunch_override_name', $cur_device);
         pushQuery($lunch_override_state, 'lunch_override_state', $cur_device);
-        $chk_count = 14;
+        $chk_count = 15;
     } else {
         pushQuery($changelog, 'ovr_changelog', $cur_device);
         pushQuery($xda_link, 'ovr_xda_link', $cur_device);
@@ -167,8 +169,9 @@ if ($_POST['hidden_override_lunch'] == 'yes') {
         pushQuery($force_clean, 'force_clean', $cur_device);
         pushQuery($buildtype, 'buildtype', $cur_device);
         pushQuery($bootimage, 'bootimage', $cur_device);
+        pushQuery($weeklies_opt, 'weeklies_opt', $cur_device);
         pushQuery($changelog, 'changelog', $cur_device);
-        $chk_count=11;
+        $chk_count=12;
 
         if ($cur_device != 'common_config') {
             pushQuery($xda_link, 'xda_link', $cur_device);

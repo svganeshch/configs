@@ -191,6 +191,8 @@
                                                             buildtype varchar(10) NULL,
                                                             bootimage varchar(10) NULL,
                                                             changelog LONGTEXT NULL,
+                                                            weeklies_opt varchar(10) NULL,
+                                                            opts int(10) NULL,
                                                             xda_link LONGTEXT NULL,
                                                             default_buildtype TEXT(20) NULL,
                                                             lunch_override_name varchar(50) NULL,
@@ -206,6 +208,7 @@
                                                             ovr_buildtype varchar(10) NULL,
                                                             ovr_bootimage varchar(10) NULL,
                                                             ovr_changelog LONGTEXT NULL,
+                                                            ovr_weeklies_opt varchar(10) NULL,
                                                             ovr_xda_link LONGTEXT NULL)
                                                            AS SELECT
                                                              'no' AS force_clean,
@@ -213,13 +216,16 @@
                                                              'yes' AS is_official,
                                                              '$device_buildtype' AS buildtype,
                                                              'no' AS bootimage,
+                                                             'yes' AS weeklies_opt,
                                                              'no' AS lunch_override_state,
                                                              '$device_buildtype' AS default_buildtype,
                                                              'no' AS ovr_force_clean,
                                                              'no' AS ovr_test_build,
                                                              'yes' AS ovr_is_official,
                                                              '$device_buildtype' AS ovr_buildtype,
-                                                             'no' AS ovr_bootimage";
+                                                             'no' AS ovr_bootimage,
+                                                             'yes' AS ovr_weeklies_opt,
+                                                             '0' AS opts";
                                     mysqli_query($db, $create_table_query) or die(mysqli_error($db));
 
                                     /* update the default buildtype eachtime on login or dashboard */
@@ -227,7 +233,7 @@
                                     mysqli_query($db, $update_default_buildtype) or die(mysqli_error($db));
 
                                     /* to add a new column 
-                                    $alter_table_query = "ALTER TABLE $device ADD default_buildtype TEXT(20) NULL AFTER xda_link";
+                                    $alter_table_query = "ALTER TABLE $device ADD `opts` int(10) DEFAULT '0' AFTER `xda_link`";
                                     mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
                                 ?>
                             </div>

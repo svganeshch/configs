@@ -255,3 +255,12 @@ pre {
 table .collapse.in {
 	display:table-row;
 }
+
+.dropdown-menu-center {
+    right: auto;
+    left: 50%;
+    padding: 5px 5px;
+    -webkit-transform: translate(-50%, 0);
+    -o-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+}
