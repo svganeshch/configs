@@ -116,7 +116,7 @@ if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
         exit("There's a build already in queue for your device");
     }
 
-    if(responseHandler($kicker_build_pipeline_url.$device) == "") exit("Build initiated!");
+    if(responseHandler($kicker_build_pipeline_url.$device.'&version='.$_SESSION['got_version']) == "") exit("Build initiated!");
     else exit("Something went wrong!");
 }
 

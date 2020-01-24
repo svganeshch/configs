@@ -1,6 +1,20 @@
 <?php
     include('session.php');
 
+    $_SESSION['got_version'] = $_GET['version'];
+    if ($_GET['version'] == 'arrow-9.x') {
+        if ($_SESSION['is_admin'])
+            $devices_list_url = DEVICES_LIST_URL_PIE;
+        else
+            header("Location: versions404.php");
+    } else if ($_GET['version'] == 'arrow-10.0') {
+        $devices_list_url = DEVICES_LIST_URL_Q;
+    } else {
+        // Fallback to current version in case if no version is passed
+        $devices_list_url = DEVICES_LIST_URL_Q;
+        $_SESSION['got_version'] = 'arrow-10.0';
+    }
+
     if (isset($_SESSION['cur_device'])) {
         unset($_SESSION['cur_device']);
     }
@@ -151,7 +165,6 @@
             <?php } ?>
             
             <?php
-            	$devices_list_url = DEVICES_LIST_URL;
                 $devices_list = explode(PHP_EOL, file_get_contents($devices_list_url));
                 ?>
                 <div class="row text-center pad-top">

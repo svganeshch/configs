@@ -62,7 +62,7 @@ if (!$_SESSION['is_admin']) {
     <div id="page-inner">
         <div class="row">
             <div class="col-md-12">
-                <h2><?php echo ucfirst($_SESSION["cur_device"]) ?></h2>   
+                <h2><?php echo ucfirst($_SESSION["cur_device"])."(".$_SESSION['got_version'].")" ?></h2>   
             </div>
         </div>              
         <!-- /. ROW  -->
