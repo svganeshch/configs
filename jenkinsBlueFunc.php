@@ -160,7 +160,8 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
         }
     }
 
-    $pipeline_response = responseHandler($kicker_build_pipeline_url);
+    $kicker_build_pipeline_url = substr($kicker_build_pipeline_url, 0, -1);
+    $pipeline_response = responseHandler($kicker_build_pipeline_url.'&version='.$_SESSION['got_version']);
 
     if ($pipeline_response == "") exit("Pipeline triggered!");
     else exit("Failed to trigger pipeline!\n".$pipeline_response);
