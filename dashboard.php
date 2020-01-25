@@ -1,13 +1,12 @@
 <?php
     include('session.php');
 
-    $_SESSION['got_version'] = $_GET['version'];
-    if ($_GET['version'] == 'arrow-9.x') {
+    if ($_SESSION['got_version'] == 'arrow-9.x') {
         if ($_SESSION['is_admin'])
             $devices_list_url = DEVICES_LIST_URL_PIE;
         else
             header("Location: versions404.php");
-    } else if ($_GET['version'] == 'arrow-10.0') {
+    } else if ($_SESSION['got_version'] == 'arrow-10.0') {
         $devices_list_url = DEVICES_LIST_URL_Q;
     } else {
         // Fallback to current version in case if no version is passed
@@ -112,6 +111,22 @@
 
             <!-- /. ROW  -->
             <hr />
+            <?php if ($_SESSION["is_admin"]) { ?>
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="alert alert-warning">
+                            <strong>Versions</strong>
+                            <br>
+                            <strong>Showing: <?php echo $_SESSION['got_version'] ?></strong>
+                                <div class="btn-toolbar">
+                                    <button type="button" id="btnArrowPie" class="btn btn-primary btn-sm" value="arrow-9.x">Arrow P</button>
+                                    <button type="button" id="btnArrowQ" class="btn btn-primary btn-sm" value="arrow-10.0">Arrow Q</button>
+                                </div>
+                        </div>                       
+                    </div>
+                </div>
+            <?php } ?>
+
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="alert alert-info">
@@ -292,7 +307,8 @@
       <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.min.js"></script>
       <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>    
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/dashboard.js"></script> 
    
 </body>
 </html>

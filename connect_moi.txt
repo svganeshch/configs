@@ -1,6 +1,6 @@
 <?php
-   define('PIE_DEVICES_LIST_URL', ''); // Official devices list of version
-   define('Q_DEVICES_LIST_URL', ''); // Official devices list of version
+   define('DEVICES_LIST_URL_PIE', ''); // Official devices list of version
+   define('DEVICES_LIST_URL_Q', ''); // Official devices list of version
    define('DB_SERVER', 'localhost:3306'); // DB server url. Usually localhost:3306
    define('DB_USERNAME', 'username'); // DB username
    define('DB_PASSWORD', 'password'); // DB password

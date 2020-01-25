@@ -49,10 +49,7 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 }
 
 if (isset($_SESSION['login_user']) && isset($_SESSION['is_admin']) && isset($_SESSION['maintainer_device'])){
-	if ($_SESSION['is_admin'])
-		header("Location: versions.php");
-	else
-    	header("Location: dashboard.php");
+    header("Location: dashboard.php");
     exit();
 }else{
 ?>
