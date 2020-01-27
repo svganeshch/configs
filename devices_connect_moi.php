@@ -3,10 +3,7 @@
    require_once('dbcon_config.php');
 
    if ($_SESSION['got_version'] == 'arrow-9.x') {
-      if ($_SESSION['is_admin'])
-            $devices_list_url = DEVICES_LIST_URL_PIE;
-      else
-            header("Location: versions404.php");
+      $devices_list_url = DEVICES_LIST_URL_PIE;
    } else if ($_SESSION['got_version'] == 'arrow-10.0') {
       $devices_list_url = DEVICES_LIST_URL_Q;
    } else {

@@ -99,7 +99,6 @@
 
             <!-- /. ROW  -->
             <hr />
-            <?php if ($_SESSION["is_admin"]) { ?>
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="alert alert-warning">
@@ -113,7 +112,6 @@
                         </div>                       
                     </div>
                 </div>
-            <?php } ?>
 
                 <div class="row">
                     <div class="col-lg-12 ">
