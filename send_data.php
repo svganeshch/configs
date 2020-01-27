@@ -1,13 +1,14 @@
 <?php
 include('session.php');
+require('devices_connect_moi.php');
 error_reporting(E_ALL & ~E_NOTICE);
 
 function pushQuery($device_data, $row_name, $cur_device) {
-    global $db;
+    global $devices_db;
     global $push_count;
 
     $check_query = "SELECT `$row_name` FROM `$cur_device`";
-    $check_res = mysqli_query($db, $check_query) or die("Checking for table failed!" . mysqli_error($db));
+    $check_res = mysqli_query($devices_db, $check_query) or die("Checking for table failed!" . mysqli_error($devices_db));
     $check_res = mysqli_num_rows($check_res);
 
     if ($check_res == 0) {
@@ -16,7 +17,7 @@ function pushQuery($device_data, $row_name, $cur_device) {
         $final_query="UPDATE `$cur_device` SET `$row_name`='$device_data'";
     }
 
-    $final_res = mysqli_query($db, $final_query) or die(mysqli_error($db));
+    $final_res = mysqli_query($devices_db, $final_query) or die(mysqli_error($devices_db));
 
     if (!empty($final_res)) {
         $push_count++;

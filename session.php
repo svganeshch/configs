@@ -1,10 +1,10 @@
 <?php
-   require('connect_moi.php');
+   require('login_connect_moi.php');
    session_start();
 
    $user_check = $_SESSION['login_user'];
 
-   $ses_sql = mysqli_query($db,"select username from login where username = '$user_check' ");
+   $ses_sql = mysqli_query($login_db,"SELECT `username` FROM `login` WHERE `username` = '$user_check' ");
 
    $row = mysqli_fetch_array($ses_sql,MYSQLI_ASSOC);
 

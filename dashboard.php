@@ -1,18 +1,6 @@
 <?php
     include('session.php');
-
-    if ($_SESSION['got_version'] == 'arrow-9.x') {
-        if ($_SESSION['is_admin'])
-            $devices_list_url = DEVICES_LIST_URL_PIE;
-        else
-            header("Location: versions404.php");
-    } else if ($_SESSION['got_version'] == 'arrow-10.0') {
-        $devices_list_url = DEVICES_LIST_URL_Q;
-    } else {
-        // Fallback to current version in case if no version is passed
-        $devices_list_url = DEVICES_LIST_URL_Q;
-        $_SESSION['got_version'] = 'arrow-10.0';
-    }
+    require('devices_connect_moi.php');
 
     if (isset($_SESSION['cur_device'])) {
         unset($_SESSION['cur_device']);
@@ -167,11 +155,11 @@
                                                         'yes' AS default_buildtype_state,
                                                         'no' AS bootimage,
                                                         'no' AS global_override";
-                                mysqli_query($db, $create_table_query) or die(mysqli_error($db));
+                                mysqli_query($devices_db, $create_table_query) or die(mysqli_error($devices_db));
 
                                 /* to add a new column 
                                 $alter_table_query = "ALTER TABLE common_config ADD default_buildtype_state varchar(10) NULL AFTER buildtype";
-                                mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
+                                mysqli_query($devices_db, $alter_table_query) or die(mysqli_error($devices_db));*/
                             ?>
                         </div>
                     </a>
@@ -254,15 +242,15 @@
                                                              'no' AS ovr_bootimage,
                                                              'yes' AS ovr_weeklies_opt,
                                                              '0' AS opts";
-                                    mysqli_query($db, $create_table_query) or die(mysqli_error($db));
+                                    mysqli_query($devices_db, $create_table_query) or die(mysqli_error($devices_db));
 
                                     /* update the default buildtype eachtime on login or dashboard */
                                     $update_default_buildtype = "UPDATE `$device` SET `default_buildtype`='$device_buildtype'";
-                                    mysqli_query($db, $update_default_buildtype) or die(mysqli_error($db));
+                                    mysqli_query($devices_db, $update_default_buildtype) or die(mysqli_error($devices_db));
 
                                     /* to add a new column 
                                     $alter_table_query = "ALTER TABLE $device ADD `opts` int(10) DEFAULT '0' AFTER `xda_link`";
-                                    mysqli_query($db, $alter_table_query) or die(mysqli_error($db));*/
+                                    mysqli_query($devices_db, $alter_table_query) or die(mysqli_error($devices_db));*/
                                 ?>
                             </div>
                         </a>                                         

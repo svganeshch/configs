@@ -1,6 +1,7 @@
 <?php
 include('session.php');
 include('jenkins_config.php');
+require('devices_connect_moi.php');
 error_reporting(E_ALL & ~E_NOTICE);
 
 $device = $_SESSION["cur_device"];
@@ -123,8 +124,8 @@ if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
 // get all non-revoked devices and initiate builds
 if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'yes') {
     $active_devices = array();
-    $get_active_devices_query = "SELECT `maintainer_device` FROM `login` WHERE `maintainer_device`!='all' and `status`='active'";
-    $active_devices_list = mysqli_query($db, $get_active_devices_query) or die("Failed to fetch active devices".mysqli_error($db));
+    $get_active_devices_query = "SELECT `maintainer_device` FROM `device_maintainers` WHERE `status`='active'";
+    $active_devices_list = mysqli_query($devices_db, $get_active_devices_query) or die("Failed to fetch active devices".mysqli_error($devices_db));
     $active_devices_list = mysqli_fetch_all($active_devices_list, MYSQLI_ASSOC);
 
     $maintainer_devices = array_merge_recursive(...$active_devices_list);
@@ -139,16 +140,16 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
     foreach($active_devices as $params) {
         // Check if the device is opted for weekly
         $check_device_override_query = "SELECT `lunch_override_state` FROM `$params`";
-        $check_device_override_res = mysqli_query($db, $check_device_override_query) or die(mysqli_error($db));
+        $check_device_override_res = mysqli_query($devices_db, $check_device_override_query) or die(mysqli_error($devices_db));
         $check_device_override_res = mysqli_fetch_assoc($check_device_override_res)['lunch_override_state'];
 
         if($check_device_override_res == 'yes') {
             $check_weekly_opt_query = "SELECT `ovr_weeklies_opt` FROM `$params`";
-            $check_weekly_opt_res = mysqli_query($db, $check_weekly_opt_query) or die(mysqli_error($db));
+            $check_weekly_opt_res = mysqli_query($devices_db, $check_weekly_opt_query) or die(mysqli_error($devices_db));
             $check_weekly_opt_res = mysqli_fetch_assoc($check_weekly_opt_res)['ovr_weeklies_opt'];
         } else {
             $check_weekly_opt_query = "SELECT `weeklies_opt` FROM `$params`";
-            $check_weekly_opt_res = mysqli_query($db, $check_weekly_opt_query) or die(mysqli_error($db));
+            $check_weekly_opt_res = mysqli_query($devices_db, $check_weekly_opt_query) or die(mysqli_error($devices_db));
             $check_weekly_opt_res = mysqli_fetch_assoc($check_weekly_opt_res)['weeklies_opt'];
         }
 
@@ -156,7 +157,7 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
             $kicker_build_pipeline_url = $kicker_build_pipeline_url.$params.',';
         } else if($check_weekly_opt_res != null && $check_weekly_opt_res == 'no') {
             $trip_opts_query = "UPDATE `$params` SET `opts`=`opts`+1";
-            mysqli_query($db, $trip_opts_query) or die(mysqli_error($db));
+            mysqli_query($devices_db, $trip_opts_query) or die(mysqli_error($devices_db));
         }
     }
 

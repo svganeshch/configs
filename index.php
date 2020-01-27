@@ -1,5 +1,5 @@
 <?php
-require_once('connect_moi.php');
+require('login_connect_moi.php');
 session_start();
 
 if (isset($_POST['username']) and isset($_POST['password'])){
@@ -9,11 +9,11 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 	$password = stripslashes($password);
 
 	$username_query = "SELECT * from `login` WHERE `username`='$username'";
-	$username_query_res = mysqli_query($db, $username_query) or die(mysqli_error($db));
+	$username_query_res = mysqli_query($login_db, $username_query) or die(mysqli_error($login_db));
 	$user_row_chk = mysqli_num_rows($username_query_res);
 	if ($user_row_chk == 1) {
 		$password_hash_query = "SELECT `password` FROM `login` WHERE `username`='$username'";
-		$password_hash_res = mysqli_query($db, $password_hash_query) or die(mysqli_error($db));
+		$password_hash_res = mysqli_query($login_db, $password_hash_query) or die(mysqli_error($login_db));
 		$pass_hash = mysqli_fetch_assoc($password_hash_res);
 		$pass_hash = $pass_hash['password'];
 
@@ -21,25 +21,10 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 			$_SESSION['login_user'] = $username;
 
 			$is_admin_check_query = "SELECT `is_admin` FROM `login` WHERE `username`='$username'";
-			$is_admin_check_res = mysqli_query($db, $is_admin_check_query) or die(mysqli_error($db));
+			$is_admin_check_res = mysqli_query($login_db, $is_admin_check_query) or die(mysqli_error($login_db));
 			$is_admin = mysqli_fetch_assoc($is_admin_check_res);
 			$is_admin = $is_admin['is_admin'];
 			$_SESSION['is_admin'] = $is_admin;
-
-			// get maintainer device
-			$maintainer_device_query = "SELECT `maintainer_device` FROM `login` WHERE `username`='$username'";
-			$maintainer_device = mysqli_query($db, $maintainer_device_query) or die(mysqli_error($db));
-			$maintainer_device = mysqli_fetch_assoc($maintainer_device);
-			$maintainer_device = $maintainer_device['maintainer_device'];
-			$_SESSION['maintainer_device'] = $maintainer_device;
-
-			// get maintainer status
-			$maintainer_status_query = "SELECT `status` FROM `login` WHERE `username`='$username'";
-			$maintainer_status = mysqli_query($db, $maintainer_status_query) or die(mysqli_error($db));
-			$maintainer_status = mysqli_fetch_assoc($maintainer_status);
-			$maintainer_status = $maintainer_status['status'];
-			$_SESSION['maintainer_status'] = $maintainer_status;
-
 		}else{
 			$fmsg = "Invalid Password!";
 		}
@@ -48,7 +33,7 @@ if (isset($_POST['username']) and isset($_POST['password'])){
 	}
 }
 
-if (isset($_SESSION['login_user']) && isset($_SESSION['is_admin']) && isset($_SESSION['maintainer_device'])){
+if (isset($_SESSION['login_user']) && isset($_SESSION['is_admin'])){
     header("Location: dashboard.php");
     exit();
 }else{

@@ -1,12 +1,13 @@
 ﻿<?php
 include('session.php');
+require('devices_connect_moi.php');
 
 if (isset($_GET['select_device']))
     $_SESSION["cur_device"]=$_GET['select_device'];
 
 if ($_SESSION["cur_device"] != "common_config") {
     $get_opts_query = "SELECT `opts` FROM `".$_SESSION['cur_device']."`";
-    $get_opts_query_res = mysqli_query($db, $get_opts_query) or die(mysqli_error($db));
+    $get_opts_query_res = mysqli_query($devices_db, $get_opts_query) or die(mysqli_error($devices_db));
     $get_opts_query_res = mysqli_fetch_assoc($get_opts_query_res)['opts'];
 }
 
@@ -317,7 +318,7 @@ if (!$_SESSION['is_admin']) {
             <!-- jenkins build buttons -->
                 <?php
                     $global_state_query = "SELECT `global_override` from `common_config`"; 
-                    $global_state_query_res = mysqli_query($db, $global_state_query) or die(mysqli_error($db)); 
+                    $global_state_query_res = mysqli_query($devices_db, $global_state_query) or die(mysqli_error($devices_db)); 
                     $global_state = mysqli_fetch_assoc($global_state_query_res);
                     $global_state = $global_state['global_override']; 
                 ?>
