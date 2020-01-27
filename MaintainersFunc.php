@@ -17,6 +17,8 @@ if(isset($_POST['nuke_maintainer']) && $_POST['nuke_maintainer'] == 'yes') {
 
     if(!mysqli_query($devices_db, $nuke_device_maintainer_query))
         exit('Something went wrong, Failed to nuke this maintainer! '.mysqli_error($devices_db));
+    else
+        exit('Successfully nuked maintainer ('.$username.')');
 }
 
 /* Maintainer access revoke */
@@ -69,8 +71,8 @@ if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes')
     else
         exit('No devices specified for new maintainer!');
 
-    $check_maintainer_query = "SELECT `username` from `login` WHERE `username`='$maintainer_username'";
-    $check_maintainer_query_res = mysqli_query($login_db, $check_maintainer_query) or die("Checking for maintainer failed!" . mysqli_error($login_db));
+    $check_maintainer_query = "SELECT `username` from `device_maintainers` WHERE `username`='$maintainer_username'";
+    $check_maintainer_query_res = mysqli_query($devices_db, $check_maintainer_query) or die("Checking for maintainer failed!" . mysqli_error($devices_db));
     $check_maintainer_query_res = mysqli_num_rows($check_maintainer_query_res);
 
     if ($check_maintainer_query_res == 1) {
@@ -89,6 +91,8 @@ if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes')
 
         if(!mysqli_query($devices_db, $add_new_maintainer_device_query))
             exit('Something went wrong, Failed to add new maintainer! '.mysqli_error($devices_db));
+        else
+            exit('Added new maintainer ('.$maintainer_username.') for devices ('.$maintainer_devices.')');
     }
 }
 
