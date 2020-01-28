@@ -11,6 +11,7 @@ $kicker_pipeline_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenk
 
 $kicker_build_pipeline_url = $kicker_pipeline_url.'/buildWithParameters?cause=Started+by+ArrowConfigs&active_devices=';
 $lastBuild_url = $blu_builder_pipeline_url.'/runs/?pretty=true';
+$leg_lastBuild_url = $leg_builder_pipeline_url;
 
 function getResponseHandler($url) {
     $data = curl_init();
@@ -33,6 +34,19 @@ function responseHandler($url) {
     return $response;
 }
 
+function checkVersion($buildInfo) {
+    global $leg_lastBuild_url;
+
+    $legLastBuildInfo = json_decode(getResponseHandler($leg_lastBuild_url.'/'.$buildInfo['id'].'/api/json?pretty=true'), true);
+
+    foreach($legLastBuildInfo['actions'][2]['parameters'] as $value) {
+        if($value['name'] == "VERSION") {
+            return $value['value'];
+            break;
+        }
+    }
+}
+
 // get build status functions
 function isBuildRunning($cur_dev) {
     global $lastBuild_url;
@@ -41,6 +55,7 @@ function isBuildRunning($cur_dev) {
 
     foreach($lastBuildInfo as $buildInfo) {
         if($buildInfo['name'] == $cur_dev) {
+            if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
             if($buildInfo['state'] == 'RUNNING') return true;
             else false;
         }
@@ -54,6 +69,7 @@ function isBuildInQueue($cur_dev) {
 
     foreach($lastBuildInfo as $buildInfo) {
         if($buildInfo['name'] == $cur_dev) {
+            if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
             if($buildInfo['state'] == 'QUEUED') return true;
             else return false;
         }
@@ -66,7 +82,10 @@ function getBuildID($cur_dev) {
     $lastBuildInfo = json_decode($lastBuildInfo, true);
 
     foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev) return($buildInfo['id']);
+        if($buildInfo['name'] == $cur_dev) {
+            if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
+            return($buildInfo['id']);
+        }
     }
 }
 
