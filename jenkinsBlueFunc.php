@@ -54,7 +54,7 @@ function isBuildRunning($cur_dev) {
     $lastBuildInfo = json_decode($lastBuildInfo, true);
 
     foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev) {
+        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
             if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
             if($buildInfo['state'] == 'RUNNING') return true;
             else false;
@@ -68,7 +68,7 @@ function isBuildInQueue($cur_dev) {
     $lastBuildInfo = json_decode($lastBuildInfo, true);
 
     foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev) {
+        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
             if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
             if($buildInfo['state'] == 'QUEUED') return true;
             else return false;
@@ -82,7 +82,7 @@ function getBuildID($cur_dev) {
     $lastBuildInfo = json_decode($lastBuildInfo, true);
 
     foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev) {
+        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
             if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
             return($buildInfo['id']);
         }
