@@ -10,7 +10,7 @@ $leg_builder_pipeline_url = 'https://'.urlencode(jenkins_username).':'.urlencode
 $kicker_pipeline_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/job/'.urlencode(kicker_pipeline);
 
 $kicker_build_pipeline_url = $kicker_pipeline_url.'/buildWithParameters?cause=Started+by+ArrowConfigs&active_devices=';
-$lastBuild_url = $blu_builder_pipeline_url.'/runs/?pretty=true';
+$lastBuild_url = $blu_builder_pipeline_url.'/runs';
 $leg_lastBuild_url = $leg_builder_pipeline_url;
 
 function getResponseHandler($url) {
@@ -34,63 +34,42 @@ function responseHandler($url) {
     return $response;
 }
 
-function checkVersion($buildInfo) {
-    global $leg_lastBuild_url;
+function setBuildID($cur_dev) {
+    global $lastBuild_url;
+    $lastBuildInfo = getResponseHandler($lastBuild_url.'/?pretty=true');
+    $lastBuildInfo = array_reverse(json_decode($lastBuildInfo, true));
 
-    $legLastBuildInfo = json_decode(getResponseHandler($leg_lastBuild_url.'/'.$buildInfo['id'].'/api/json?pretty=true'), true);
-
-    foreach($legLastBuildInfo['actions'][2]['parameters'] as $value) {
-        if($value['name'] == "VERSION") {
-            return $value['value'];
-            break;
+    foreach($lastBuildInfo as $buildInfo) {
+        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
+            $_SESSION['jenkins_build_id'] = $buildInfo['id'];
         }
     }
 }
+
+if(!isset($_SESSION['jenkins_build_id']))
+    setBuildID($device);
 
 // get build status functions
 function isBuildRunning($cur_dev) {
     global $lastBuild_url;
-    $lastBuildInfo = getResponseHandler($lastBuild_url);
+    $lastBuildInfo = getResponseHandler($lastBuild_url.'/'.$_SESSION['jenkins_build_id'].'/?pretty=true');
     $lastBuildInfo = json_decode($lastBuildInfo, true);
 
-    foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
-            if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
-            if($buildInfo['state'] == 'RUNNING') return true;
-            else false;
-        }
-    }
+    if($lastBuildInfo['state'] == 'RUNNING') return true;
+    else false;
 }
 
 function isBuildInQueue($cur_dev) {
     global $lastBuild_url;
-    $lastBuildInfo = getResponseHandler($lastBuild_url);
+    $lastBuildInfo = getResponseHandler($lastBuild_url.'/'.$_SESSION['jenkins_build_id'].'/?pretty=true');
     $lastBuildInfo = json_decode($lastBuildInfo, true);
 
-    foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
-            if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
-            if($buildInfo['state'] == 'QUEUED') return true;
-            else return false;
-        }
-    }
-}
-
-function getBuildID($cur_dev) {
-    global $lastBuild_url;
-    $lastBuildInfo = getResponseHandler($lastBuild_url);
-    $lastBuildInfo = json_decode($lastBuildInfo, true);
-
-    foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
-            if(checkVersion($buildInfo) != $_SESSION['got_version']) continue;
-            return($buildInfo['id']);
-        }
-    }
+    if($lastBuildInfo['state'] == 'QUEUED') return true;
+    else return false;
 }
 
 // GetBuildStatus
-if(isset($_POST['getBuildStatus']) && $_POST['getBuildStatus'] == 'yes') {
+if(isset($_POST['getBuildStatus']) && $_POST['getBuildStatus'] == 'yes' && isset($_SESSION['jenkins_build_id'])) {
     if(isBuildRunning($device)) exit("building");
     elseif(isBuildInQueue($device)) exit("waiting");
     else exit("idle");
@@ -99,7 +78,7 @@ if(isset($_POST['getBuildStatus']) && $_POST['getBuildStatus'] == 'yes') {
 // Jenkins button actions
 // stop the build
 if(isset($_POST['buildStop']) && $_POST['buildStop'] == 'yes') {
-    $build_stop_url = $leg_builder_pipeline_url.'/'.getBuildID($device).'/stop';
+    $build_stop_url = $leg_builder_pipeline_url.'/'.$_SESSION['jenkins_build_id'].'/stop';
 
     if(isBuildInQueue($device)) {
         exit("There's a build waiting in queue!\nTry remove from queue option instead.");
@@ -116,7 +95,7 @@ if(isset($_POST['buildStop']) && $_POST['buildStop'] == 'yes') {
 // remove from queue
 if(isset($_POST["buildRemoveQueue"]) && $_POST["buildRemoveQueue"] == 'yes') {
     if(isBuildInQueue($device)) {
-        $queue_url = $leg_builder_pipeline_url.'/'.getBuildID($device).'/stop';
+        $queue_url = $leg_builder_pipeline_url.'/'.$_SESSION['jenkins_build_id'].'/stop';
         $queueCancelRes = responseHandler($queue_url);
         if($queueCancelRes == "") exit("Removed the build from queue");
         else exit("Something went wrong while trying to remove build from queue\n".$queueCancelRes);
@@ -136,8 +115,11 @@ if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
         exit("There's a build already in queue for your device");
     }
 
-    if(responseHandler($kicker_build_pipeline_url.$device.'&version='.$_SESSION['got_version']) == "") exit("Build initiated!");
-    else exit("Something went wrong!");
+    if(responseHandler($kicker_build_pipeline_url.$device.'&version='.$_SESSION['got_version']) == "") {
+        unset($_SESSION['jenkins_build_id']);
+        setBuildID($device);
+        exit("Build initiated!");
+    } else exit("Something went wrong!");
 }
 
 // get all non-revoked devices and initiate builds

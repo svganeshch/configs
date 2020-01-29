@@ -5,6 +5,8 @@
     if (isset($_SESSION['cur_device'])) {
         unset($_SESSION['cur_device']);
     }
+    
+    unset($_SESSION['jenkins_build_id']);
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
