@@ -75,6 +75,10 @@ if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes')
     $check_maintainer_query_res = mysqli_query($devices_db, $check_maintainer_query) or die("Checking for maintainer failed!" . mysqli_error($devices_db));
     $check_maintainer_query_res = mysqli_num_rows($check_maintainer_query_res);
 
+    $check_maintainer_login_query = "SELECT `username` from `login` WHERE `username`='$maintainer_username'";
+    $check_maintainer_login_query_res = mysqli_query($login_db, $check_maintainer_login_query) or die("Checking for maintainer login failed!" . mysqli_error($login_db));
+    $check_maintainer_login_query_res = mysqli_num_rows($check_maintainer_login_query_res);
+
     if ($check_maintainer_query_res == 1) {
         $update_maintainer_query = "UPDATE `device_maintainers` SET `maintainer_device`='$maintainer_devices' WHERE `username`='$maintainer_username'";
         if(mysqli_query($devices_db, $update_maintainer_query))
@@ -86,8 +90,10 @@ if(isset($_POST['add_new_maintainer']) && $_POST['add_new_maintainer'] == 'yes')
         $add_new_maintainer_login_query = "INSERT into `login` (`username`, `password`) VALUES ('$maintainer_username', '$default_pass_hash')";
         $add_new_maintainer_device_query = "INSERT into `device_maintainers` (`username`, `maintainer_device`) VALUES ('$maintainer_username', '$maintainer_devices')";
 
-        if(!mysqli_query($login_db, $add_new_maintainer_login_query))
-            exit('Something went wrong, Failed to add new maintainer! '.mysqli_error($login_db));
+        if($check_maintainer_login_query_res !=1) {
+            if(!mysqli_query($login_db, $add_new_maintainer_login_query))
+                exit('Something went wrong, Failed to add new maintainer login entry! '.mysqli_error($login_db));
+        }
 
         if(!mysqli_query($devices_db, $add_new_maintainer_device_query))
             exit('Something went wrong, Failed to add new maintainer! '.mysqli_error($devices_db));
