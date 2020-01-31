@@ -37,11 +37,12 @@ function responseHandler($url) {
 function setBuildID($cur_dev) {
     global $lastBuild_url;
     $lastBuildInfo = getResponseHandler($lastBuild_url.'/?pretty=true');
-    $lastBuildInfo = array_reverse(json_decode($lastBuildInfo, true));
+    $lastBuildInfo = json_decode($lastBuildInfo, true);
 
     foreach($lastBuildInfo as $buildInfo) {
         if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
-            $_SESSION['jenkins_build_id'] = $buildInfo['id'];
+            if($buildInfo['state'] == 'RUNNING' || $buildInfo['state'] == 'QUEUED')
+                $_SESSION['jenkins_build_id'] = $buildInfo['id'];
         }
     }
 }
@@ -69,10 +70,11 @@ function isBuildInQueue($cur_dev) {
 }
 
 // GetBuildStatus
-if(isset($_POST['getBuildStatus']) && $_POST['getBuildStatus'] == 'yes' && isset($_SESSION['jenkins_build_id'])) {
-    if(isBuildRunning($device)) exit("building");
+if(isset($_POST['getBuildStatus']) && $_POST['getBuildStatus'] == 'yes') {
+    if($_SESSION['jenkins_build_id'] == null) exit("idle");
+    elseif(isBuildRunning($device)) exit("building");
     elseif(isBuildInQueue($device)) exit("waiting");
-    else exit("idle");
+    else exit("---");
 }
 
 // Jenkins button actions
