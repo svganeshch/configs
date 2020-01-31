@@ -192,16 +192,6 @@ if (!$_SESSION['is_admin']) {
 
                             <div class="info-con" id="info-con"></div>
 
-                            <?php if ($_SESSION["cur_device"] != "common_config") { ?>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>Override lunch?</label>
-                                    <input type="checkbox" name="override_lunch" id="override_lunch" /> 
-                                </div>
-                            </div>
-                            <input type="hidden" name="hidden_override_lunch" id="hidden_override_lunch" value="no" />
-                            <?php } ?>
-
                             <div class="config_dev_div" id="config_dev_div">
                                 <strong><label name="config_dev_name" id="config_dev_name" ><?php echo ucfirst($_SESSION["cur_device"]); ?> config:</label></strong>
                                 <br/>
@@ -214,8 +204,8 @@ if (!$_SESSION['is_admin']) {
                                         <button type="button" name="add1" id="add1" class="btn btn-success">+</button>
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <input autocomplete="on" type="text" id="int_repo_paths_text_field" name="repo_paths[]" class="form-control" />
+                                                <div class="form-group" id="repo_paths_group0">
+                                                    <input autocomplete="on" type="text" id="repo_paths_text_field0" name="repo_paths[]" class="form-control" />
                                                 </div>
                                             </div>                                
                                         </div>
@@ -228,17 +218,21 @@ if (!$_SESSION['is_admin']) {
                                         <button type="button" name="add2" id="add2" class="btn btn-success">+</button>
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-8 col-xs-8">
-                                                            <input placeholder="repo url" autocomplete="on" type="text" id="int_repo_clones_text_field" name="repo_clones[]" class="form-control" />
-                                                        </div>
-                                                        <div class="col-md-4 col-xs-4">
-                                                            <input placeholder="branch" autocomplete="on" type="text" id="int_repo_clone_branch_text_field" name="repo_clone_branch[]" class="form-control" />
+                                                <div class="row">
+                                                    <div class="col-md-8 col-xs-8">
+                                                        <div class="form-group" id="repo_clones_group0">
+                                                            <input placeholder="repo url" autocomplete="on" type="text" id="repo_clones_text_field0" name="repo_clones[]" class="form-control" />
                                                         </div>
                                                     </div>
-                                                    <br class="custom_br" id="custom_br"/>
-                                                    <input placeholder="path for repo" autocomplete="on" type="text" id="int_repo_clones_paths_text_field" name="repo_clones_paths[]" class="form-control" />
+                                                    <div class="col-md-4 col-xs-4">
+                                                        <div class="form-group" id="repo_clone_branch_group0">
+                                                            <input placeholder="branch" autocomplete="on" type="text" id="repo_clone_branch_text_field0" name="repo_clone_branch[]" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br class="custom_br" id="custom_br"/>
+                                                <div class="form-group" id="repo_clones_paths_group0">
+                                                    <input placeholder="path for repo" autocomplete="on" type="text" id="repo_clones_paths_text_field0" name="repo_clones_paths[]" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
@@ -251,8 +245,8 @@ if (!$_SESSION['is_admin']) {
                                         <button type="button" name="add3" id="add3" class="btn btn-success">+</button>
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <input autocomplete="on" type="text" id="int_repopick_topics_text_field" name="repopick_topics[]" class="form-control" />
+                                                <div class="form-group" id="repopick_topics_group0">
+                                                    <input autocomplete="on" type="text" id="repopick_topics_text_field0" name="repopick_topics[]" class="form-control" />
                                                 </div>
                                             </div>                                
                                         </div>
@@ -266,7 +260,7 @@ if (!$_SESSION['is_admin']) {
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <input autocomplete="on" type="text" id="int_repopick_changes_text_field" name="repopick_changes[]" class="form-control" />
+                                                    <input autocomplete="on" type="text" id="repopick_changes_text_field0" name="repopick_changes[]" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
