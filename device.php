@@ -259,7 +259,7 @@ if (!$_SESSION['is_admin']) {
                                         <button type="button" name="add4" id="add4" class="btn btn-success">+</button>
                                         <div class="row">
                                             <div class="col-md-12 col-xs-12">
-                                                <div class="form-group">
+                                                <div class="form-group" id="repopick_changes_group0">
                                                     <input autocomplete="on" type="text" id="repopick_changes_text_field0" name="repopick_changes[]" class="form-control" />
                                                 </div>
                                             </div>

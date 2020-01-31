@@ -335,8 +335,28 @@ $(document).ready(function(){
 	 $('#dynamic_field-'+button_id+'').remove();
   });
 
+  function parseValidateData(invalidFieldsData, validateData, KeyValidateData) {
+	var field_index = 0;
+	var is_data_ok= true;
+	$.each( invalidFieldsData, function( key, value ) {
+		if (value != null) {
+			if (key == KeyValidateData) {
+				$.each(validateData, function(form_key, form_data) {
+					if (value[field_index] == $('#'+form_data).val()) {
+						$('#'+KeyValidateData+'_group'+form_data[form_data.length - 1]).addClass('has-error has-feedback')
+							.append('<span class="glyphicon glyphicon-remove form-control-feedback" id="field-error-icon"></span>');
+						$('#'+KeyValidateData+'_text_field'+form_data[form_data.length - 1]).focus();
+						field_index++;
+						is_data_ok = false;
+					}
+				});
+			}
+		}
+	});
+	return is_data_ok;
+  }
+
   function validateFields() {
-	  var is_all_ok = true;
 	  $.ajax({
 		  async: false,
 		  url:"validateFields.php",
@@ -345,29 +365,41 @@ $(document).ready(function(){
 		  success:function(data)
 		  {
 			var invalid_fields = $.parseJSON(data);
-			var field_index = 0;
 			var repo_paths_data = $("input[name='repo_paths[]']")
 				.map(function(){return $(this).attr('id');}).get();
 			$('[id^=repo_paths_group]').removeClass('has-error has-feedback');
+
+			var repo_clones_data = $("input[name='repo_clones[]']")
+				.map(function(){return $(this).attr('id');}).get();
+			$('[id^=repo_clones_group]').removeClass('has-error has-feedback');
+
+			var repo_clone_branch_data = $("input[name='repo_clone_branch[]']")
+				.map(function(){return $(this).attr('id');}).get();
+			$('[id^=repo_clone_branch_group]').removeClass('has-error has-feedback');
+
+			var repo_clones_paths_data = $("input[name='repo_clones_paths[]']")
+				.map(function(){return $(this).attr('id');}).get();
+			$('[id^=repo_clones_paths_group]').removeClass('has-error has-feedback');
+
+			var repopick_topics_data = $("input[name='repopick_topics[]']")
+				.map(function(){return $(this).attr('id');}).get();
+			$('[id^=repopick_topics_group]').removeClass('has-error has-feedback');
+
+			var repopick_changes_data = $("input[name='repopick_changes[]']")
+				.map(function(){return $(this).attr('id');}).get();
+			$('[id^=repopick_changes_group]').removeClass('has-error has-feedback');
+
 			$('span[id^=field-error-icon]').remove();
-			$.each( invalid_fields, function( key, value ) {
-				if (value != null) {
-					if (key == 'repo_paths') {
-						$.each(repo_paths_data, function(form_key, form_data) {
-							if (value[field_index] == $('#'+form_data).val()) {
-								$('#repo_paths_group'+form_data[form_data.length - 1]).addClass('has-error has-feedback')
-									.append('<span class="glyphicon glyphicon-remove form-control-feedback" id="field-error-icon"></span>');
-								$('#repo_paths_text_field'+form_data[form_data.length - 1]).focus();
-								field_index++;
-								is_all_ok = false;
-							}
-						});
-					}
-				}
-			});
+
+			is_rp_ok = parseValidateData(invalid_fields, repo_paths_data, 'repo_paths');
+			is_rcd_ok = parseValidateData(invalid_fields, repo_clones_data, 'repo_clones');
+			is_rcb_ok = parseValidateData(invalid_fields, repo_clone_branch_data, 'repo_clone_branch');
+			is_rcp_ok = parseValidateData(invalid_fields, repo_clones_paths_data, 'repo_clones_paths');
+			is_rptp_ok = parseValidateData(invalid_fields, repopick_topics_data, 'repopick_topics');
+			is_rpc_ok = parseValidateData(invalid_fields, repopick_changes_data, 'repopick_changes');
 		  }
 	});
-	return is_all_ok;
+	return is_rp_ok && is_rcd_ok && is_rcb_ok && is_rcp_ok && is_rptp_ok && is_rpc_ok;
   }
   
   $('body').on('click', '#submit', function(){
