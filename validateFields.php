@@ -18,7 +18,7 @@ $invalidFields['repo_paths'] = $repoPathsContent;
 
 foreach($repoCloneUrls as $value) {
     if(!preg_match('/(http[s]?:\/\/)?[^\s(["<,>]*\.[^\s[",><]*/', $value)) {
-        $repoCloneUrlsContent[] = $value;
+        $repoCloneUrlsContent[] = null;
     }
 }
 $invalidFields['repo_clones'] = $repoCloneUrlsContent;
@@ -31,7 +31,7 @@ foreach($repoCloneBranch as $value) {
 $invalidFields['repo_clone_branch'] = $repoCloneBranchContent;
 
 foreach($repoClonesPaths as $value) {
-    if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9]+)$/', $value)) {
+    if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9]*)$/', $value)) {
         $repoClonesPathsContent[] = $value;
     }
 }
