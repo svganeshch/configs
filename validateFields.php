@@ -10,6 +10,7 @@ $repopickTopics = $_POST["repopick_topics"];
 $repopickChangeNums = $_POST["repopick_changes"];
 
 foreach($repoPaths as $value) {
+    $value = trim($value);
     if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9]*)$/', $value)) {
         $repoPathsContent[] = $value;
     }
@@ -17,20 +18,23 @@ foreach($repoPaths as $value) {
 $invalidFields['repo_paths'] = $repoPathsContent;
 
 foreach($repoCloneUrls as $value) {
-    if(!preg_match('/(http[s]?:\/\/)?[^\s(["<,>]*\.[^\s[",><]*/', $value)) {
-        $repoCloneUrlsContent[] = null;
+    $value = trim($value);
+    if(!preg_match('/(http[s]?:\/\/)?[^\s(["<,>]*\.[^\s[",><]*(\.git)(\/)?$/', $value)) {
+        $repoCloneUrlsContent[] = $value;
     }
 }
 $invalidFields['repo_clones'] = $repoCloneUrlsContent;
 
 foreach($repoCloneBranch as $value) {
-    if(!preg_match('/^([A-z0-9-_+.]*)[A-z0-9]*$/', $value)) {
+    $value = trim($value);
+    if(!preg_match('/^([A-z0-9-_+.\/]*)[A-z0-9]*$/', $value)) {
         $repoCloneBranchContent[] = $value;
     }
 }
 $invalidFields['repo_clone_branch'] = $repoCloneBranchContent;
 
 foreach($repoClonesPaths as $value) {
+    $value = trim($value);
     if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9]*)$/', $value)) {
         $repoClonesPathsContent[] = $value;
     }
@@ -38,6 +42,7 @@ foreach($repoClonesPaths as $value) {
 $invalidFields['repo_clones_paths'] = $repoClonesPathsContent;
 
 foreach($repopickTopics as $value) {
+    $value = trim($value);
     if(!preg_match('/^([A-z0-9-_+]*)[A-z0-9]*$/', $value)) {
         $repopickTopicsContent[] = $value;
     }
@@ -45,6 +50,7 @@ foreach($repopickTopics as $value) {
 $invalidFields['repopick_topics'] = $repopickTopicsContent;
 
 foreach($repopickChangeNums as $value) {
+    $value = trim($value);
     if(!preg_match('/^([0-9]*)?[0-9 ]*$/', $value)) {
         $repopickChangeNumsContent[] = $value;
     }
