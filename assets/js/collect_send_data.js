@@ -10,6 +10,7 @@ $(document).ready(function(){
 	var repopick_changes;
 	var changelog;
 	var xda_link;
+	var is_fields_ok = false;
 	
 	$.ajax({
 		url:"get_data.php",
@@ -397,9 +398,11 @@ $(document).ready(function(){
 			is_rcp_ok = parseValidateData(invalid_fields, repo_clones_paths_data, 'repo_clones_paths');
 			is_rptp_ok = parseValidateData(invalid_fields, repopick_topics_data, 'repopick_topics');
 			is_rpc_ok = parseValidateData(invalid_fields, repopick_changes_data, 'repopick_changes');
+
+			is_fields_ok = is_rp_ok && is_rcd_ok && is_rcb_ok && is_rcp_ok && is_rptp_ok && is_rpc_ok;
 		  }
 	});
-	return is_rp_ok && is_rcd_ok && is_rcb_ok && is_rcp_ok && is_rptp_ok && is_rpc_ok;
+	return is_fields_ok;
   }
   
   $('body').on('click', '#submit', function(){
@@ -434,6 +437,7 @@ $(document).ready(function(){
 
   $('body').on('click', '#buildTrigger', function(){
 	$('#submit').trigger('click');
+	if(!is_fields_ok) return;
 	$('#notifyDialog').modal({
 		backdrop: "static",
 		keyboard: false,

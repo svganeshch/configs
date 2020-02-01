@@ -19,7 +19,7 @@ $invalidFields['repo_paths'] = $repoPathsContent;
 
 foreach($repoCloneUrls as $value) {
     $value = trim($value);
-    if(!preg_match('/(http[s]?:\/\/)?[^\s(["<,>]*\.[^\s[",><]*(\.git)(\/)?$/', $value)) {
+    if(!preg_match('/(http[s]?:\/\/)?[^\s(["<,>]*\.[^\s[",><]*(\/)?$/', $value)) {
         $repoCloneUrlsContent[] = $value;
     }
 }
