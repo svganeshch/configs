@@ -12,7 +12,7 @@ $repopickChangeNums = $_POST["repopick_changes"];
 foreach($repoPaths as $value) {
     $value = trim($value);
     if($value != null) {
-        if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9]*)$/', $value)) {
+        if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9-_]*)$/', $value)) {
             $repoPathsContent[] = $value;
         }
     }
@@ -42,7 +42,7 @@ $invalidFields['repo_clone_branch'] = $repoCloneBranchContent;
 foreach($repoClonesPaths as $value) {
     $value = trim($value);
     if($value != null) {
-        if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9]*)$/', $value)) {
+        if(!preg_match('/^([A-z0-9-_]+\/)*([A-z0-9-_]*)$/', $value)) {
             $repoClonesPathsContent[] = $value;
         }
     }
