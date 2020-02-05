@@ -2,6 +2,8 @@
 include('session.php');
 require('devices_connect_moi.php');
 
+unset($_SESSION['jenkins_build_id']);
+
 if (isset($_GET['select_device']))
     $_SESSION["cur_device"]=$_GET['select_device'];
 
