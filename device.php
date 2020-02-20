@@ -16,7 +16,7 @@ if ($_SESSION["cur_device"] != "common_config") {
 if (!$_SESSION['is_admin']) {
     $pattern = "/\b" . $_GET['select_device'] . "\b/i";
 
-    if($get_opts_query_res > 3) {
+    if($get_opts_query_res >= 3) {
         header("Location: locked404.php");
     }
     if($_SESSION['maintainer_status'] != 'active') {
