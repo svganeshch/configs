@@ -77,6 +77,7 @@ $is_official = $_POST["hidden_is_official"];
 $test_build = $_POST["hidden_test_build"];
 $force_clean = $_POST["hidden_force_clean"];
 $buildtype = $_POST["buildtype"];
+$buildvariant = $_POST["buildvariant"];
 $bootimage = $_POST["hidden_bootimage"];
 $weeklies_opt = $_POST["hidden_weeklies_opt"];
 $changelog = $_POST["changelog"];
@@ -101,9 +102,10 @@ pushQuery($is_official, 'is_official', $cur_device);
 pushQuery($test_build, 'test_build', $cur_device);
 pushQuery($force_clean, 'force_clean', $cur_device);
 pushQuery($buildtype, 'buildtype', $cur_device);
+pushQuery($buildvariant, 'buildvariant', $cur_device);
 pushQuery($bootimage, 'bootimage', $cur_device);
 pushQuery($changelog, 'changelog', $cur_device);
-$chk_count=11;
+$chk_count=12;
 
 if ($cur_device != 'common_config') {
     if (isset($weeklies_opt)) {

@@ -175,6 +175,17 @@ if (!$_SESSION['is_admin']) {
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-3 col-xs-4" id="buildvariant_div">
+                                        <div class="form-group">
+                                            <label for="buildvariant">Build variant:</label>
+                                            <select name="buildvariant" class="form-control" id="buildvariant" selected="selected">
+                                                <option>vanilla</option>
+                                                <option>gapps</option>
+                                                <option>both</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </div>
@@ -398,7 +409,7 @@ if (!$_SESSION['is_admin']) {
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <script src="assets/js/mainHandler.min.js"></script>
-    <!--<script src="assets/js/collect_send_data.js"></script>-->
+    <!-- <script src="assets/js/collect_send_data.js"></script> -->
 
     <?php if (!$_SESSION['is_admin']) { ?>
     <script type="text/javascript">
