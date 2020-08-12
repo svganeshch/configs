@@ -213,22 +213,7 @@
                                                             weeklies_opt varchar(10) NULL,
                                                             opts int(10) NULL,
                                                             xda_link LONGTEXT NULL,
-                                                            default_buildtype TEXT(20) NULL,
-                                                            lunch_override_name varchar(50) NULL,
-                                                            lunch_override_state varchar(10) NULL,
-                                                            ovr_repo_paths JSON NULL,
-                                                            ovr_repo_clones JSON NULL,
-                                                            ovr_repo_clones_paths JSON NULL,
-                                                            ovr_repopick_topics JSON NULL,
-                                                            ovr_repopick_changes JSON NULL,
-                                                            ovr_force_clean varchar(10) NULL,
-                                                            ovr_test_build varchar(10) NULL,
-                                                            ovr_is_official varchar(10) NULL,
-                                                            ovr_buildtype varchar(10) NULL,
-                                                            ovr_bootimage varchar(10) NULL,
-                                                            ovr_changelog LONGTEXT NULL,
-                                                            ovr_weeklies_opt varchar(10) NULL,
-                                                            ovr_xda_link LONGTEXT NULL)
+                                                            default_buildtype TEXT(20) NULL)
                                                            AS SELECT
                                                              'no' AS force_clean,
                                                              'no' AS test_build,
@@ -237,14 +222,7 @@
                                                              'vanilla' AS buildvariant,
                                                              'no' AS bootimage,
                                                              'yes' AS weeklies_opt,
-                                                             'no' AS lunch_override_state,
                                                              '$device_buildtype' AS default_buildtype,
-                                                             'no' AS ovr_force_clean,
-                                                             'no' AS ovr_test_build,
-                                                             'yes' AS ovr_is_official,
-                                                             '$device_buildtype' AS ovr_buildtype,
-                                                             'no' AS ovr_bootimage,
-                                                             'yes' AS ovr_weeklies_opt,
                                                              '0' AS opts";
                                     mysqli_query($devices_db, $create_table_query) or die(mysqli_error($devices_db));
 
