@@ -142,19 +142,9 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
     // Construct pipline url with parameters
     foreach($active_devices as $params) {
         // Check if the device is opted for weekly
-        $check_device_override_query = "SELECT `lunch_override_state` FROM `$params`";
-        $check_device_override_res = mysqli_query($devices_db, $check_device_override_query) or die(mysqli_error($devices_db));
-        $check_device_override_res = mysqli_fetch_assoc($check_device_override_res)['lunch_override_state'];
-
-        if($check_device_override_res == 'yes') {
-            $check_weekly_opt_query = "SELECT `ovr_weeklies_opt` FROM `$params`";
-            $check_weekly_opt_res = mysqli_query($devices_db, $check_weekly_opt_query) or die(mysqli_error($devices_db));
-            $check_weekly_opt_res = mysqli_fetch_assoc($check_weekly_opt_res)['ovr_weeklies_opt'];
-        } else {
-            $check_weekly_opt_query = "SELECT `weeklies_opt` FROM `$params`";
-            $check_weekly_opt_res = mysqli_query($devices_db, $check_weekly_opt_query) or die(mysqli_error($devices_db));
-            $check_weekly_opt_res = mysqli_fetch_assoc($check_weekly_opt_res)['weeklies_opt'];
-        }
+        $check_weekly_opt_query = "SELECT `weeklies_opt` FROM `$params`";
+        $check_weekly_opt_res = mysqli_query($devices_db, $check_weekly_opt_query) or die(mysqli_error($devices_db));
+        $check_weekly_opt_res = mysqli_fetch_assoc($check_weekly_opt_res)['weeklies_opt'];
 
         if($check_weekly_opt_res != null && $check_weekly_opt_res == 'yes') {
             $kicker_build_pipeline_url = $kicker_build_pipeline_url.$params.',';
