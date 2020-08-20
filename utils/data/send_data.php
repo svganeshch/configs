@@ -1,7 +1,9 @@
 <?php
-include('session.php');
-require('devices_connect_moi.php');
 error_reporting(E_ALL & ~E_NOTICE);
+
+$path = $_SERVER['DOCUMENT_ROOT'];
+require_once($path . '/utils/session.php');
+require_once($path . '/helpers/devices_connect_moi.php');
 
 function pushQuery($device_data, $row_name, $cur_device) {
     global $devices_db;

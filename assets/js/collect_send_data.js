@@ -16,7 +16,7 @@ $(document).ready(function() {
     var is_fields_ok = false;
 
     $.ajax({
-        url: "get_data.php",
+        url: "/utils/data/get_data.php",
         method: "GET",
     }).done(function(data) {
         var result = $.parseJSON(data);
@@ -292,7 +292,7 @@ $(document).ready(function() {
         });
         $('#notifyDialogData').text('Please wait...!')
         $.ajax({
-            url: "jenkinsBlueFunc.php",
+            url: "/utils/jenkins/jenkinsBlueFunc.php",
             method: "POST",
             data: {
                 PipelineBuildTrigger: 'yes'
@@ -364,7 +364,7 @@ $(document).ready(function() {
     function validateFields() {
         $.ajax({
             async: false,
-            url: "validateFields.php",
+            url: "/utils/validateFields.php",
             method: "POST",
             data: $('#device_changes').serialize(),
             success: function(data) {
@@ -425,7 +425,7 @@ $(document).ready(function() {
 
         $('#notifyDialogData').text('Please wait...!');
         $.ajax({
-            url: "send_data.php",
+            url: "/utils/data/send_data.php",
             method: "POST",
             data: $('#device_changes').serialize(),
             success: function(data) {
@@ -449,7 +449,7 @@ $(document).ready(function() {
         $('#notifyDialogData').text('Please wait...!')
         $.ajax({
             async: false,
-            url: "jenkinsBlueFunc.php",
+            url: "/utils/jenkins/jenkinsBlueFunc.php",
             method: "POST",
             data: {
                 buildTrigger: 'yes'
@@ -473,7 +473,7 @@ $(document).ready(function() {
         });
         $('#notifyDialogData').text('Please wait...!')
         $.ajax({
-            url: "jenkinsBlueFunc.php",
+            url: "/utils/jenkins/jenkinsBlueFunc.php",
             method: "POST",
             data: {
                 buildRemoveQueue: 'yes'
@@ -496,7 +496,7 @@ $(document).ready(function() {
         });
         $('#notifyDialogData').text('Please wait...!')
         $.ajax({
-            url: "jenkinsBlueFunc.php",
+            url: "/utils/jenkins/jenkinsBlueFunc.php",
             method: "POST",
             data: {
                 buildStop: 'yes'
@@ -517,7 +517,7 @@ $(document).ready(function() {
     function getProgress() {
         $.ajax({
             method: "POST",
-            url: "jenkinsBlueFunc.php",
+            url: "/utils/jenkins/jenkinsBlueFunc.php",
             data: {
                 getProgressStatus: 'yes'
             },
@@ -532,7 +532,7 @@ $(document).ready(function() {
     function getHeaderTextSize() {
         $.ajax({
             method: "POST",
-            url: "jenkinsBlueFunc.php",
+            url: "/utils/jenkins/jenkinsBlueFunc.php",
             data: {
                 getHeaderTextSize: 'yes',
             },
@@ -544,26 +544,26 @@ $(document).ready(function() {
             }
         });
     }
-    if (dev_name != 'Common_config config:')
-        getHeaderTextSize();
+    // if (dev_name != 'Common_config config:')
+    //     getHeaderTextSize();
 
     // set more log option
-    function setIdleMoreLog() {
-        if (window.curTextSize != null) {
-            if (window.curTextSize >= 1000) {
-                window.curTextSize = window.curTextSize - 1000;
-                $('#fullLog').show();
-                getBuildOutput();
-            }
-            getBuildOutput();
-        }
-    }
+    // function setIdleMoreLog() {
+    //     if (window.curTextSize != null) {
+    //         if (window.curTextSize >= 1000) {
+    //             window.curTextSize = window.curTextSize - 1000;
+    //             $('#fullLog').show();
+    //             getBuildOutput();
+    //         }
+    //         getBuildOutput();
+    //     }
+    // }
 
     // set jenkins build status
     function getJenkinsBuildStatus() {
         $.ajax({
             method: "POST",
-            url: "jenkinsBlueFunc.php",
+            url: "/utils/jenkins/jenkinsBlueFunc.php",
             data: {
                 getBuildStatus: 'yes'
             },
@@ -573,9 +573,9 @@ $(document).ready(function() {
                 if ((data.localeCompare('building')) == 0 || window.Morelog == 'true') {
                     $('#build-progress-bar').show();
                     getProgress();
-                    getBuildOutput();
+                    //getBuildOutput();
                 } else if ((data.localeCompare('idle')) == 0) {
-                    if (!window.idleLogSetShown) setIdleMoreLog();
+                    //if (!window.idleLogSetShown) setIdleMoreLog();
                 }
                 window.jenkinsLooper = setTimeout(function() {
                     getJenkinsBuildStatus();
@@ -588,61 +588,61 @@ $(document).ready(function() {
         getJenkinsBuildStatus();
 
     // get build log output
-    function getBuildOutput() {
-        window.idleLogSetShown = true;
-        $.ajax({
-            method: "POST",
-            url: "jenkinsBlueFunc.php",
-            data: {
-                getBodyOutput: 'yes',
-                headerTextSize: window.curTextSize
-            },
-            success: function(data) {
-                if (data != null) {
-                    var parsedData = JSON.parse(data);
-                    var headerData = JSON.parse(parsedData.headers);
-                    var bodyData = parsedData.body;
+    // function getBuildOutput() {
+    //     window.idleLogSetShown = true;
+    //     $.ajax({
+    //         method: "POST",
+    //         url: "/utils/jenkins/jenkinsBlueFunc.php",
+    //         data: {
+    //             getBodyOutput: 'yes',
+    //             headerTextSize: window.curTextSize
+    //         },
+    //         success: function(data) {
+    //             if (data != null) {
+    //                 var parsedData = JSON.parse(data);
+    //                 var headerData = JSON.parse(parsedData.headers);
+    //                 var bodyData = parsedData.body;
 
-                    if (['x-more-data'] in headerData)
-                        window.Morelog = headerData['x-more-data'];
-                    else
-                        window.Morelog = false;
+    //                 if (['x-more-data'] in headerData)
+    //                     window.Morelog = headerData['x-more-data'];
+    //                 else
+    //                     window.Morelog = false;
 
-                    if (Number(window.curTextSize) == Number(headerData['x-text-size'])) return;
-                    else {
-                        window.curTextSize = Number(headerData['x-text-size']);
-                        $('#buildOutput').append('<p id="logs">' + bodyData + '</p>');
+    //                 if (Number(window.curTextSize) == Number(headerData['x-text-size'])) return;
+    //                 else {
+    //                     window.curTextSize = Number(headerData['x-text-size']);
+    //                     $('#buildOutput').append('<p id="logs">' + bodyData + '</p>');
 
-                        if (!$('#buildOutput').is(':hover'))
-                            $('#buildOutput').scrollTop($('#buildOutput').prop("scrollHeight"));
-                    }
-                }
-            }
-        });
-    }
+    //                     if (!$('#buildOutput').is(':hover'))
+    //                         $('#buildOutput').scrollTop($('#buildOutput').prop("scrollHeight"));
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
 
-    $('body').on('click', '#fullLog', function() {
-        $.ajax({
-            url: "jenkinsBlueFunc.php",
-            method: "POST",
-            data: {
-                getBodyOutput: 'yes',
-                headerTextSize: 0
-            },
-            success: function(data) {
-                if (data != null) {
-                    clearTimeout(window.jenkinsLooper);
-                    var parsedData = JSON.parse(data);
-                    var headerData = JSON.parse(parsedData.headers);
-                    var bodyData = parsedData.body;
-                    window.curTextSize = Number(headerData['x-text-size']);
-                    $('#buildOutput').empty();
-                    $('#buildOutput').append('<p id="logs">' + bodyData + '</p>');
-                    getJenkinsBuildStatus();
-                }
-            }
-        });
-    });
+    // $('body').on('click', '#fullLog', function() {
+    //     $.ajax({
+    //         url: "/utils/jenkins/jenkinsBlueFunc.php",
+    //         method: "POST",
+    //         data: {
+    //             getBodyOutput: 'yes',
+    //             headerTextSize: 0
+    //         },
+    //         success: function(data) {
+    //             if (data != null) {
+    //                 clearTimeout(window.jenkinsLooper);
+    //                 var parsedData = JSON.parse(data);
+    //                 var headerData = JSON.parse(parsedData.headers);
+    //                 var bodyData = parsedData.body;
+    //                 window.curTextSize = Number(headerData['x-text-size']);
+    //                 $('#buildOutput').empty();
+    //                 $('#buildOutput').append('<p id="logs">' + bodyData + '</p>');
+    //                 getJenkinsBuildStatus();
+    //             }
+    //         }
+    //     });
+    // });
 
     $('body').on('click', '#reset-hard', function() {
         //set defaults

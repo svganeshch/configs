@@ -1,5 +1,8 @@
 <?php
-include('session.php');
+error_reporting(E_ALL & ~E_NOTICE);
+
+$path = $_SERVER['DOCUMENT_ROOT'];
+require_once($path . '/utils/session.php');
 
 $invalidFields = array();
 $repoPaths = $_POST["repo_paths"];

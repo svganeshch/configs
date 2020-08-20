@@ -1,6 +1,9 @@
 <?php
-   require('login_connect_moi.php');
-   session_start();
+   $path = $_SERVER['DOCUMENT_ROOT'];
+   require_once($path . '/helpers/login_connect_moi.php');
+   if(!isset($_SESSION)) {
+      session_start();
+   }
 
    $user_check = $_SESSION['login_user'];
 
@@ -11,7 +14,7 @@
    $login_session = $row['username'];
 
    if(!isset($login_session)){
-      header("location:index.php");
+      header("location: ../index.php");
       die();
    }
 ?>

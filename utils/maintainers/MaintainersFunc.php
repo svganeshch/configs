@@ -1,7 +1,9 @@
 <?php
-include('session.php');
-require('devices_connect_moi.php');
 error_reporting(E_ALL & ~E_NOTICE);
+
+$path = $_SERVER['DOCUMENT_ROOT'];
+require_once($path . '/utils/session.php');
+require_once($path . '/helpers/devices_connect_moi.php');
 
 $default_pass_hash = "$2y$10$7eq56qYax0VLu/EcVJVwRO6V92fugE3zzddyjzAUI69q20uvmasNi"; //maintainer@arrowos
 

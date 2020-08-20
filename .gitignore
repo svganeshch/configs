@@ -1,2 +1,1 @@
-dbcon_config.php
-jenkins_config.php
+config/*.php

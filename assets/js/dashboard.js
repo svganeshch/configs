@@ -1,13 +1,18 @@
-$(document).ready(function(){
-    $('body').on('click', '#btnArrowPie', function(){
+$(document).ready(function() {
+    setTimeout(function() {
+        $("#dashboard-nav[name=main]").trigger('click');
+    }, 10);
+    var version = localStorage.version;
+    $.post("/helpers/setVersion.php", { "version": version });
+    $('body').on('click', '#variantbutton', function() {
         var version = $(this).val();
-        $.post("setVersion.php", {"version": version});
+        localStorage.setItem('version', version);
+        $.post("/helpers/setVersion.php", { "version": version });
         window.location.href = window.location.href;
     });
 
-    $('body').on('click', '#btnArrowQ', function(){
-        var version = $(this).val();
-        $.post("setVersion.php", {"version": version});
-        window.location.href = window.location.href;
-    });
+    $('body').on('click', '#dashboard-nav', function() {
+        var selectedPage = $(this).attr('name');
+        $('#dashboard-content').load('/dashboard-content/dashboard-' + selectedPage + '.php');
+    })
 });

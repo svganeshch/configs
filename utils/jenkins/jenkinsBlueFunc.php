@@ -1,8 +1,10 @@
 <?php
-include('session.php');
-include('jenkins_config.php');
-require('devices_connect_moi.php');
 error_reporting(E_ALL & ~E_NOTICE);
+
+$path = $_SERVER['DOCUMENT_ROOT'];
+require_once($path . '/utils/session.php');
+require_once($path . '/config/jenkins_config.php');
+require_once($path . '/helpers/devices_connect_moi.php');
 
 $device = $_SESSION["cur_device"];
 $blu_builder_pipeline_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/blue/rest/organizations/jenkins/pipelines/'.urlencode(builder_pipeline);

@@ -1,6 +1,7 @@
 <?php
-include('session.php');
-require('devices_connect_moi.php');
+$path = $_SERVER['DOCUMENT_ROOT'];
+include($path . '/utils/session.php');
+require($path . '/helpers/devices_connect_moi.php');
 
 function getData($cur_device) {
     global $devices_db;
