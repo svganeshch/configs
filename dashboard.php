@@ -40,7 +40,7 @@ require_once($path .'/utils/session.php');
 
 <body>
     <div id="wrapper">
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="adjust-nav">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -48,14 +48,13 @@ require_once($path .'/utils/session.php');
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">
-                        <img class="arrow-logo" src="assets/img/logo.png" />
-
+                    <a style="color:#fff;" class="navbar-brand" href="/">
+                        <img class="d-inline-block align-top arrow-logo" src="assets/img/logo.png" />
+                        ArrowOS Configs
                     </a>
-
                 </div>
             </div>
-        </div>
+    </nav>
 
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">

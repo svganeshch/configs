@@ -49,15 +49,15 @@ if (!$_SESSION['is_admin']) {
 <body>
 
     <div id="wrapper">
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="adjust-nav">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">
-                        <img class="arrow-logo" src="assets/img/logo.png" />
+                    <a style="color:#fff;" class="navbar-brand" href="/">
+                        <img class="d-inline-block align-top arrow-logo" src="assets/img/logo.png" />
                     </a>
                 </div>
             </div>
-        </div>
+        </nav>
 
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper-device">
