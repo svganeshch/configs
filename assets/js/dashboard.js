@@ -4,7 +4,7 @@ $(document).ready(function() {
     }, 10);
     var version = localStorage.version;
     $.post("/helpers/setVersion.php", { "version": version });
-    $('body').on('click', '#variantbutton', function() {
+    $('body').on('click', '#versionbutton', function() {
         var version = $(this).val();
         localStorage.setItem('version', version);
         $.post("/helpers/setVersion.php", { "version": version });

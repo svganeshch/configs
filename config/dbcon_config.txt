@@ -1,8 +1,9 @@
 <?php
-   // Variants array
-   $VARIANTS = array(
+   // Versions array
+   $VERSIONS = array(
       'version-1' => '',
-      'version-2' => ''
+      'version-2' => ''.
+      'version-1_community' => ''
    );
 
    define('DB_SERVER', 'localhost:3306'); // DB server url. Usually localhost:3306

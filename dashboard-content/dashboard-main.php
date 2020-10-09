@@ -28,9 +28,26 @@ unset($_SESSION['jenkins_build_id']);
                     <br>
                     <strong>Showing: <?php echo $_SESSION['got_version'] ?></strong>
                     <div class="btn-toolbar">
-                        <?php foreach ($VARIANTS as $variant => $value) { ?>
-                            <button type="button" id="variantbutton" class="btn btn-primary btn-sm" value="<?php echo $variant ?>"><?php echo $variant ?></button>
-                        <?php } ?>
+                        <?php foreach ($VERSIONS as $version => $value) {
+                            if (!strpos($version, 'community')) { ?>
+                                <button type="button" id="versionbutton" class="btn btn-primary btn-sm" value="<?php echo $version ?>"><?php echo $version ?></button>
+                        <?php }
+                        } ?>
+                        <div class="dropdown">
+                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                community
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-center">
+                                <?php foreach ($VERSIONS as $version => $value) {
+                                    if (strpos($version, 'community')) { ?>
+                                        <li>
+                                            <button type="button" id="versionbutton" class="btn btn-warning btn-sm" value="<?php echo $version ?>"><?php echo explode('_', $version)[0] ?></button>
+                                        </li>
+                                <?php }
+                                } ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

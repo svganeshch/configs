@@ -4,15 +4,15 @@ include($path . '/utils/session.php');
 require_once($path . '/config/dbcon_config.php');
 
 if (isset($_SESSION['got_version'])) {
-   foreach ($VARIANTS as $variant => $variant_url) {
-      if ($_SESSION['got_version'] == $variant) {
-         $devices_list_url = $variant_url;
-         $_SESSION['got_version'] = $variant;
+   foreach ($VERSIONS as $version => $version_url) {
+      if ($_SESSION['got_version'] == $version) {
+         $devices_list_url = $version_url;
+         $_SESSION['got_version'] = $version;
       }
    }
 } else {
    // Always/Initially fallback to current version in case if no version is passed
-   $devices_list_url = $VARIANTS['arrow-10.0'];
+   $devices_list_url = $VERSIONS['arrow-10.0'];
    $_SESSION['got_version'] = 'arrow-10.0';
 }
 
