@@ -38,7 +38,7 @@ unset($_SESSION['jenkins_build_id']);
                                 community
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-center">
+                            <ul class="dropdown-menu">
                                 <?php foreach ($VERSIONS as $version => $value) {
                                     if (strpos($version, 'community')) { ?>
                                         <li>
