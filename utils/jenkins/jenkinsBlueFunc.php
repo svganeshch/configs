@@ -42,7 +42,7 @@ function setBuildID($cur_dev) {
     $lastBuildInfo = json_decode($lastBuildInfo, true);
 
     foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev.' ('.$_SESSION['got_version'].')') {
+        if($buildInfo['name'] == $cur_dev.' ('.explode('_', $_SESSION['got_version'])[0].')') {
             if($buildInfo['state'] == 'RUNNING' || $buildInfo['state'] == 'QUEUED')
                 $_SESSION['jenkins_build_id'] = $buildInfo['id'];
         }
