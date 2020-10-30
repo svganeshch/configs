@@ -34,6 +34,7 @@ $(document).ready(function() {
                 $('#buildvariant').val(value['buildvariant']);
                 $('#bootimage').bootstrapToggle((value['bootimage'] == 'yes') ? 'on' : 'off');
                 $('#weeklies_opt').bootstrapToggle((value['weeklies_opt'] == 'yes') ? 'on' : 'off');
+                $('#force_node').val(value['force_node']);
 
                 // text fields
                 repo_paths = $.parseJSON(value['repo_paths']);

@@ -1,4 +1,7 @@
 <?php
+   // No of nodes
+   $NODES = 5;
+   
    // Versions array
    $VERSIONS = array(
       'version-1' => '',

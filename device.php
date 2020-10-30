@@ -2,6 +2,7 @@
 $path = $_SERVER['DOCUMENT_ROOT'];
 require_once($path . '/utils/session.php');
 require_once($path . '/helpers/devices_connect_moi.php');
+require_once($path . '/config/dbcon_config.php');
 
 unset($_SESSION['jenkins_build_id']);
 
@@ -83,6 +84,18 @@ if (!$_SESSION['is_admin']) {
                                         </div>
                                     </div>
                                     <input type="hidden" name="hidden_global_override" id="hidden_global_override" value="no" />
+
+                                    <div class="col-md-3 col-xs-4" id="force_node_div">
+                                        <div class="pull-left form-group">
+                                            <label for="force_node">Force node:</label>
+                                            <select name="force_node" class="form-control" id="force_node" selected="selected">
+                                                <option>default</option>
+                                                <?php for ($i = 1; $i <= $NODES; $i++) {
+                                                    echo "<option>Arrow-".$i."</option>"; 
+                                                } ?>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     <div class="pull-right form-group">
                                         <input type="button" name="PipelineBuildTrigger" id="PipelineBuildTrigger" class="btn btn-success" value="Pipeline Build" />

@@ -85,7 +85,8 @@ unset($_SESSION['jenkins_build_id']);
                                                         default_buildtype_state varchar(10) NULL,
                                                         bootimage varchar(10) NULL,
                                                         global_override varchar(10) NULL,
-                                                        changelog LONGTEXT NULL)
+                                                        changelog LONGTEXT NULL,
+                                                        force_node varchar(10) NULL)
                                                        AS SELECT
                                                         'no' AS force_clean,
                                                         'no' AS test_build,
@@ -94,7 +95,8 @@ unset($_SESSION['jenkins_build_id']);
                                                         'vanilla' AS buildvariant,
                                                         'yes' AS default_buildtype_state,
                                                         'no' AS bootimage,
-                                                        'no' AS global_override";
+                                                        'no' AS global_override,
+                                                        'default' AS force_node";
                             mysqli_query($devices_db, $create_table_query) or die(mysqli_error($devices_db));
 
                             /* to add a new column 

@@ -84,6 +84,7 @@ $bootimage = $_POST["hidden_bootimage"];
 $weeklies_opt = $_POST["hidden_weeklies_opt"];
 $changelog = $_POST["changelog"];
 $xda_link = $_POST["xda_link"];
+$force_node = $_POST["force_node"];
 
 // Check to see if any admin specific toggles have been messed with
 if (!$_SESSION['is_admin']) {
@@ -127,6 +128,10 @@ if ($cur_device == 'common_config') {
     }
     if (isset($default_buildtype_state)) {
         pushQuery($default_buildtype_state, 'default_buildtype_state', $cur_device);
+        $chk_count++;
+    }
+    if (isset($force_node)) {
+        pushQuery($force_node, 'force_node', $cur_device);
         $chk_count++;
     }
 }
