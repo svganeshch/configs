@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
     var a = 0,
         b = 0,
@@ -17,124 +17,128 @@ $(document).ready(function() {
 
     $.ajax({
         url: "/utils/data/get_data.php",
-        method: "GET",
-    }).done(function(data) {
-        var result = $.parseJSON(data);
-        var j = 0;
+        method: "POST",
+        data: {
+            getData: 'yes'
+        },
+        success: function (data) {
+            var result = $.parseJSON(data);
+            var j = 0;
 
-        if (result != null) {
-            $.each(result, function(key, value) {
+            if (result != null) {
+                $.each(result, function (key, value) {
 
-                $('#global_override').bootstrapToggle((value['global_override'] == 'yes') ? 'on' : 'off');
-                $('#is_official').bootstrapToggle((value['is_official'] == 'yes') ? 'on' : 'off');
-                $('#test_build').bootstrapToggle((value['test_build'] == 'yes') ? 'on' : 'off');
-                $('#force_clean').bootstrapToggle((value['force_clean'] == 'yes') ? 'on' : 'off');
-                $('#default_buildtype_state').bootstrapToggle((value['default_buildtype_state'] == 'yes') ? 'on' : 'off');
-                $('#buildtype').val(value['buildtype']);
-                $('#buildvariant').val(value['buildvariant']);
-                $('#bootimage').bootstrapToggle((value['bootimage'] == 'yes') ? 'on' : 'off');
-                $('#weeklies_opt').bootstrapToggle((value['weeklies_opt'] == 'yes') ? 'on' : 'off');
-                $('#force_node').val(value['force_node']);
+                    $('#global_override').bootstrapToggle((value['global_override'] == 'yes') ? 'on' : 'off');
+                    $('#is_official').bootstrapToggle((value['is_official'] == 'yes') ? 'on' : 'off');
+                    $('#test_build').bootstrapToggle((value['test_build'] == 'yes') ? 'on' : 'off');
+                    $('#force_clean').bootstrapToggle((value['force_clean'] == 'yes') ? 'on' : 'off');
+                    $('#default_buildtype_state').bootstrapToggle((value['default_buildtype_state'] == 'yes') ? 'on' : 'off');
+                    $('#buildtype').val(value['buildtype']);
+                    $('#buildvariant').val(value['buildvariant']);
+                    $('#bootimage').bootstrapToggle((value['bootimage'] == 'yes') ? 'on' : 'off');
+                    $('#weeklies_opt').bootstrapToggle((value['weeklies_opt'] == 'yes') ? 'on' : 'off');
+                    $('#force_node').val(value['force_node']);
 
-                // text fields
-                repo_paths = $.parseJSON(value['repo_paths']);
-                repo_clones = $.parseJSON(value['repo_clones']);
-                repo_clones_paths = $.parseJSON(value['repo_clones_paths']);
-                repopick_topics = $.parseJSON(value['repopick_topics']);
-                repopick_changes = $.parseJSON(value['repopick_changes']);
-                changelog = value['changelog'];
-                xda_link = value['xda_link'];
-            });
-        }
+                    // text fields
+                    repo_paths = $.parseJSON(value['repo_paths']);
+                    repo_clones = $.parseJSON(value['repo_clones']);
+                    repo_clones_paths = $.parseJSON(value['repo_clones_paths']);
+                    repopick_topics = $.parseJSON(value['repopick_topics']);
+                    repopick_changes = $.parseJSON(value['repopick_changes']);
+                    changelog = value['changelog'];
+                    xda_link = value['xda_link'];
+                });
+            }
 
-        // repo paths to delete json data
-        if (repo_paths != null && repo_paths != 'null' && repo_paths != 'NULL') {
-            $.each(repo_paths, function(key, value) {
-                if (value != null && value != 'null' && value != 'NULL') {
-                    for (j = 0; j <= value.length - 1; j++) {
-                        if (j != 0) {
-                            if ($('#' + 'repo_paths_text_field' + j + '').length == 0)
-                                $("#add1").trigger("click");
-                        }
-                        $('#repo_paths_text_field' + a + '').val(value[j]);
-                    }
-                }
-            });
-        }
-
-        // repos to clone json data
-        if (repo_clones != null && repo_clones != 'null' && repo_clones != 'NULL') {
-            $.each(repo_clones, function(key, value) {
-                if (value != null && value != 'null' && value != 'NULL') {
-                    for (j = 0; j <= value.length - 1; j++) {
-                        if ($('#' + 'repo_clones_text_field' + j + '').length == 0)
-                            $("#add2").trigger("click");
-
-                        var clone_url = value[j];
-                        if (clone_url.includes("-b")) {
-                            var splitString = clone_url.split('-b');
-                            $('#repo_clones_text_field' + b + '').val(splitString[0].trim());
-                            $('#repo_clone_branch_text_field' + b + '').val(splitString[1].trim());
-                        } else {
-                            $('#repo_clones_text_field' + b + '').val(clone_url);
+            // repo paths to delete json data
+            if (repo_paths != null && repo_paths != 'null' && repo_paths != 'NULL') {
+                $.each(repo_paths, function (key, value) {
+                    if (value != null && value != 'null' && value != 'NULL') {
+                        for (j = 0; j <= value.length - 1; j++) {
+                            if (j != 0) {
+                                if ($('#' + 'repo_paths_text_field' + j + '').length == 0)
+                                    $("#add1").trigger("click");
+                            }
+                            $('#repo_paths_text_field' + a + '').val(value[j]);
                         }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        // repo clone paths json data
-        if (repo_clones_paths != null && repo_clones_paths != 'null' && repo_clones_paths != 'NULL') {
-            $.each(repo_clones_paths, function(key, value) {
-                if (value != null && value != 'null' && value != 'NULL') {
-                    for (j = 0; j <= value.length - 1; j++) {
-                        b = j;
-                        $('#repo_clones_paths_text_field' + b + '').val(value[j]);
+            // repos to clone json data
+            if (repo_clones != null && repo_clones != 'null' && repo_clones != 'NULL') {
+                $.each(repo_clones, function (key, value) {
+                    if (value != null && value != 'null' && value != 'NULL') {
+                        for (j = 0; j <= value.length - 1; j++) {
+                            if ($('#' + 'repo_clones_text_field' + j + '').length == 0)
+                                $("#add2").trigger("click");
+
+                            var clone_url = value[j];
+                            if (clone_url.includes("-b")) {
+                                var splitString = clone_url.split('-b');
+                                $('#repo_clones_text_field' + b + '').val(splitString[0].trim());
+                                $('#repo_clone_branch_text_field' + b + '').val(splitString[1].trim());
+                            } else {
+                                $('#repo_clones_text_field' + b + '').val(clone_url);
+                            }
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        // repopick topics json data
-        if (repopick_topics != null && repopick_topics != 'null' && repopick_topics != 'NULL') {
-            $.each(repopick_topics, function(key, value) {
-                if (value != null && value != 'null' && value != 'NULL') {
-                    for (j = 0; j <= value.length - 1; j++) {
-                        if ($('#' + 'repopick_topics_text_field' + j + '').length == 0)
-                            $("#add3").trigger("click");
-                        $('#repopick_topics_text_field' + c + '').val(value[j]);
+            // repo clone paths json data
+            if (repo_clones_paths != null && repo_clones_paths != 'null' && repo_clones_paths != 'NULL') {
+                $.each(repo_clones_paths, function (key, value) {
+                    if (value != null && value != 'null' && value != 'NULL') {
+                        for (j = 0; j <= value.length - 1; j++) {
+                            b = j;
+                            $('#repo_clones_paths_text_field' + b + '').val(value[j]);
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        // repopick changes json data
-        if (repopick_changes != null && repopick_changes != 'null' && repopick_changes != 'NULL') {
-            $.each(repopick_changes, function(key, value) {
-                if (value != null && value != 'null' && value != 'NULL') {
-                    for (j = 0; j <= value.length - 1; j++) {
-                        if ($('#' + 'repopick_changes_text_field' + j + '').length == 0)
-                            $("#add4").trigger("click");
-                        $('#repopick_changes_text_field' + d + '').val(value[j]);
+            // repopick topics json data
+            if (repopick_topics != null && repopick_topics != 'null' && repopick_topics != 'NULL') {
+                $.each(repopick_topics, function (key, value) {
+                    if (value != null && value != 'null' && value != 'NULL') {
+                        for (j = 0; j <= value.length - 1; j++) {
+                            if ($('#' + 'repopick_topics_text_field' + j + '').length == 0)
+                                $("#add3").trigger("click");
+                            $('#repopick_topics_text_field' + c + '').val(value[j]);
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        if (xda_link != null && xda_link != 'null' && xda_link != 'NULL') {
-            $('#xda_link').val(xda_link);
-        } else {
-            $('#xda_link').val('');
-        }
+            // repopick changes json data
+            if (repopick_changes != null && repopick_changes != 'null' && repopick_changes != 'NULL') {
+                $.each(repopick_changes, function (key, value) {
+                    if (value != null && value != 'null' && value != 'NULL') {
+                        for (j = 0; j <= value.length - 1; j++) {
+                            if ($('#' + 'repopick_changes_text_field' + j + '').length == 0)
+                                $("#add4").trigger("click");
+                            $('#repopick_changes_text_field' + d + '').val(value[j]);
+                        }
+                    }
+                });
+            }
 
-        if (changelog != null && changelog != 'null' && changelog != 'NULL') {
-            $('#changelog').val(changelog);
-        } else {
-            $('#changelog').val('');
+            if (xda_link != null && xda_link != 'null' && xda_link != 'NULL') {
+                $('#xda_link').val(xda_link);
+            } else {
+                $('#xda_link').val('');
+            }
+
+            if (changelog != null && changelog != 'null' && changelog != 'NULL') {
+                $('#changelog').val(changelog);
+            } else {
+                $('#changelog').val('');
+            }
         }
     });
 
-    $('body').on('click', '#add1', function() {
+    $('body').on('click', '#add1', function () {
         a++;
         $('#dynamic_field-1-').append(
             '<li class="list-group-item" style="border:none" id="dynamic_field-repo_paths' + a + '">' +
@@ -149,7 +153,7 @@ $(document).ready(function() {
             '</li>');
         $('#repo_paths_text_field' + a + '').focus();
     });
-    $('body').on('click', '#add2', function() {
+    $('body').on('click', '#add2', function () {
         b++;
         $('#dynamic_field-2-').append(
             '<li class="list-group-item" style="border:none" id="dynamic_field-repo_clones' + b + '">' +
@@ -177,7 +181,7 @@ $(document).ready(function() {
             '</li>');
         $('#repo_clones_text_field' + b + '').focus();
     });
-    $('body').on('click', '#add3', function() {
+    $('body').on('click', '#add3', function () {
         c++;
         $('#dynamic_field-3-').append(
             '<li class="list-group-item" style="border:none" id="dynamic_field-repopick_topics' + c + '">' +
@@ -192,7 +196,7 @@ $(document).ready(function() {
             '</li>');
         $('#repopick_topics_text_field' + c + '').focus();
     });
-    $('body').on('click', '#add4', function() {
+    $('body').on('click', '#add4', function () {
         d++;
         $('#dynamic_field-4-').append(
             '<li class="list-group-item" style="border:none" id="dynamic_field-repopick_changes' + d + '">' +
@@ -215,7 +219,7 @@ $(document).ready(function() {
         onstyle: 'success',
         offstyle: 'danger'
     });
-    $('body').on('change', '#global_override', function() {
+    $('body').on('change', '#global_override', function () {
         if ($(this).prop('checked')) {
             $('#default_buildtype_state').trigger("change");
             $('#hidden_global_override').val('yes');
@@ -233,7 +237,7 @@ $(document).ready(function() {
         onstyle: 'success',
         offstyle: 'danger'
     });
-    $('body').on('change', '#is_official', function() {
+    $('body').on('change', '#is_official', function () {
         if ($(this).prop('checked')) {
             $('#hidden_is_official').val('yes');
         } else {
@@ -247,7 +251,7 @@ $(document).ready(function() {
         onstyle: 'success',
         offstyle: 'danger'
     });
-    $('body').on('change', '#test_build', function() {
+    $('body').on('change', '#test_build', function () {
         if ($(this).prop('checked')) {
             $('#hidden_test_build').val('yes');
         } else {
@@ -261,7 +265,7 @@ $(document).ready(function() {
         onstyle: 'success',
         offstyle: 'danger'
     });
-    $('body').on('change', '#force_clean', function() {
+    $('body').on('change', '#force_clean', function () {
         if ($(this).prop('checked')) {
             $('#hidden_force_clean').val('yes');
         } else {
@@ -275,7 +279,7 @@ $(document).ready(function() {
         onstyle: 'success',
         offstyle: 'danger'
     });
-    $('body').on('change', '#default_buildtype_state', function() {
+    $('body').on('change', '#default_buildtype_state', function () {
         if ($(this).prop('checked')) {
             $('#hidden_default_buildtype_state').val('yes');
             $('#buildtype_div').hide();
@@ -285,7 +289,7 @@ $(document).ready(function() {
         }
     });
 
-    $('body').on('click', '#PipelineBuildTrigger', function() {
+    $('body').on('click', '#PipelineBuildTrigger', function () {
         $('#notifyDialog').modal({
             backdrop: "static",
             keyboard: false,
@@ -298,10 +302,10 @@ $(document).ready(function() {
             data: {
                 PipelineBuildTrigger: 'yes'
             },
-            success: function(data) {
+            success: function (data) {
                 data = data.trim();
                 $('#notifyDialogData').text(data);
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#notifyDialog").modal("hide");
                 }, 2000);
             }
@@ -314,7 +318,7 @@ $(document).ready(function() {
         onstyle: 'success',
         offstyle: 'danger'
     });
-    $('body').on('change', '#bootimage', function() {
+    $('body').on('change', '#bootimage', function () {
         if ($(this).prop('checked')) {
             $('#hidden_bootimage').val('yes');
         } else {
@@ -328,7 +332,7 @@ $(document).ready(function() {
         onstyle: 'success',
         offstyle: 'danger'
     });
-    $('body').on('change', '#weeklies_opt', function() {
+    $('body').on('change', '#weeklies_opt', function () {
         if ($(this).prop('checked')) {
             $('#hidden_weeklies_opt').val('yes');
         } else {
@@ -336,7 +340,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '.btn_remove', function() {
+    $(document).on('click', '.btn_remove', function () {
         var button_id = $(this).attr("id");
         $('#dynamic_field-' + button_id + '').remove();
     });
@@ -344,10 +348,10 @@ $(document).ready(function() {
     function parseValidateData(invalidFieldsData, validateData, KeyValidateData) {
         var field_index = 0;
         var is_data_ok = true;
-        $.each(invalidFieldsData, function(key, value) {
+        $.each(invalidFieldsData, function (key, value) {
             if (value != null) {
                 if (key == KeyValidateData) {
-                    $.each(validateData, function(form_key, form_data) {
+                    $.each(validateData, function (form_key, form_data) {
                         if (value[field_index] == $('#' + form_data).val()) {
                             $('#' + KeyValidateData + '_group' + form_data[form_data.length - 1]).addClass('has-error has-feedback')
                                 .append('<span class="glyphicon glyphicon-remove form-control-feedback" id="field-error-icon"></span>');
@@ -368,30 +372,30 @@ $(document).ready(function() {
             url: "/utils/validateFields.php",
             method: "POST",
             data: $('#device_changes').serialize(),
-            success: function(data) {
+            success: function (data) {
                 var invalid_fields = $.parseJSON(data);
                 var repo_paths_data = $("input[name='repo_paths[]']")
-                    .map(function() { return $(this).attr('id'); }).get();
+                    .map(function () { return $(this).attr('id'); }).get();
                 $('[id^=repo_paths_group]').removeClass('has-error has-feedback');
 
                 var repo_clones_data = $("input[name='repo_clones[]']")
-                    .map(function() { return $(this).attr('id'); }).get();
+                    .map(function () { return $(this).attr('id'); }).get();
                 $('[id^=repo_clones_group]').removeClass('has-error has-feedback');
 
                 var repo_clone_branch_data = $("input[name='repo_clone_branch[]']")
-                    .map(function() { return $(this).attr('id'); }).get();
+                    .map(function () { return $(this).attr('id'); }).get();
                 $('[id^=repo_clone_branch_group]').removeClass('has-error has-feedback');
 
                 var repo_clones_paths_data = $("input[name='repo_clones_paths[]']")
-                    .map(function() { return $(this).attr('id'); }).get();
+                    .map(function () { return $(this).attr('id'); }).get();
                 $('[id^=repo_clones_paths_group]').removeClass('has-error has-feedback');
 
                 var repopick_topics_data = $("input[name='repopick_topics[]']")
-                    .map(function() { return $(this).attr('id'); }).get();
+                    .map(function () { return $(this).attr('id'); }).get();
                 $('[id^=repopick_topics_group]').removeClass('has-error has-feedback');
 
                 var repopick_changes_data = $("input[name='repopick_changes[]']")
-                    .map(function() { return $(this).attr('id'); }).get();
+                    .map(function () { return $(this).attr('id'); }).get();
                 $('[id^=repopick_changes_group]').removeClass('has-error has-feedback');
 
                 $('span[id^=field-error-icon]').remove();
@@ -409,7 +413,7 @@ $(document).ready(function() {
         return is_fields_ok;
     }
 
-    $('body').on('click', '#submit', function() {
+    $('body').on('click', '#submit', function () {
         $('#notifyDialog').modal({
             backdrop: "static",
             keyboard: false,
@@ -418,7 +422,7 @@ $(document).ready(function() {
 
         if (!validateFields()) {
             $('#notifyDialogData').text('Invalid data...!!');
-            setTimeout(function() {
+            setTimeout(function () {
                 $("#notifyDialog").modal("hide");
             }, 800);
             return;
@@ -429,17 +433,17 @@ $(document).ready(function() {
             url: "/utils/data/send_data.php",
             method: "POST",
             data: $('#device_changes').serialize(),
-            success: function(data) {
+            success: function (data) {
                 data = data.trim();
                 $('#notifyDialogData').text(data);
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#notifyDialog").modal("hide");
                 }, 2000);
             }
         });
     });
 
-    $('body').on('click', '#buildTrigger', function() {
+    $('body').on('click', '#buildTrigger', function () {
         $('#submit').trigger('click');
         if (!is_fields_ok) return;
         $('#notifyDialog').modal({
@@ -455,18 +459,18 @@ $(document).ready(function() {
             data: {
                 buildTrigger: 'yes'
             },
-            success: function(data) {
+            success: function (data) {
                 $('#buildOutput').empty();
                 data = data.trim();
                 $('#notifyDialogData').text(data);
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#notifyDialog").modal("hide");
                 }, 2000);
             }
         });
     });
 
-    $('body').on('click', '#buildRemoveQueue', function() {
+    $('body').on('click', '#buildRemoveQueue', function () {
         $('#notifyDialog').modal({
             backdrop: "static",
             keyboard: false,
@@ -479,17 +483,17 @@ $(document).ready(function() {
             data: {
                 buildRemoveQueue: 'yes'
             },
-            success: function(data) {
+            success: function (data) {
                 data = data.trim();
                 $('#notifyDialogData').text(data);
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#notifyDialog").modal("hide");
                 }, 2000);
             }
         });
     });
 
-    $('body').on('click', '#buildStop', function() {
+    $('body').on('click', '#buildStop', function () {
         $('#notifyDialog').modal({
             backdrop: "static",
             keyboard: false,
@@ -502,10 +506,10 @@ $(document).ready(function() {
             data: {
                 buildStop: 'yes'
             },
-            success: function(data) {
+            success: function (data) {
                 data = data.trim();
                 $('#notifyDialogData').text(data);
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#notifyDialog").modal("hide");
                 }, 2000);
             }
@@ -522,7 +526,7 @@ $(document).ready(function() {
             data: {
                 getProgressStatus: 'yes'
             },
-            success: function(data) {
+            success: function (data) {
                 data = data.trim();
                 $('.progress-bar').css('width', data + '%').attr('aria-valuenow', data).text(data + '%');
             }
@@ -537,7 +541,7 @@ $(document).ready(function() {
             data: {
                 getHeaderTextSize: 'yes',
             },
-            success: function(data) {
+            success: function (data) {
                 if (data != null) {
                     var headerData = JSON.parse(data);
                     window.curTextSize = Number(headerData['x-text-size']);
@@ -568,7 +572,7 @@ $(document).ready(function() {
             data: {
                 getBuildStatus: 'yes'
             },
-            success: function(data) {
+            success: function (data) {
                 $('#buildStatus').text(data);
                 data = data.trim(); // cuz whitespaces are gey
                 if ((data.localeCompare('building')) == 0 || window.Morelog == 'true') {
@@ -578,7 +582,7 @@ $(document).ready(function() {
                 } else if ((data.localeCompare('idle')) == 0) {
                     //if (!window.idleLogSetShown) setIdleMoreLog();
                 }
-                window.jenkinsLooper = setTimeout(function() {
+                window.jenkinsLooper = setTimeout(function () {
                     getJenkinsBuildStatus();
                 }, 5000);
             }
@@ -645,7 +649,7 @@ $(document).ready(function() {
     //     });
     // });
 
-    $('body').on('click', '#reset-hard', function() {
+    $('body').on('click', '#reset-hard', function () {
         //set defaults
         $('#is_official').bootstrapToggle('on');
         $('#test_build').bootstrapToggle('off');

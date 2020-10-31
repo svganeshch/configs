@@ -86,12 +86,12 @@ if (!$_SESSION['is_admin']) {
                                     <input type="hidden" name="hidden_global_override" id="hidden_global_override" value="no" />
 
                                     <div class="col-md-3 col-xs-4" id="force_node_div">
-                                        <div class="pull-left form-group">
+                                        <div class="form-group">
                                             <label for="force_node">Force node:</label>
                                             <select name="force_node" class="form-control" id="force_node" selected="selected">
                                                 <option>default</option>
                                                 <?php for ($i = 1; $i <= $NODES; $i++) {
-                                                    echo "<option>Arrow-".$i."</option>"; 
+                                                    echo "<option>Arrow-" . $i . "</option>";
                                                 } ?>
                                             </select>
                                         </div>
