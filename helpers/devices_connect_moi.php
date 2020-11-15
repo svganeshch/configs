@@ -22,6 +22,12 @@ if (!$devices_db) {
    die("Database Connection Failed" . mysqli_error($devices_db));
 }
 
+define('DB_DATABASE_DEVICES_TEST_PROFILE', 'configs_test_profile_' . $_SESSION['got_version']);
+$devices_test_profile_db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE_DEVICES_TEST_PROFILE);
+if (!$devices_test_profile_db) {
+   die("Database test profile Connection Failed" . mysqli_error($devices_test_profile_db));
+}
+
 // get maintainer device
 $maintainer_device_query = "SELECT `maintainer_device` FROM `device_maintainers` WHERE `username`='" . $_SESSION['login_user'] . "'";
 $maintainer_device = mysqli_query($devices_db, $maintainer_device_query) or die(mysqli_error($devices_db));

@@ -1,4 +1,6 @@
 ﻿<?php
+error_reporting(E_ALL & ~E_NOTICE);
+
 $path = $_SERVER['DOCUMENT_ROOT'];
 require_once($path . '/utils/session.php');
 require_once($path . '/helpers/devices_connect_moi.php');
@@ -221,7 +223,18 @@ if (!$_SESSION['is_admin']) {
 
                                             <div class="config_dev_div" id="config_dev_div">
                                                 <strong><label name="config_dev_name" id="config_dev_name"><?php echo ucfirst($_SESSION["cur_device"]); ?> config:</label></strong>
-                                                <br />
+
+                                                <div class="row">
+                                                    <div class="col-md-3 col-xs-4">
+                                                        <div class="form-group pull-right">
+                                                            <label for="sel1">Select profile:</label>
+                                                            <select name="device_profile" class="form-control" id="device_profile" selected="selected">
+                                                                <option>official</option>
+                                                                <option>test</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="main_config_menu" id="main_config_menu">

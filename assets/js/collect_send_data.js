@@ -15,11 +15,13 @@ $(document).ready(function () {
     var xda_link;
     var is_fields_ok = false;
 
+    $('#device_profile').val(localStorage.getItem('device_profile'));
     $.ajax({
         url: "/utils/data/get_data.php",
         method: "POST",
         data: {
-            getData: 'yes'
+            getData: 'yes',
+            device_profile: localStorage.getItem('device_profile')
         },
         success: function (data) {
             var result = $.parseJSON(data);
@@ -515,6 +517,14 @@ $(document).ready(function () {
             }
         });
     });
+
+    // switch device profile
+    $('#device_profile').change(function (params) {
+        var device_profile = $('#device_profile').val();
+        localStorage.setItem('device_profile', device_profile);
+        $.post("/helpers/setProfile.php", { "device_profile": device_profile });
+        window.location.href = window.location.href;
+    })
 
     // set build progress
     $('#build-progress-bar').hide();

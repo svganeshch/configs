@@ -7,21 +7,24 @@ require_once($path . '/helpers/devices_connect_moi.php');
 
 function pushQuery($device_data, $row_name, $cur_device) {
     global $devices_db;
+    global $devices_test_profile_db;
     global $push_count;
+    global $deviceProfile;
 
     $device_data = trim($device_data);
+    $dev_db = ($deviceProfile == "official") ? $devices_db : $devices_test_profile_db;
 
     $check_query = "SELECT `$row_name` FROM `$cur_device`";
-    $check_res = mysqli_query($devices_db, $check_query) or die("Checking for table failed!" . mysqli_error($devices_db));
+    $check_res = mysqli_query($dev_db, $check_query) or die("Checking for table failed!" . mysqli_error($dev_db));
     $check_res = mysqli_num_rows($check_res);
 
     if ($check_res == 0) {
-        $final_query = "INSERT into `$cur_device` (`$row_name`) VALUES ('$device_data')";
+        $final_query = "INSERT into `$cur_device` (`$row_name`) VALUES ('$dev_db')";
     } else {
         $final_query="UPDATE `$cur_device` SET `$row_name`='$device_data'";
     }
 
-    $final_res = mysqli_query($devices_db, $final_query) or die(mysqli_error($devices_db));
+    $final_res = mysqli_query($dev_db, $final_query) or die(mysqli_error($dev_db));
 
     if (!empty($final_res)) {
         $push_count++;
@@ -62,6 +65,7 @@ function genJsonData ($counts, $key_value_name) {
 }
 
 // Start
+$deviceProfile = $_POST["device_profile"];
 $cur_device = $_SESSION["cur_device"];
 $push_count = 0;
 

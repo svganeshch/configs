@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
+
 $path = $_SERVER['DOCUMENT_ROOT'];
 require_once($path . '/utils/session.php');
 require($path . '/helpers/devices_connect_moi.php');
@@ -99,6 +101,9 @@ unset($_SESSION['jenkins_build_id']);
                                                         'default' AS force_node";
                             mysqli_query($devices_db, $create_table_query) or die(mysqli_error($devices_db));
 
+                            // create common_config table also in test profile
+                            mysqli_query($devices_test_profile_db, $create_table_query) or die(mysqli_error($devices_test_profile_db));
+
                             /* to add a new column 
                                 $alter_table_query = "ALTER TABLE common_config ADD default_buildtype_state varchar(10) NULL AFTER buildtype";
                                 mysqli_query($devices_db, $alter_table_query) or die(mysqli_error($devices_db));*/
@@ -165,6 +170,9 @@ unset($_SESSION['jenkins_build_id']);
                                                              '$device_buildtype' AS default_buildtype,
                                                              '0' AS opts";
                                 mysqli_query($devices_db, $create_table_query) or die(mysqli_error($devices_db));
+
+                                // create device table also in test profile
+                                mysqli_query($devices_test_profile_db, $create_table_query) or die(mysqli_error($devices_test_profile_db));
 
                                 /* update the default buildtype eachtime on login or dashboard */
                                 $update_default_buildtype = "UPDATE `$device` SET `default_buildtype`='$device_buildtype'";

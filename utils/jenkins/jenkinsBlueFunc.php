@@ -122,7 +122,7 @@ if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
 
     $force_node = getDataValue("common_config", "force_node");
 
-    if(responseHandler($kicker_build_pipeline_url.$device.'&version='.$_SESSION['got_version'].'&force_node='.$force_node) == "") {
+    if(responseHandler($kicker_build_pipeline_url.$device.'&version='.$_SESSION['got_version'].'&force_node='.$force_node.'&device_profile='.$_SESSION['device_profile']) == "") {
         unset($_SESSION['jenkins_build_id']);
         setBuildID($device);
         exit("Build initiated!");
@@ -161,7 +161,7 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
 
     $kicker_build_pipeline_url = substr($kicker_build_pipeline_url, 0, -1);
     $force_node = getDataValue("common_config", "force_node");
-    $pipeline_response = responseHandler($kicker_build_pipeline_url.'&version='.$_SESSION['got_version'].'&force_node='.$force_node);
+    $pipeline_response = responseHandler($kicker_build_pipeline_url.'&version='.$_SESSION['got_version'].'&force_node='.$force_node.'&device_profile='.$_SESSION['device_profile']);
 
     if ($pipeline_response == "") exit("Pipeline triggered!");
     else exit("Failed to trigger pipeline!\n".$pipeline_response);
