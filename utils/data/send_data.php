@@ -5,7 +5,8 @@ $path = $_SERVER['DOCUMENT_ROOT'];
 require_once($path . '/utils/session.php');
 require_once($path . '/helpers/devices_connect_moi.php');
 
-function pushQuery($device_data, $row_name, $cur_device) {
+function pushQuery($device_data, $row_name, $cur_device)
+{
     global $devices_db;
     global $devices_test_profile_db;
     global $push_count;
@@ -21,7 +22,7 @@ function pushQuery($device_data, $row_name, $cur_device) {
     if ($check_res == 0) {
         $final_query = "INSERT into `$cur_device` (`$row_name`) VALUES ('$dev_db')";
     } else {
-        $final_query="UPDATE `$cur_device` SET `$row_name`='$device_data'";
+        $final_query = "UPDATE `$cur_device` SET `$row_name`='$device_data'";
     }
 
     $final_res = mysqli_query($dev_db, $final_query) or die(mysqli_error($dev_db));
@@ -29,18 +30,18 @@ function pushQuery($device_data, $row_name, $cur_device) {
     if (!empty($final_res)) {
         $push_count++;
     }
-
 }
 
-function genJsonCloneData ($counts, $key_value_name, $branch) {
+function genJsonCloneData($counts, $key_value_name, $branch)
+{
     global $cur_device;
 
-    for ($i=0; $i < $counts; $i++) { 
+    for ($i = 0; $i < $counts; $i++) {
         if (trim($_POST["$key_value_name"][$i]) != '') {
             if (isset($_POST["$branch"][$i]) && trim($_POST["$branch"][$i]) != '') {
-                $content [] = $_POST["$key_value_name"][$i]." -b ".$_POST["$branch"][$i];
+                $content[] = $_POST["$key_value_name"][$i] . " -b " . $_POST["$branch"][$i];
             } else {
-                $content [] = $_POST["$key_value_name"][$i];
+                $content[] = $_POST["$key_value_name"][$i];
             }
         }
     }
@@ -50,12 +51,13 @@ function genJsonCloneData ($counts, $key_value_name, $branch) {
     pushQuery($repo_data, $key_value_name, $cur_device);
 }
 
-function genJsonData ($counts, $key_value_name) {
+function genJsonData($counts, $key_value_name)
+{
     global $cur_device;
 
-    for ($i=0; $i < $counts; $i++) { 
+    for ($i = 0; $i < $counts; $i++) {
         if (trim($_POST["$key_value_name"][$i]) != '') {
-            $content [] = $_POST["$key_value_name"][$i];
+            $content[] = $_POST["$key_value_name"][$i];
         }
     }
 
@@ -90,6 +92,11 @@ $changelog = $_POST["changelog"];
 $xda_link = $_POST["xda_link"];
 $force_node = $_POST["force_node"];
 
+if (isset($_POST['clone_profile']) && $_POST['clone_profile'] == "yes") {
+    if ($deviceProfile == "official") $deviceProfile = "test";
+    elseif ($deviceProfile == "test") $deviceProfile = "official";
+}
+
 // Check to see if any admin specific toggles have been messed with
 if (!$_SESSION['is_admin']) {
     if (($is_official == 'yes') || ($test_build == 'no') || ($force_clean == 'yes')) {
@@ -112,7 +119,7 @@ pushQuery($buildtype, 'buildtype', $cur_device);
 pushQuery($buildvariant, 'buildvariant', $cur_device);
 pushQuery($bootimage, 'bootimage', $cur_device);
 pushQuery($changelog, 'changelog', $cur_device);
-$chk_count=12;
+$chk_count = 12;
 
 if ($cur_device != 'common_config') {
     if (isset($weeklies_opt)) {
@@ -140,8 +147,6 @@ if ($cur_device == 'common_config') {
     }
 }
 
-if ( $push_count == $chk_count ) {
-    echo "Successfully inserted ".$cur_device." data!";
+if ($push_count == $chk_count) {
+    echo "Successfully inserted " . $cur_device . " data!";
 }
-
-?>

@@ -225,6 +225,11 @@ if (!$_SESSION['is_admin']) {
                                                 <strong><label name="config_dev_name" id="config_dev_name"><?php echo ucfirst($_SESSION["cur_device"]); ?> config:</label></strong>
 
                                                 <div class="row">
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <button type="button" id="clone_profile" name="clone_profile" class="btn btn-success" title="clone this content over to other profile!">
+                                                            <i class="fa fa-files-o" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                     <div class="col-md-3 col-xs-4">
                                                         <div class="form-group pull-right">
                                                             <label for="sel1">Select profile:</label>

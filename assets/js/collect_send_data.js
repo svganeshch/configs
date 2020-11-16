@@ -445,6 +445,36 @@ $(document).ready(function () {
         });
     });
 
+    $('body').on('click', '#clone_profile', function () {
+        $('#notifyDialog').modal({
+            backdrop: "static",
+            keyboard: false,
+            show: true
+        });
+
+        if (!validateFields()) {
+            $('#notifyDialogData').text('Invalid data...!!');
+            setTimeout(function () {
+                $("#notifyDialog").modal("hide");
+            }, 800);
+            return;
+        }
+
+        $('#notifyDialogData').text('Please wait cloning profile...!');
+        $.ajax({
+            url: "/utils/data/send_data.php",
+            method: "POST",
+            data: $('#device_changes').serialize() + '&clone_profile=yes',
+            success: function (data) {
+                data = data.trim();
+                $('#notifyDialogData').text(data);
+                setTimeout(function () {
+                    $("#notifyDialog").modal("hide");
+                }, 2000);
+            }
+        });
+    });
+
     $('body').on('click', '#buildTrigger', function () {
         $('#submit').trigger('click');
         if (!is_fields_ok) return;
