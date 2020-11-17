@@ -31,6 +31,7 @@ function getData($cur_device) {
 */
 function getDataValue($device_table, $col_name) {
     global $devices_db;
+    global $devices_test_profile_db;
     
     $dev_db = ($_SESSION["device_profile"] == "official") ? $devices_db : $devices_test_profile_db;
 
