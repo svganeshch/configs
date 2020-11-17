@@ -31,9 +31,11 @@ function getData($cur_device) {
 */
 function getDataValue($device_table, $col_name) {
     global $devices_db;
+    
+    $dev_db = ($_SESSION["device_profile"] == "official") ? $devices_db : $devices_test_profile_db;
 
     $get_data_query = "SELECT `$col_name` FROM `$device_table`";
-    $get_data_query_res = mysqli_query($devices_db, $get_data_query) or die("Fetching data from table failed!" . mysqli_error($devices_db));
+    $get_data_query_res = mysqli_query($dev_db, $get_data_query) or die("Fetching data from table failed!" . mysqli_error($dev_db));
     $get_data_query_rows = mysqli_num_rows($get_data_query_res);
 
     if ($get_data_query_rows > 0) {
