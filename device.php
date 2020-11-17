@@ -357,7 +357,7 @@ if (!$_SESSION['is_admin']) {
                             <!-- jenkins build buttons -->
                             <?php
                             $global_state_query = "SELECT `global_override` from `common_config`";
-                            $global_state_query_res = mysqli_query($devices_db, $global_state_query) or die(mysqli_error($devices_db));
+                            $global_state_query_res = mysqli_query(($_SESSION['device_profile'] == "official") ? $devices_db : $devices_test_profile_db, $global_state_query) or die(mysqli_error($devices_db));
                             $global_state = mysqli_fetch_assoc($global_state_query_res);
                             $global_state = $global_state['global_override'];
                             ?>
