@@ -15,6 +15,7 @@ $(document).ready(function () {
     var xda_link;
     var is_fields_ok = false;
 
+    $.post("/helpers/setProfile.php", { "device_profile": localStorage.getItem('device_profile') });
     $('#device_profile').val(localStorage.getItem('device_profile'));
     $.ajax({
         url: "/utils/data/get_data.php",
