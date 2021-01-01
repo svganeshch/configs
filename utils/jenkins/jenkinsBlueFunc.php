@@ -121,6 +121,9 @@ if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
     }
 
     $force_node = getDataValue("common_config", "force_node");
+    
+    if($_SESSION['device_profile'] == "official" && !$_SESSION['is_admin'])
+        exit("Initiating builds from official profile is forbidden for non-admins, please refresh the page or choose appropriate profile!");
 
     if(responseHandler($kicker_build_pipeline_url.$device.'&version='.$_SESSION['got_version'].'&force_node='.$force_node.'&device_profile='.$_SESSION['device_profile']) == "") {
         unset($_SESSION['jenkins_build_id']);
