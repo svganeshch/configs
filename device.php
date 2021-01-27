@@ -159,7 +159,7 @@ if (!$_SESSION['is_admin']) {
                                                         <div class="col-md-3 col-xs-4" title="Opting out of more than 3 weeklies consequently will lock you out from using configs!">
                                                             <div class="form-group">
                                                                 <div class="checkbox">
-                                                                    <label>Weeklies <span class="badge badge-light pull-right"><?php echo $get_opts_query_res ?></span>
+                                                                    <label>Official release<span class="badge badge-light pull-right"><?php echo $get_opts_query_res ?></span>
                                                                         <span class="sr-only">unread messages</span>
                                                                     </label>
                                                                     <input type="checkbox" name="weeklies_opt" id="weeklies_opt" checked />
