@@ -55,7 +55,7 @@ $invalidFields['repo_clones_paths'] = $repoClonesPathsContent;
 foreach($repopickTopics as $value) {
     $value = trim($value);
     if($value != null) {
-        if(!preg_match('/^([A-z0-9-_+.]*)[A-z0-9.]*$/', $value)) {
+        if(!preg_match('/^([A-z0-9- _:\/@+.]*)[A-z0-9.]*$/', $value)) {
             $repopickTopicsContent[] = $value;
         }
     }
