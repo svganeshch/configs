@@ -1,5 +1,5 @@
 <?php
-$path = $_SERVER['DOCUMENT_ROOT'];
+$path = "/var/www/html";
 include($path . '/utils/session.php');
 require_once($path . '/config/dbcon_config.php');
 

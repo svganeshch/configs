@@ -1,5 +1,5 @@
 <?php
-    $path = $_SERVER['DOCUMENT_ROOT'];
+    $path = "/var/www/html";
     include($path.'/utils/session.php');
     $_SESSION['got_version'] = $_POST['version'];
 ?>

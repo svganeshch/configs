@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
 
-$path = $_SERVER['DOCUMENT_ROOT'];
+$path = "/var/www/html";
 require_once($path . '/utils/session.php');
 
 if (!$_SESSION['is_admin']) {

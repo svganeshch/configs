@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
 
-$path = $_SERVER['DOCUMENT_ROOT'];
+$path = "/var/www/html";
 include($path . '/utils/session.php');
 require($path . '/helpers/devices_connect_moi.php');
 

@@ -1,5 +1,5 @@
 <?php
-$path = $_SERVER['DOCUMENT_ROOT'];
+$path = "/var/www/html";
 require_once($path . '/config/dbcon_config.php');
 
 $login_db = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE_LOGIN);

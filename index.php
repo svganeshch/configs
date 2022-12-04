@@ -1,5 +1,5 @@
 <?php
-$path = $_SERVER['DOCUMENT_ROOT'];
+$path = "/var/www/html";
 require($path . '/helpers/login_connect_moi.php');
 session_start();
 

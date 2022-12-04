@@ -1,5 +1,5 @@
 <?php
-   $path = $_SERVER['DOCUMENT_ROOT'];
+   $path = "/var/www/html";
    require_once($path . '/helpers/login_connect_moi.php');
    if(!isset($_SESSION)) {
       session_start();
