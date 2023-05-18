@@ -8,102 +8,65 @@ require_once($path . '/config/jenkins_config.php');
 require_once($path . '/helpers/devices_connect_moi.php');
 
 $device = $_SESSION["cur_device"];
-$blu_builder_pipeline_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/blue/rest/organizations/jenkins/pipelines/'.urlencode(builder_pipeline);
-$leg_builder_pipeline_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/job/'.urlencode(builder_pipeline);
-$kicker_pipeline_url = 'https://'.urlencode(jenkins_username).':'.urlencode(jenkins_user_api).'@'.urlencode(jenkins_url).'/job/'.urlencode(kicker_pipeline);
+// Base urls
+$builder_pipeline_url = "https://".urlencode(jenkins_url)."/job/" . urlencode(builder_pipeline);
+$scheduler_build_pipeline_url = "https://".urlencode(jenkins_url)."/job/" . urlencode(scheduler_pipeline); 
 
-$kicker_build_pipeline_url = $kicker_pipeline_url.'/buildWithParameters?cause=Started+by+ArrowConfigs&active_devices=';
-$lastBuild_url = $blu_builder_pipeline_url.'/runs';
-$leg_lastBuild_url = $leg_builder_pipeline_url;
+// Trigger urls
+$trigger_builder_pipeline_url = $builder_pipeline_url . "/buildWithParameters";
+$trigger_scheduler_pipeline_url  = $scheduler_build_pipeline_url . "/buildWithParameters?cause=Started+by+ArrowConfigs&active_devices=";
 
-function getResponseHandler($url) {
-    $data = curl_init();
-    curl_setopt($data, CURLOPT_URL, $url);
-    curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
-    $response = curl_exec($data);
-    curl_close($data);
+// utility urls/strings
+$pretty_json =  "?pretty=true";
+$allBuildsurl = $builder_pipeline_url . "/api/json?tree=allBuilds[id,inProgress,displayName,description]";
 
-    return $response;
+// Set active device build id (running or queued)
+if(!isset($_SESSION["jenkins_build_id"])){
+    setIdActiveBuild($device);
 }
 
-function responseHandler($url) {
-    $data = curl_init();
-    curl_setopt($data, CURLOPT_URL, $url);
-    curl_setopt($data, CURLOPT_POST, 1);
-    curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
-    $response = curl_exec($data);
-    curl_close($data);
-
-    return $response;
+if(isset($_POST["getBuildStatus"]) && $_POST["getBuildStatus"] == "yes"){
+    if($_SESSION["jenkins_build_id"] != null){
+        exit("idle");
+    }elseif(checkBuildStatus("Executing")){
+        exit("building");
+    }elseif(checkBuildStatus("Waiting")){
+        exit("waiting");
+    }else{
+        exit("---");
+    }
 }
 
-function setBuildID($cur_dev) {
-    global $lastBuild_url;
-    $lastBuildInfo = getResponseHandler($lastBuild_url.'/?pretty=true');
-    $lastBuildInfo = json_decode($lastBuildInfo, true);
+// Stop running build
+if(isset($_POST["buildStop"]) && $_POST["buildStop"] == "yes"){
+    $url = $builder_pipeline_url . "/" . $_SESSION["jenkins_build_id"] . "/stop";
 
-    foreach($lastBuildInfo as $buildInfo) {
-        if($buildInfo['name'] == $cur_dev.' ('.explode('_', $_SESSION['got_version'])[0].')'.' ('.$_SESSION["device_profile"].')') {
-            if($buildInfo['state'] == 'RUNNING' || $buildInfo['state'] == 'QUEUED')
-                $_SESSION['jenkins_build_id'] = $buildInfo['id'];
+    if(checkBuildStatus("Waiting")){
+        exit("There is already a build waiting in queue for this device \nTry to remove it from the queue instead");
+    }
+
+    if(checkBuildStatus("Executing")){
+        $response = curlCall($url, true);
+        if($response == ""){
+            exit("The build has been stopped");
+            setIdActiveBuild($device);
+        }else{
+            exit("");
         }
+        exit("There is already a build running in this device \nTry to stop it instead");
+    }else{
+        exit("What are you trying to stop!\nThere's no build running currently!");
     }
 }
 
-if(!isset($_SESSION['jenkins_build_id']))
-    setBuildID($device);
-
-// get build status functions
-function isBuildRunning($cur_dev) {
-    global $lastBuild_url;
-    $lastBuildInfo = getResponseHandler($lastBuild_url.'/'.$_SESSION['jenkins_build_id'].'/?pretty=true');
-    $lastBuildInfo = json_decode($lastBuildInfo, true);
-
-    if($lastBuildInfo['state'] == 'RUNNING') return true;
-    else false;
-}
-
-function isBuildInQueue($cur_dev) {
-    global $lastBuild_url;
-    $lastBuildInfo = getResponseHandler($lastBuild_url.'/'.$_SESSION['jenkins_build_id'].'/?pretty=true');
-    $lastBuildInfo = json_decode($lastBuildInfo, true);
-
-    if($lastBuildInfo['state'] == 'QUEUED') return true;
-    else return false;
-}
-
-// GetBuildStatus
-if(isset($_POST['getBuildStatus']) && $_POST['getBuildStatus'] == 'yes') {
-    if($_SESSION['jenkins_build_id'] == null) exit("idle");
-    elseif(isBuildRunning($device)) exit("building");
-    elseif(isBuildInQueue($device)) exit("waiting");
-    else exit("---");
-}
-
-// Jenkins button actions
-// stop the build
-if(isset($_POST['buildStop']) && $_POST['buildStop'] == 'yes') {
-    $build_stop_url = $leg_builder_pipeline_url.'/'.$_SESSION['jenkins_build_id'].'/stop';
-
-    if(isBuildInQueue($device)) {
-        exit("There's a build waiting in queue!\nTry remove from queue option instead.");
-    }
-
-    if(isBuildRunning($device)) {
-        $stopRes=responseHandler($build_stop_url);
-        if($stopRes == "") exit("Stopped the build!");
-        else exit("Something went wrong while trying to stop the build".$stopRes);
-    }
-    else exit("What are you trying to stop!\nThere's no build running currently!");
-}
-
-// remove from queue
+// Remove build from queue
 if(isset($_POST["buildRemoveQueue"]) && $_POST["buildRemoveQueue"] == 'yes') {
-    if(isBuildInQueue($device)) {
-        $queue_url = $leg_builder_pipeline_url.'/'.$_SESSION['jenkins_build_id'].'/stop';
-        $queueCancelRes = responseHandler($queue_url);
-        if($queueCancelRes == "") exit("Removed the build from queue");
-        else exit("Something went wrong while trying to remove build from queue\n".$queueCancelRes);
+    // Check if the build is actually in queue
+    if(checkBuildStatus("Waiting")) {
+        $url = $builder_pipeline_url.'/'.$_SESSION['jenkins_build_id'].'/stop';
+        $response = curlCall($url, true);
+        if($response == "") exit("Removed the build from queue");
+        else exit("Something went wrong while trying to remove build from queue\n".$response);
     }
     else {
         exit("There's no build in queue");
@@ -113,23 +76,28 @@ if(isset($_POST["buildRemoveQueue"]) && $_POST["buildRemoveQueue"] == 'yes') {
 // initiate a build
 if(isset($_POST["buildTrigger"]) && $_POST["buildTrigger"] == 'yes') {
     // check if a build is already running
-    if(isBuildRunning($device)) exit("A build is already running for your device!");
+    if(checkBuildStatus("Executing")) {
+        exit("A build is already running for your device!");
+    }
 
     // check if a build is already in queue
-    if(isBuildInQueue($device)) {
+    if(checkBuildStatus("Waiting")) {
         exit("There's a build already in queue for your device");
     }
 
     $force_node = getDataValue("common_config", "force_node");
-    
-    if($_SESSION['device_profile'] == "official" && !$_SESSION['is_admin'])
-        exit("Initiating builds from official profile is forbidden for non-admins, please refresh the page or choose appropriate profile!");
 
-    if(responseHandler($kicker_build_pipeline_url.$device.'&version='.$_SESSION['got_version'].'&force_node='.$force_node.'&device_profile='.$_SESSION['device_profile']) == "") {
+    if($_SESSION['device_profile'] == "official" && !$_SESSION['is_admin']) {
+        exit("Initiating builds from official profile is forbidden for non-admins, please refresh the page or choose appropriate profile!");
+    }
+
+    if(curlCall($trigger_scheduler_pipeline_url . $device.'&version=' . $_SESSION['got_version'] . '&force_node=' . $force_node . '&device_profile=' . $_SESSION['device_profile'], true) == "") {
         unset($_SESSION['jenkins_build_id']);
-        setBuildID($device);
+        setIdActiveBuild($device);
         exit("Build initiated!");
-    } else exit("Something went wrong!");
+    } else {
+        exit("Something went wrong!");
+    }
 }
 
 // get all non-revoked devices and initiate builds
@@ -146,7 +114,7 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
                 array_push($active_devices, $ad);
         }
     }
-    
+
     // Construct pipline url with parameters
     foreach($active_devices as $params) {
         // Check if the device is opted for weekly
@@ -162,11 +130,52 @@ if(isset($_POST["PipelineBuildTrigger"]) && $_POST["PipelineBuildTrigger"] == 'y
         }
     }
 
-    $kicker_build_pipeline_url = substr($kicker_build_pipeline_url, 0, -1);
+    $trigger_scheduler_pipeline_url = substr($kicker_build_pipeline_url, 0, -1);
     $force_node = getDataValue("common_config", "force_node");
-    $pipeline_response = responseHandler($kicker_build_pipeline_url.'&version='.$_SESSION['got_version'].'&force_node='.$force_node.'&device_profile='.$_SESSION['device_profile']);
+    $pipeline_response = curlCall($kicker_build_pipeline_url.'&version='.$_SESSION['got_version'].'&force_node='.$force_node.'&device_profile='.$_SESSION['device_profile'], true);
 
     if ($pipeline_response == "") exit("Pipeline triggered!");
     else exit("Failed to trigger pipeline!\n".$pipeline_response);
 }
-?>
+
+// given a string return true if the build description for the active id contains it
+function checkBuildStatus($strToLook){
+    global $builder_pipeline_url;
+    global $pretty_json;
+    $checkStatusurl = $builder_pipeline_url . "/" . $_SESSION["jenkins_build_id"] . "/api/json" . $pretty_json;
+    $response = json_decode(curlCall($checkStatusurl, false), true);
+    return str_contains($response["description"], $strToLook);
+}
+
+// Get all builds and check the builds for the selected device and get the id of the last running or queued build
+function setIdActiveBuild($cur_dev) {
+    global $allBuildsurl;
+    $allBuildsInfo = json_decode(curlCall($allBuildsurl, false), true);
+
+    foreach($allBuildsInfo["allBuilds"] as $build) {
+        // Lets itterate through all the builds, when the build name matches the current device and the build is 
+        // in progress or queued state then set the build id in session
+        if(str_contains($build["displayName"], $cur_dev)) {
+            // Running build or queued
+            if(($build["inProgress"] && !$build["description"] == "Waiting for Executor") || ($build["inProgress"] && $build["description"]) == "Waiting for Executor") {
+                $_SESSION["jenkins_build_id"] = $build["id"];
+                break;
+            }
+        }
+    }
+}
+
+// prepare a curl GET or POST request and return the response
+function curlCall($url, $isPost) {
+    global $jenkins_authentication;
+    $ch = curl_init($url);
+    if($isPost){
+        curl_setopt($ch, CURLOPT_POST, $isPost);
+    }
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+    curl_setopt($ch, CURLOPT_USERPWD, $jenkins_authentication);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return $response;
+}
